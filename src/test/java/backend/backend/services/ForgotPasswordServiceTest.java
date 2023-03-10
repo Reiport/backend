@@ -9,12 +9,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import backend.backend.application.services.authentication.ForgotPasswordService;
 import backend.backend.presentation.contracts.authentication.ForgotPasswordRequest;
 import backend.backend.presentation.errors.authentication.UserNotFoundException;
 import backend.context.SpringTestContext;
 
+@ActiveProfiles("test")
 @DisplayName("ForgotPassword Use Case Testing")
 @ExtendWith(MockitoExtension.class)
 @Import(SpringTestContext.class)
