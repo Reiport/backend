@@ -1,5 +1,5 @@
 server:
-  port: 3000
+  port: 7000
 redis:
   host: 0.0.0.0
   port: 6379
@@ -7,10 +7,10 @@ jwt:
   secret: supersecret
 spring:
   mail:
-    host: 
-    port: 
-    username: 
-    password: 
+    host: sandbox.smtp.mailtrap.io
+    port: 25
+    username: 7f6b1bdb601444
+    password: 48612a2a50c119
   datasource:
     url: jdbc:postgresql://0.0.0.0:5432/reiport
     username: postgres

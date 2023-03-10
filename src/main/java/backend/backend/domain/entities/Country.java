@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Table(name = "country")
 @Data
 @Entity
+@NoArgsConstructor
 public class Country {
 
     @Id
@@ -33,6 +35,10 @@ public class Country {
 
     @Column
     private LocalDate deletedAt;
+
+    public Country(String country) {
+        this.country = country;
+    }
 
     @OneToMany(mappedBy = "country")
     private Set<PostalCode> countryPostalCodes;

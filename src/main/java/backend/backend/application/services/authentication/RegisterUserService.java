@@ -1,8 +1,5 @@
 package backend.backend.application.services.authentication;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,83 +21,83 @@ import backend.backend.presentation.errors.authentication.UserAlreadyRegisteredE
 @Service
 public class RegisterUserService {
 
-	private final IGuestTypeRepository guestTypeRepository;
-	private final IPostalCodeRepository postalCodeRepository;
-	private final IUserRepository userRepository;
-	private final IJwtGenerator jwtGenerator;
-	private final IMailSender mailSender;
-	private final PasswordEncoder passwordEncoder;
-	private final AuthenticationManager authenticationManager;
+    private final IGuestTypeRepository guestTypeRepository;
+    private final IPostalCodeRepository postalCodeRepository;
+    private final IUserRepository userRepository;
+    private final IJwtGenerator jwtGenerator;
+    private final IMailSender mailSender;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-	public RegisterUserService(
-			IGuestTypeRepository guestTypeRepository,
-			IPostalCodeRepository postalCodeRepository,
-			IUserRepository userRepository,
-			IJwtGenerator jwtGenerator,
-			IMailSender mailSender,
-			PasswordEncoder passwordEncoder,
-			AuthenticationManager authenticationManager) {
-		this.guestTypeRepository = guestTypeRepository;
-		this.postalCodeRepository = postalCodeRepository;
-		this.userRepository = userRepository;
-		this.jwtGenerator = jwtGenerator;
-		this.mailSender = mailSender;
-		this.passwordEncoder = passwordEncoder;
-		this.authenticationManager = authenticationManager;
-	}
+    public RegisterUserService(
+            IGuestTypeRepository guestTypeRepository,
+            IPostalCodeRepository postalCodeRepository,
+            IUserRepository userRepository,
+            IJwtGenerator jwtGenerator,
+            IMailSender mailSender,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager) {
+        this.guestTypeRepository = guestTypeRepository;
+        this.postalCodeRepository = postalCodeRepository;
+        this.userRepository = userRepository;
+        this.jwtGenerator = jwtGenerator;
+        this.mailSender = mailSender;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
-	public AuthenticationResult handle(RegisterRequest request) {
+    public AuthenticationResult handle(RegisterRequest registerRequest) {
 
-		var guest_type = this.guestTypeRepository.findById(1);
+        var guest_type = this.guestTypeRepository.findByName(registerRequest.getGuestType());
 
-		var postalCode = this.postalCodeRepository.findById("3520-039");
+        var postalCode = this.postalCodeRepository.findById(registerRequest.getPostalCode());
 
-		var user = this.userRepository.findByEmail(request.getEmail());
+        var user = this.userRepository.findByEmail(registerRequest.getEmail());
 
-		if (user.isPresent()) {
-			throw new UserAlreadyRegisteredException();
-		}
+        if (user.isPresent()) {
+            throw new UserAlreadyRegisteredException();
+        }
 
-		var createdUser = this.userRepository.save(
-				new Guest(
-						request.getEmail(),
-						passwordEncoder.encode(request.getPassword()),
-						"Fernado",
-						"La Ventura",
-						LocalDate.of(2014, Month.JANUARY, 1),
-						BigDecimal.valueOf(999999999),
-						"Rua das Flores",
-						150,
-						BigDecimal.valueOf(789456123),
-						postalCode.get(),
-						guest_type.get()));
+        var createdUser = this.userRepository.save(
+                new Guest(
+                        registerRequest.getEmail(),
+                        passwordEncoder.encode(registerRequest.getPassword()),
+                        registerRequest.getFirstName(),
+                        registerRequest.getLastName(),
+                        registerRequest.getBirthDate(),
+                        registerRequest.getNif(),
+                        registerRequest.getStreet(),
+                        registerRequest.getPort(),
+                        registerRequest.getTelephone(),
+                        postalCode.get(),
+                        guest_type.get()));
 
-		Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
 
-		options.put("verifyLink", "");
+        options.put("verifyLink", "");
 
-		// Send Email
-		mailSender.sendEmail(
-				"Registro na plantaforma Reiport",
-				request.getEmail(),
-				"welcome",
-				options);
+        // Send Email
+        mailSender.sendEmail(
+                "Registro na plantaforma Reiport",
+                registerRequest.getEmail(),
+                "welcome",
+                options);
 
-		authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(createdUser, request.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(createdUser, registerRequest.getPassword()));
 
-		var token = jwtGenerator.generateToken(
-				createdUser.getId().toString(),
-				request.getEmail());
+        var token = jwtGenerator.generateToken(
+                createdUser.getId().toString(),
+                registerRequest.getEmail());
 
-		var refresh_token = jwtGenerator.generateToken(
-				createdUser.getId().toString(),
-				request.getEmail());
+        var refresh_token = jwtGenerator.generateToken(
+                createdUser.getId().toString(),
+                registerRequest.getEmail());
 
-		return new AuthenticationResult(
-				token,
-				refresh_token);
+        return new AuthenticationResult(
+                token,
+                refresh_token);
 
-	}
+    }
 
 }

@@ -48,7 +48,6 @@ public class LoginService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userFound.get(), request.getPassword()));
 
-        // Generate TokensP
         String token = jwtGenerator.generateToken(userFound.get().getId().toString(), request.getEmail());
         String refreshToken = jwtGenerator.generateToken(userFound.get().getId().toString(),
                 request.getEmail());

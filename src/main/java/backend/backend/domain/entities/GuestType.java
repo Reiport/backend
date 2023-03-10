@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Table(name = "guesttype")
 @Data
 @Entity
+@NoArgsConstructor
 public class GuestType {
 
     @Id
@@ -36,6 +38,10 @@ public class GuestType {
 
     @Column
     private LocalDate deletedAt;
+
+    public GuestType(String name) {
+        this.name = name;
+    }
 
     @OneToMany(mappedBy = "guestType")
     private Set<Guest> guestTypeGuests;

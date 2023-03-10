@@ -13,7 +13,6 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Set;
@@ -32,7 +31,7 @@ public class Guest implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 200, unique = true)
     private String email;
 
     @Column(nullable = false, length = 100, name = "passwd")
@@ -48,7 +47,7 @@ public class Guest implements UserDetails {
     private LocalDate birthDate;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal nif;
+    private String nif;
 
     @Column(nullable = false, length = 100)
     private String street;
@@ -57,7 +56,7 @@ public class Guest implements UserDetails {
     private Integer port;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal telephone;
+    private String telephone;
 
     @Column
     private LocalDate createdAt;
@@ -85,8 +84,13 @@ public class Guest implements UserDetails {
     @OneToMany(mappedBy = "guest")
     private Set<HistoricStates> guestHistoricStatess;
 
-    public Guest(String email, String password, String firstName, String lastName, LocalDate birthDate, BigDecimal nif,
-            String street, Integer port, BigDecimal telephone, PostalCode postalCode, GuestType guestType) {
+    public Guest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public Guest(String email, String password, String firstName, String lastName, LocalDate birthDate, String nif,
+            String street, Integer port, String telephone, PostalCode postalCode, GuestType guestType) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;

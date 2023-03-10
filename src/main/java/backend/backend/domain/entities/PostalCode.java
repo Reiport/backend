@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Table(name = "postalcode")
 @Data
 @Entity
+@NoArgsConstructor
 public class PostalCode {
 
     @Id
@@ -36,6 +38,13 @@ public class PostalCode {
 
     @Column
     private LocalDate deletedAt;
+
+    public PostalCode(String id, String description, String locality, Country country) {
+        this.id = id;
+        this.description = description;
+        this.locality = locality;
+        this.country = country;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country", nullable = false)
