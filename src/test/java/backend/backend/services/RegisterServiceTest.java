@@ -77,9 +77,9 @@ public class RegisterServiceTest {
         return sut.handle(new RegisterRequest(
                 guest.getEmail(),
                 guest.getPassword(),
-                null,
+                guest.getFirstName(),
                 guest.getLastName(),
-                guest.getBirthDate(),
+                guest.getBirthDate().toString(),
                 guest.getNif(),
                 guest.getStreet(),
                 guest.getPort(),

@@ -1,7 +1,5 @@
 package backend.backend.presentation.contracts.authentication;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,7 +27,7 @@ public class RegisterRequest {
     private String lastName;
 
     @NotBlank()
-    private LocalDate birthDate;
+    private String birthDate;
 
     @Size(min = 9, max = 9)
     @NotBlank()
@@ -38,7 +36,6 @@ public class RegisterRequest {
     @NotBlank()
     private String street;
 
-    @NotBlank()
     private Integer port;
 
     @Size(min = 9, max = 9)

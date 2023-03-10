@@ -1,5 +1,7 @@
 package backend.backend.application.services.authentication;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +66,7 @@ public class RegisterUserService {
                         passwordEncoder.encode(registerRequest.getPassword()),
                         registerRequest.getFirstName(),
                         registerRequest.getLastName(),
-                        registerRequest.getBirthDate(),
+                        LocalDate.parse(registerRequest.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         registerRequest.getNif(),
                         registerRequest.getStreet(),
                         registerRequest.getPort(),
