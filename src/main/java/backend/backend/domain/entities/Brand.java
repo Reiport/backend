@@ -40,10 +40,4 @@ public class Brand {
     @OneToMany(mappedBy = "brand")
     private Set<Model> brandModels;
 
-    @OneToMany(mappedBy = "brand")
-    private Set<Container> brandContainers;
-
-    @OneToMany(mappedBy = "brand")
-    private Set<Vehicle> brandVehicles;
-
 }

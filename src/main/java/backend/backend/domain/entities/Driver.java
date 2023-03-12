@@ -12,7 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class Driver {
     private Boolean hasCam;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal cc;
+    private String cc;
 
     @Column(nullable = false)
     private Boolean isWorking;

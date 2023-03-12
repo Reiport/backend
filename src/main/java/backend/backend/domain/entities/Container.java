@@ -57,14 +57,6 @@ public class Container {
     @JoinColumn(name = "model", nullable = false)
     private Model model;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand", nullable = false)
-    private Brand brand;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type", nullable = false)
-    private Type type;
-
     @OneToMany(mappedBy = "containerLicense")
     private Set<Request> containerLicenseRequests;
 

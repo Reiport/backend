@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ResetPasswordRequest {
+public class ResetPassword {
 
     private String password;
     private String confirmPassword;

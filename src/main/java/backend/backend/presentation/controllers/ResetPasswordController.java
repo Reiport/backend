@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import backend.backend.application.services.authentication.ResetPasswordService;
-import backend.backend.application.services.authentication.common.ResetPasswordRequest;
+import backend.backend.application.services.authentication.common.ResetPassword;
+import backend.backend.presentation.contracts.authentication.ResetPasswordRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -21,7 +22,7 @@ public class ResetPasswordController {
             @RequestBody ResetPasswordRequest request) {
 
         this.resetPasswordService.handle(
-                new ResetPasswordRequest(
+                new ResetPassword(
                         request.getPassword(),
                         request.getConfirmPassword(),
                         token));

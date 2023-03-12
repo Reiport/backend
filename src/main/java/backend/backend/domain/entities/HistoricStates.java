@@ -13,7 +13,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@Table(name = "historicstates")
+@Table(name = "historicstate")
 @Data
 @Entity
 public class HistoricStates {
@@ -25,6 +25,9 @@ public class HistoricStates {
 
     @Column(nullable = false)
     private LocalDate startDate;
+
+    @Column(nullable = false)
+    private int state;
 
     @Column
     private LocalDate createdAt;
@@ -38,10 +41,6 @@ public class HistoricStates {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request", nullable = false)
     private Request request;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "state", nullable = false)
-    private State state;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest", nullable = false)

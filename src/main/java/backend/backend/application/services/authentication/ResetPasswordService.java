@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import backend.backend.application.common.interfaces.repositories.ITokenRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
-import backend.backend.application.services.authentication.common.ResetPasswordRequest;
+import backend.backend.application.services.authentication.common.ResetPassword;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.redis.Token;
 import backend.backend.presentation.errors.authentication.PasswordsNotEqualException;
@@ -30,7 +30,7 @@ public class ResetPasswordService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void handle(ResetPasswordRequest request) {
+    public void handle(ResetPassword request) {
 
         Guest currentUser;
 

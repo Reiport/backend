@@ -42,6 +42,9 @@ public class Vehicle {
     private Boolean isInUse;
 
     @Column
+    private Integer fuel;
+
+    @Column
     private LocalDate createdAt;
 
     @Column
@@ -51,16 +54,8 @@ public class Vehicle {
     private LocalDate deletedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand", nullable = false)
-    private Brand brand;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model", nullable = false)
     private Model model;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fuel", nullable = false)
-    private Fuel fuel;
 
     @OneToMany(mappedBy = "license")
     private Set<Request> licenseRequests;

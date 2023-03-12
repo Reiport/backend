@@ -9,19 +9,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Table(name = "drivergroup")
+@Table(name = "guestgroup")
 @Data
 @Entity
-public class DriverGroup {
+public class GuestGroup {
 
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal kilometers;
+    @Column
+    private LocalDate beginDate;
 
-    @Column(nullable = false)
-    private Character type;
+    @Column
+    private LocalDate exitDate;
 
     @Column
     private LocalDate createdAt;
@@ -39,7 +38,7 @@ public class DriverGroup {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "driver", nullable = false)
-    private Driver driver;
+    @JoinColumn(name = "guest", nullable = false)
+    private Guest guest;
 
 }
