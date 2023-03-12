@@ -44,6 +44,9 @@ public class Container {
     @Column(nullable = false)
     private Boolean isInUse;
 
+    @Column(nullable = false)
+    private Type type;
+
     @Column
     private LocalDate createdAt;
 

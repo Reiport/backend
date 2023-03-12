@@ -42,7 +42,7 @@ public class Vehicle {
     private Boolean isInUse;
 
     @Column
-    private Integer fuel;
+    private Fuel fuel;
 
     @Column
     private LocalDate createdAt;

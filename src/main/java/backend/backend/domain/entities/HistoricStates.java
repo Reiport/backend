@@ -27,7 +27,7 @@ public class HistoricStates {
     private LocalDate startDate;
 
     @Column(nullable = false)
-    private int state;
+    private State state;
 
     @Column
     private LocalDate createdAt;
