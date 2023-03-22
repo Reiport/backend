@@ -1,4 +1,4 @@
-package backend.backend.presentation.controllers;
+package backend.backend.presentation.controllers.global;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

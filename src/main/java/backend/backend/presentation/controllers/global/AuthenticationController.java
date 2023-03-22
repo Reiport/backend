@@ -1,31 +1,41 @@
-package backend.backend.presentation.controllers;
+package backend.backend.presentation.controllers.global;
 
-import org.springframework.http.HttpStatusCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.application.services.authentication.ForgotPasswordService;
 import backend.backend.application.services.authentication.LoginService;
 import backend.backend.application.services.authentication.RegisterUserService;
+import backend.backend.application.services.authentication.ValidateAccountService;
 import backend.backend.application.services.authentication.common.AuthenticationResult;
 import backend.backend.presentation.contracts.authentication.ForgotPasswordRequest;
 import backend.backend.presentation.contracts.authentication.LoginRequest;
 import backend.backend.presentation.contracts.authentication.RegisterRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/auth")
 @RestController
-@RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final RegisterUserService registerService;
-    private final LoginService loginService;
-    private final ForgotPasswordService forgotPasswordService;
+    @Autowired
+    private RegisterUserService registerService;
 
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private ForgotPasswordService forgotPasswordService;
+
+    @Autowired
+    private ValidateAccountService validateAccountService;
+
+    // Only for clients
     @PostMapping("/register")
     private ResponseEntity<AuthenticationResult> register(@Valid @RequestBody RegisterRequest request) {
 
@@ -40,11 +50,11 @@ public class AuthenticationController {
                 request.getPort(),
                 request.getTelephone(),
                 request.getPostalCode(),
-                request.getGuestType()));
+                "Client"));
 
-        return new ResponseEntity<AuthenticationResult>(
-                tokens,
-                HttpStatusCode.valueOf(201));
+        return ResponseEntity
+                .ok()
+                .body(tokens);
 
     }
 
@@ -55,9 +65,9 @@ public class AuthenticationController {
                 request.getEmail(),
                 request.getPassword()));
 
-        return new ResponseEntity<AuthenticationResult>(
-                tokens,
-                HttpStatusCode.valueOf(200));
+        return ResponseEntity
+                .ok()
+                .body(tokens);
 
     }
 
@@ -66,9 +76,19 @@ public class AuthenticationController {
 
         this.forgotPasswordService.handle(request);
 
-        return new ResponseEntity<>(
-                null,
-                HttpStatusCode.valueOf(200));
+        return ResponseEntity
+                .ok()
+                .build();
+    }
+
+    @GetMapping("/validate_account")
+    private ResponseEntity<?> validate_account(@RequestParam String token) {
+
+        validateAccountService.handle(token);
+
+        return ResponseEntity
+                .ok()
+                .build();
 
     }
 

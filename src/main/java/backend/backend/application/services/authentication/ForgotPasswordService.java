@@ -55,7 +55,7 @@ public class ForgotPasswordService {
 
         options.put("name", user.get().getEmail());
         options.put("forgotLink",
-                "localhost:8080/changepassword?token=" + forgotToken);
+                "localhost:8080/resetpassword?token=" + forgotToken);
 
         mailSender.sendEmail(
                 "Pedido de esquecimento de senha",
