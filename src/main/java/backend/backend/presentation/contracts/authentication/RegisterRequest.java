@@ -46,7 +46,7 @@ public class RegisterRequest {
     @NotBlank()
     private String postalCode;
 
-    @NotBlank()
+    @NotBlank
     private String guestType;
 
 }

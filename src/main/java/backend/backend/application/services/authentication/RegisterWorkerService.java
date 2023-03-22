@@ -35,6 +35,7 @@ public class RegisterWorkerService {
 
     public void handle(RegisterWorkerRequest request) {
 
+        // TODO: Mudar isto!
         if (request.getGuestType().equals("Cliente"))
             throw new RuntimeException("You cannot register an Client!");
 
@@ -55,13 +56,15 @@ public class RegisterWorkerService {
         Guest guest = GuestMapper.INSTANCE.registerWorkerRequestToGuest(request);
         guest.setEmail(email);
         guest.setPassword(passwordEncoder.encode(password));
+        guest.setGuestType(guestTypeRepository.findByName(request.getGuestType()).get());
 
+        // TODO: Não deixou salvar
         this.userRepository.save(guest);
 
         Map<String, Object> options = new HashMap<>();
 
         options.put("email", guest.getEmail());
-        options.put("password", guest.getPassword());
+        options.put("password", password);
 
         // Send Email
         mailSender.sendEmail(

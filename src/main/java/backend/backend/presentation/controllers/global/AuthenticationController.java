@@ -50,7 +50,7 @@ public class AuthenticationController {
                 request.getPort(),
                 request.getTelephone(),
                 request.getPostalCode(),
-                "Client"));
+                "Cliente"));
 
         return ResponseEntity
                 .ok()

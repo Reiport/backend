@@ -25,7 +25,8 @@ public interface GuestMapper {
     @Mapping(target = "guestHistoricStatess", ignore = true)
     Guest registerRequestToGuest(RegisterRequest request);
 
-    @Mapping(source = "guestType", target = "guestType.name")
+    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
+    @Mapping(target = "guestType", ignore = true)
     @Mapping(source = "postalCode", target = "postalCode.id")
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)

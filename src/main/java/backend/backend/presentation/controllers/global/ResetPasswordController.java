@@ -27,7 +27,9 @@ public class ResetPasswordController {
                         request.getConfirmPassword(),
                         token));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity
+                .ok()
+                .build();
 
     }
 

@@ -25,9 +25,9 @@ public class CredentialsGenerator implements ICredentialGenerator {
 
         StringBuilder email = new StringBuilder();
 
-        email.append(firstName);
+        email.append(firstName.toLowerCase());
         email.append(".");
-        email.append(lastName);
+        email.append(lastName.toLowerCase());
         email.append("@");
         email.append(credentialsSettings.getName());
 
