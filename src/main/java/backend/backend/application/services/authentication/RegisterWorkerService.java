@@ -58,7 +58,6 @@ public class RegisterWorkerService {
         guest.setPassword(passwordEncoder.encode(password));
         guest.setGuestType(guestTypeRepository.findByName(request.getGuestType()).get());
 
-        // TODO: Não deixou salvar
         this.userRepository.save(guest);
 
         Map<String, Object> options = new HashMap<>();

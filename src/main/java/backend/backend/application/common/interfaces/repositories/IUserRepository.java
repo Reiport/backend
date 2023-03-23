@@ -1,5 +1,6 @@
 package backend.backend.application.common.interfaces.repositories;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,9 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
 
     @Query(value = "SELECT * FROM Guest u WHERE u.email = ?1", nativeQuery = true)
     Optional<Guest> findByEmail(String email);
+
+    @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name <> 'Cliente'")
+    Collection<Guest> getAllWorkers();
 
     Optional<Guest> findById(Integer id);
 
