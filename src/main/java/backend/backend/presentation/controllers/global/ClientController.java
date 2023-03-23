@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.application.services.client.GetAllClientsService;
+import backend.backend.application.services.client.GetClientById;
 import backend.backend.domain.entities.Guest;
 import backend.backend.presentation.contracts.worker.WorkerResponse;
 import backend.backend.presentation.mappers.GuestMapper;
@@ -20,6 +22,9 @@ public class ClientController {
 
     @Autowired
     private GetAllClientsService getAllClientsService;
+
+    @Autowired
+    private GetClientById getClientById;
 
     @GetMapping("/")
     private ResponseEntity<Collection<WorkerResponse>> getAllClients() {
@@ -34,6 +39,17 @@ public class ClientController {
         return ResponseEntity
                 .ok()
                 .body(response);
+
+    }
+
+    @GetMapping()
+    private ResponseEntity<WorkerResponse> getClientById(@RequestParam int id) {
+
+        Guest response = getClientById.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body(GuestMapper.INSTANCE.toWorkerResponse(response));
 
     }
 
