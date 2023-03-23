@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
 import backend.backend.domain.entities.Guest;
-import backend.backend.presentation.errors.authentication.ClientNotFoundException;
+import backend.backend.presentation.errors.client.ClientNotFoundException;
 
 @Service
 public class GetClientById {

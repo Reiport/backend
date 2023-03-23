@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.application.services.authentication.RegisterWorkerService;
 import backend.backend.application.services.worker.GetAllWorkersService;
+import backend.backend.application.services.worker.GetWorkerById;
+import backend.backend.domain.entities.Guest;
 import backend.backend.presentation.contracts.authentication.RegisterWorkerRequest;
 import backend.backend.presentation.contracts.worker.WorkerResponse;
 import backend.backend.presentation.mappers.GuestMapper;
@@ -23,12 +26,15 @@ import jakarta.validation.Valid;
 public class ManageWorkerAccount {
 
     @Autowired
-    RegisterWorkerService registerWorkerService;
+    private RegisterWorkerService registerWorkerService;
 
     @Autowired
-    GetAllWorkersService getAllWorkersService;
+    private GetAllWorkersService getAllWorkersService;
 
-    @GetMapping("/workers")
+    @Autowired
+    private GetWorkerById getWorkerById;
+
+    @GetMapping("/workers/")
     private ResponseEntity<Collection<WorkerResponse>> getAllWorkers() {
 
         var workers = getAllWorkersService.handle(10);
@@ -41,6 +47,17 @@ public class ManageWorkerAccount {
         return ResponseEntity
                 .ok()
                 .body(response);
+
+    }
+
+    @GetMapping("/workers")
+    private ResponseEntity<WorkerResponse> getWorkerById(@RequestParam int id) {
+
+        Guest result = getWorkerById.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body(GuestMapper.INSTANCE.toWorkerResponse(result));
 
     }
 
