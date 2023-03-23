@@ -18,6 +18,9 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name <> 'Cliente'")
     Collection<Guest> getAllWorkers();
 
+    @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Cliente'")
+    Collection<Guest> getAllClients();
+
     Optional<Guest> findById(Integer id);
 
 }
