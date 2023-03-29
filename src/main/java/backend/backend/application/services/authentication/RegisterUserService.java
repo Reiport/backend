@@ -53,7 +53,7 @@ public class RegisterUserService {
 
     public AuthenticationResult handle(RegisterRequest registerRequest) {
 
-        var postalCode = this.postalCodeRepository.findById(registerRequest.getPostalCode());
+        var postalCode = this.postalCodeRepository.findByCode(registerRequest.getPostalCode());
 
         var user = this.userRepository.findByEmail(registerRequest.getEmail());
 
@@ -73,7 +73,7 @@ public class RegisterUserService {
                         registerRequest.getStreet(),
                         registerRequest.getPort(),
                         registerRequest.getTelephone(),
-                        postalCode.get(),
+                        postalCode,
                         guestTypeRepository.findByName("Cliente").get()));
 
         Map<String, Object> options = new HashMap<>();

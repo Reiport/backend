@@ -24,19 +24,25 @@ public class HistoricStates {
     private Integer id;
 
     @Column(nullable = false)
-    private LocalDate startDate;
+    private LocalDate startDate = LocalDate.now();
 
     @Column(nullable = false)
     private State state;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;
 
     @Column
     private LocalDate deletedAt;
+
+    public HistoricStates(State state, Request request, Guest guest) {
+        this.state = state;
+        this.request = request;
+        this.guest = guest;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request", nullable = false)

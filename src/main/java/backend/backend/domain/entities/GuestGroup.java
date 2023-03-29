@@ -17,13 +17,13 @@ import java.time.LocalDate;
 public class GuestGroup {
 
     @Column
-    private LocalDate beginDate;
+    private LocalDate beginDate = LocalDate.now();
 
     @Column
     private LocalDate exitDate;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;
@@ -40,5 +40,10 @@ public class GuestGroup {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest", nullable = false)
     private Guest guest;
+
+    public GuestGroup(Request request, Guest guest) {
+        this.request = request;
+        this.guest = guest;
+    }
 
 }

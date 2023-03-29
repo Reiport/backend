@@ -6,4 +6,6 @@ import backend.backend.domain.entities.Country;
 
 public interface ICountryRepository extends JpaRepository<Country, Integer> {
 
+    Country findByCountry(String country);
+
 }

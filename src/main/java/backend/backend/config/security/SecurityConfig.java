@@ -48,6 +48,7 @@ public class SecurityConfig {
         return (AuthenticationManager) configuration.getAuthenticationManager();
     }
 
+    // TODO: Fix Authorization
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -59,7 +60,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/**").permitAll()
+                // .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(
