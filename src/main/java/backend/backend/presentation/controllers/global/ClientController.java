@@ -29,7 +29,7 @@ public class ClientController {
     @GetMapping("/")
     private ResponseEntity<Collection<WorkerResponse>> getAllClients() {
 
-        Collection<Guest> clients = getAllClientsService.handle(10);
+        Collection<Guest> clients = getAllClientsService.handle();
 
         var response = clients
                 .stream()

@@ -26,6 +26,7 @@ public interface GuestMapper {
     @Mapping(target = "guestHistoricStatess", ignore = true)
     Guest registerRequestToGuest(RegisterRequest request);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     @Mapping(target = "guestType", ignore = true)
     @Mapping(source = "postalCode", target = "postalCode.id")
@@ -33,7 +34,6 @@ public interface GuestMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "clientRequests", ignore = true)
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "idDrivers", ignore = true)
     @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "guestHistoricStatess", ignore = true)
@@ -41,6 +41,7 @@ public interface GuestMapper {
     @Mapping(target = "password", ignore = true)
     Guest registerWorkerRequestToGuest(RegisterWorkerRequest request);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "postalCode", source = "postalCode.id")
     @Mapping(target = "guestType", source = "guestType.name")
     WorkerResponse toWorkerResponse(Guest guest);

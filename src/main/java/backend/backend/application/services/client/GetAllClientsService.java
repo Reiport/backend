@@ -14,7 +14,7 @@ public class GetAllClientsService {
     @Autowired
     private IUserRepository _userRepository;
 
-    public Collection<Guest> handle(int qty) {
+    public Collection<Guest> handle() {
         return this._userRepository.getAllClients();
     }
 

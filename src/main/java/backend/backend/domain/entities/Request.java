@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Table(name = "request")
 @Data
 @Entity
+@NoArgsConstructor
 public class Request {
 
     @Id
