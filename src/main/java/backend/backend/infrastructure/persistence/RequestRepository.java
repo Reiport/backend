@@ -8,6 +8,7 @@ import backend.backend.application.common.interfaces.repositories.IRequestReposi
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.GuestGroup;
 import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -59,6 +60,26 @@ public class RequestRepository implements IRequestRepository {
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+
+    @Override
+    public State getRequestState(int requestId) {
+
+        try {
+
+            TypedQuery<State> query = _entityManager.createQuery("SELECT r.state FROM Request r", State.class);
+
+            return query.getSingleResult();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void changeState(State state) {
+        _entityManager.createQuery("SELECT hs FROM HistoricStates hs WHERE hs.request = :request_id");
     }
 
 }

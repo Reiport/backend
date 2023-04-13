@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.State;
 
 public interface IRequestRepository {
 
@@ -11,8 +12,12 @@ public interface IRequestRepository {
 
     Request getRequestById(int id);
 
+    Request save(Request request);
+
     void linkGuest(Guest guest, Request request);
 
-    Request save(Request request);
+    State getRequestState(int requestId);
+
+    void changeState(State state);
 
 }

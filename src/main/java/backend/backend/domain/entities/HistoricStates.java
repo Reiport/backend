@@ -42,6 +42,7 @@ public class HistoricStates {
         this.state = state;
         this.request = request;
         this.guest = guest;
+
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

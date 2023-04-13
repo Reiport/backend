@@ -60,17 +60,7 @@ public class CreateRequestService {
         // TODO: Most likely change this, to assigning the postal code manually
         PostalCode foundPostalCodeDest = _postalCodeRepository.findByCode(request.getPostalCodeDest());
 
-        // if (foundPostalCodeDest.isEmpty())
-        // postalCodeDest = _postalCodeRepository.save(new
-        // PostalCode(request.getPostalCodeDest(), "Lost River",
-        // _countryRepository.findByCountry("Portugal")));
-
         PostalCode foundPostalCodeOri = _postalCodeRepository.findByCode(request.getPostalCodeOri());
-
-        // if (foundPostalCodeOri.isEmpty())
-        // postalCodeOri = _postalCodeRepository.save(new
-        // PostalCode(request.getPostalCodeOri(), "Lost River",
-        // _countryRepository.findByCountry("Portugal")));
 
         Request createdRequest = _requestRepository.save(
                 new Request(
@@ -97,7 +87,7 @@ public class CreateRequestService {
                         foundClient.get()));
 
         // TODO: Este codigo não verifica se o manager já está num request!
-        // TODO: De alguma forma avisar que este request está disponivel para
+        // TODO: De alguma forma avisar que este request está disponivel para cena
         _requestRepository.linkGuest(
                 authUser,
                 createdRequest);

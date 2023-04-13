@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Table(name = "request")
 @Data
 @Entity
-@NoArgsConstructor
 public class Request {
 
     @Id
@@ -63,6 +61,9 @@ public class Request {
 
     @Column
     private LocalDate deletedAt;
+
+    public Request() {
+    }
 
     public Request(BigDecimal cargoWeight, LocalDate deadline, Integer portDest, String streetDest, Integer portOri,
             String streetOri, BigDecimal deliveryPrice, PostalCode postalCodeDest, PostalCode postalCodeOri,
