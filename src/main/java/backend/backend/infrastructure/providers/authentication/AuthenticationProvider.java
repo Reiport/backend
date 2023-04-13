@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
+import backend.backend.domain.entities.Guest;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -17,13 +18,17 @@ public class AuthenticationProvider implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
+        Guest userDetails = null;
+
         var userFound = this.userRepository.findByEmail(email);
 
         if (userFound.isEmpty()) {
             throw new UsernameNotFoundException("There is no User with that email!");
         }
 
-        return userFound.get();
+        userDetails = userFound.get();
+
+        return userDetails;
 
     }
 

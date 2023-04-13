@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import backend.backend.application.common.interfaces.IJwtGenerator;
@@ -26,7 +26,7 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authentication");
+        final String authHeader = request.getHeader("Authorization");
         final String userEmail;
         final String jwtToken;
 
@@ -47,12 +47,11 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
 
             if (jwtGenerator.validateToken(jwtToken)) {
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-                        null);
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails.getUsername(), null, null);
 
-                authToken.setDetails(new WebAuthenticationDetails(request));
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
             }
 
         }

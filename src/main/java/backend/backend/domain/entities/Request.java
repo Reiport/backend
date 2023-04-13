@@ -27,10 +27,10 @@ public class Request {
     private Integer id;
 
     @Column(nullable = false)
-    private Boolean truckAvailability;
+    private Boolean truckAvailability = false;
 
     @Column(nullable = false)
-    private Boolean containerAvailability;
+    private Boolean containerAvailability = false;
 
     @Column(nullable = false, precision = 11, scale = 2)
     private BigDecimal cargoWeight;
@@ -54,13 +54,31 @@ public class Request {
     private BigDecimal deliveryPrice;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;
 
     @Column
     private LocalDate deletedAt;
+
+    public Request() {
+    }
+
+    public Request(BigDecimal cargoWeight, LocalDate deadline, Integer portDest, String streetDest, Integer portOri,
+            String streetOri, BigDecimal deliveryPrice, PostalCode postalCodeDest, PostalCode postalCodeOri,
+            Guest client) {
+        this.cargoWeight = cargoWeight;
+        this.deadline = deadline;
+        this.portDest = portDest;
+        this.streetDest = streetDest;
+        this.portOri = portOri;
+        this.streetOri = streetOri;
+        this.deliveryPrice = deliveryPrice;
+        this.postalCodeDest = postalCodeDest;
+        this.postalCodeOri = postalCodeOri;
+        this.client = client;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postal_code_dest", nullable = false)

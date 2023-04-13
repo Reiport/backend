@@ -39,6 +39,12 @@ public class PostalCode {
     @Column
     private LocalDate deletedAt;
 
+    public PostalCode(String id, String locality, Country country) {
+        this.id = id;
+        this.locality = locality;
+        this.country = country;
+    }
+
     public PostalCode(String id, String description, String locality, Country country) {
         this.id = id;
         this.description = description;

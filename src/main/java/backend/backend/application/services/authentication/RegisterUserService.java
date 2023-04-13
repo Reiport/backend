@@ -2,9 +2,11 @@ package backend.backend.application.services.authentication;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,45 +16,44 @@ import backend.backend.application.common.interfaces.IJwtGenerator;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IGuestTypeRepository;
 import backend.backend.application.common.interfaces.repositories.IPostalCodeRepository;
+import backend.backend.application.common.interfaces.repositories.ITokenRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
 import backend.backend.application.services.authentication.common.AuthenticationResult;
 import backend.backend.domain.entities.Guest;
 import backend.backend.presentation.contracts.authentication.RegisterRequest;
 import backend.backend.presentation.errors.authentication.UserAlreadyRegisteredException;
+import backend.backend.domain.entities.redis.Token;
 
 @Service
 public class RegisterUserService {
 
-    private final IGuestTypeRepository guestTypeRepository;
-    private final IPostalCodeRepository postalCodeRepository;
-    private final IUserRepository userRepository;
-    private final IJwtGenerator jwtGenerator;
-    private final IMailSender mailSender;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private IGuestTypeRepository guestTypeRepository;
 
-    public RegisterUserService(
-            IGuestTypeRepository guestTypeRepository,
-            IPostalCodeRepository postalCodeRepository,
-            IUserRepository userRepository,
-            IJwtGenerator jwtGenerator,
-            IMailSender mailSender,
-            PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager) {
-        this.guestTypeRepository = guestTypeRepository;
-        this.postalCodeRepository = postalCodeRepository;
-        this.userRepository = userRepository;
-        this.jwtGenerator = jwtGenerator;
-        this.mailSender = mailSender;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    private IPostalCodeRepository postalCodeRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
+
+    @Autowired
+    private IJwtGenerator jwtGenerator;
+
+    @Autowired
+    private IMailSender mailSender;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ITokenRepository tokenRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public AuthenticationResult handle(RegisterRequest registerRequest) {
 
-        var guest_type = this.guestTypeRepository.findByName(registerRequest.getGuestType());
-
-        var postalCode = this.postalCodeRepository.findById(registerRequest.getPostalCode());
+        var postalCode = this.postalCodeRepository.findByCode(registerRequest.getPostalCode());
 
         var user = this.userRepository.findByEmail(registerRequest.getEmail());
 
@@ -60,6 +61,7 @@ public class RegisterUserService {
             throw new UserAlreadyRegisteredException();
         }
 
+        // TODO: Consertar a busca do tipo de utilizador ao banco
         var createdUser = this.userRepository.save(
                 new Guest(
                         registerRequest.getEmail(),
@@ -71,14 +73,24 @@ public class RegisterUserService {
                         registerRequest.getStreet(),
                         registerRequest.getPort(),
                         registerRequest.getTelephone(),
-                        postalCode.get(),
-                        guest_type.get()));
+                        postalCode,
+                        guestTypeRepository.findByName("Cliente").get()));
 
         Map<String, Object> options = new HashMap<>();
 
-        options.put("verifyLink", "");
+        String validation_token = jwtGenerator.generateSimpleToken();
 
-        // Send Email
+        tokenRepository.save(
+                new Token(
+                        createdUser.getId(),
+                        validation_token,
+                        new Date(System.currentTimeMillis() + 15 * 60 * 1000).getTime() // 15 min
+                ));
+
+        options.put(
+                "verifyLink",
+                "localhost:8080/auth/validate_account?token=" + validation_token);
+
         mailSender.sendEmail(
                 "Registro na plantaforma Reiport",
                 registerRequest.getEmail(),
