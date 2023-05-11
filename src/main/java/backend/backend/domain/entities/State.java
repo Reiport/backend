@@ -6,5 +6,5 @@ public enum State {
     CANCELLED,
     COMPLETED,
     SCHEDULED,
-    UNPAID
+    PAYED
 }

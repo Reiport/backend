@@ -43,7 +43,8 @@ public class JavaMailProvider implements IMailSender {
             helper.setTo(to);
             helper.setText(htmlFile, true);
 
-            javaMailSender.send(mimeMessage);
+            // javaMailSender.send(mimeMessage);
+            new Thread(() -> javaMailSender.send(mimeMessage)).start();
 
         } catch (Exception e) {
             throw new RuntimeException("Error Sending Mail");

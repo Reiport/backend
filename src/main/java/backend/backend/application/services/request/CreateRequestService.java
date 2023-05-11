@@ -82,7 +82,7 @@ public class CreateRequestService {
         // Update Historic States - Worker Started Request
         _historicStateRepository.save(
                 new HistoricStates(
-                        State.SCHEDULED,
+                        State.SUSPENDED,
                         createdRequest,
                         foundClient.get()));
 

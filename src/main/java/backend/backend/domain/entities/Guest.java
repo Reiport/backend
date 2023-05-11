@@ -14,10 +14,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Table(name = "guest")
@@ -25,6 +27,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @NoArgsConstructor
 public class Guest implements UserDetails {
+
+    // private final Collection<GuestType> role = new ArrayList<>();
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -106,7 +110,10 @@ public class Guest implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(guestType.getName()));
+
+        return authorities;
     }
 
     @Override

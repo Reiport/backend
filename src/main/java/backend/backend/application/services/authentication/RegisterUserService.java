@@ -2,9 +2,11 @@ package backend.backend.application.services.authentication;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -100,13 +102,18 @@ public class RegisterUserService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(createdUser, registerRequest.getPassword()));
 
+        Collection<String> authorities = createdUser.getAuthorities().stream().map(role -> role.getAuthority())
+                .collect(Collectors.toList());
+
         var token = jwtGenerator.generateToken(
                 createdUser.getId().toString(),
-                registerRequest.getEmail());
+                registerRequest.getEmail(),
+                authorities);
 
         var refresh_token = jwtGenerator.generateToken(
                 createdUser.getId().toString(),
-                registerRequest.getEmail());
+                registerRequest.getEmail(),
+                authorities);
 
         return new AuthenticationResult(
                 token,

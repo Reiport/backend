@@ -72,13 +72,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgotpassword")
-    private ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+    private ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
 
         this.forgotPasswordService.handle(request);
 
         return ResponseEntity
-                .ok()
-                .build();
+                .ok("Email de recuperação enviado!");
     }
 
     @GetMapping("/validate_account")

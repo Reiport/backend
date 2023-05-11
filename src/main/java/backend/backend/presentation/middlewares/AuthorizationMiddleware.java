@@ -1,8 +1,11 @@
 package backend.backend.presentation.middlewares;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,9 +39,14 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
         }
 
         jwtToken = authHeader.substring(7);
-        userEmail = jwtGenerator
-                .decodeToken(jwtToken)
+        var decodedToken = jwtGenerator.decodeToken(jwtToken);
+
+        userEmail = decodedToken
                 .getClaim("email")
+                .asString();
+
+        var userRole = decodedToken
+                .getClaim("role")
                 .asString();
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -48,7 +56,8 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
             if (jwtGenerator.validateToken(jwtToken)) {
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails.getUsername(), null, null);
+                        userDetails.getUsername(), null,
+                        new ArrayList<>(Arrays.asList(new SimpleGrantedAuthority(userRole))));
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

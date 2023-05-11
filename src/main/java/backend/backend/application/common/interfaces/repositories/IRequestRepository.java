@@ -18,6 +18,6 @@ public interface IRequestRepository {
 
     State getRequestState(int requestId);
 
-    void changeState(State state);
+    void changeState(Request request, State state);
 
 }

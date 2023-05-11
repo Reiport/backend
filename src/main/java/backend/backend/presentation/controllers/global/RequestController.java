@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.backend.application.services.request.CreateRequestService;
 import backend.backend.application.services.request.GetAllRequestService;
 import backend.backend.application.services.request.GetRequestService;
+import backend.backend.application.services.worker.manager.CompleteRequestService;
 import backend.backend.domain.entities.Request;
+import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
 import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.contracts.request.RequestResponse;
 import backend.backend.presentation.mappers.RequestMapper;
@@ -33,6 +35,9 @@ public class RequestController {
 
     @Autowired
     private GetAllRequestService getAllRequestService;
+
+    @Autowired
+    private CompleteRequestService completeRequestService;
 
     @GetMapping("/")
     public ResponseEntity<Collection<RequestResponse>> getAllRequests() {
@@ -66,6 +71,17 @@ public class RequestController {
     private ResponseEntity<?> createRequest(@Valid @RequestBody ContentRequest request) {
 
         this.createRequestService.handle(request);
+
+        return ResponseEntity
+                .ok()
+                .body("Request was submited to validation");
+
+    }
+
+    @PostMapping("/handle")
+    private ResponseEntity<?> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
+
+        this.completeRequestService.handle(request);
 
         return ResponseEntity
                 .ok()

@@ -11,7 +11,9 @@ import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 @Repository
 public class RequestRepository implements IRequestRepository {
@@ -78,8 +80,16 @@ public class RequestRepository implements IRequestRepository {
     }
 
     @Override
-    public void changeState(State state) {
-        _entityManager.createQuery("SELECT hs FROM HistoricStates hs WHERE hs.request = :request_id");
+    @Transactional
+    public void changeState(Request request, State state) {
+
+        Query updateQuery = _entityManager
+                .createQuery("UPDATE HistoricStates hs SET hs.state = :state WHERE hs.request = :requestId");
+        updateQuery.setParameter("state", state.ordinal());
+        updateQuery.setParameter("requestId", request.getId());
+
+        updateQuery.executeUpdate();
+
     }
 
 }

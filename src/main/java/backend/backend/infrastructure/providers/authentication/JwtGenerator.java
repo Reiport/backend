@@ -1,5 +1,6 @@
 package backend.backend.infrastructure.providers.authentication;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Random;
 
@@ -19,8 +20,9 @@ public class JwtGenerator implements IJwtGenerator {
         algorithm = Algorithm.HMAC256(jwtConfiguration.getSecret());
     }
 
+    // TODO: Fix the role acess
     @Override
-    public String generateToken(String uuid, String email) {
+    public String generateToken(String uuid, String email, Collection<String> role) {
 
         String token = "";
 
@@ -29,6 +31,7 @@ public class JwtGenerator implements IJwtGenerator {
             token = JWT.create()
                     .withIssuer("Reiport")
                     .withClaim("email", email)
+                    .withClaim("role", (String) role.toArray()[0])
                     .withClaim("token_id", uuid)
                     .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                     .sign(algorithm);

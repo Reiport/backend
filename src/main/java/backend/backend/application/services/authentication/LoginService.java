@@ -1,5 +1,8 @@
 package backend.backend.application.services.authentication;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,9 +51,14 @@ public class LoginService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userFound.get(), request.getPassword()));
 
-        String token = jwtGenerator.generateToken(userFound.get().getId().toString(), request.getEmail());
+        Collection<String> authorities = userFound.get().getAuthorities().stream().map(role -> role.getAuthority())
+                .collect(Collectors.toList());
+
+        String token = jwtGenerator.generateToken(userFound.get().getId().toString(), request.getEmail(),
+                authorities);
+
         String refreshToken = jwtGenerator.generateToken(userFound.get().getId().toString(),
-                request.getEmail());
+                request.getEmail(), authorities);
 
         return new AuthenticationResult(
                 token,
