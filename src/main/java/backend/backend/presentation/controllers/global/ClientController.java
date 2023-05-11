@@ -27,6 +27,7 @@ public class ClientController {
     @Autowired
     private GetClientById getClientById;
 
+    @PreAuthorize("hasAnyAuthority('Rececionista, Admin')")
     @GetMapping("/")
     private ResponseEntity<Collection<WorkerResponse>> getAllClients() {
 
@@ -43,7 +44,7 @@ public class ClientController {
 
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAnyAuthority('Rececionista, Admin')")
     @GetMapping()
     public ResponseEntity<WorkerResponse> getClientById(@RequestParam int id) {
 

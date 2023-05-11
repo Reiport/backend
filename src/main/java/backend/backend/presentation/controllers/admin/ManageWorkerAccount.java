@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,7 @@ public class ManageWorkerAccount {
     @Autowired
     private GetWorkerById getWorkerById;
 
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/workers/")
     private ResponseEntity<Collection<WorkerResponse>> getAllWorkers() {
 
@@ -50,6 +52,7 @@ public class ManageWorkerAccount {
 
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/workers")
     private ResponseEntity<WorkerResponse> getWorkerById(@RequestParam int id) {
 
@@ -61,6 +64,7 @@ public class ManageWorkerAccount {
 
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/auth/worker")
     public ResponseEntity<String> registerAlternativeUser(@Valid @RequestBody RegisterWorkerRequest request) {
 
