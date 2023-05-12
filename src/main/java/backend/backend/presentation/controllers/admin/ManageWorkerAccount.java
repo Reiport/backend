@@ -37,7 +37,7 @@ public class ManageWorkerAccount {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/workers/")
-    private ResponseEntity<Collection<WorkerResponse>> getAllWorkers() {
+    public ResponseEntity<Collection<WorkerResponse>> getAllWorkers() {
 
         var workers = getAllWorkersService.handle(10);
 
@@ -54,7 +54,7 @@ public class ManageWorkerAccount {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/workers")
-    private ResponseEntity<WorkerResponse> getWorkerById(@RequestParam int id) {
+    public ResponseEntity<WorkerResponse> getWorkerById(@RequestParam int id) {
 
         Guest result = getWorkerById.handle(id);
 
