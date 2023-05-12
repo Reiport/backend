@@ -20,6 +20,9 @@ import java.util.Set;
 @Entity
 public class Model {
 
+    public Model() {
+    }
+
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

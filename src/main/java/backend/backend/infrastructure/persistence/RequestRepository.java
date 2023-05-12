@@ -1,10 +1,13 @@
 package backend.backend.infrastructure.persistence;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
+import backend.backend.domain.entities.Driver;
+import backend.backend.domain.entities.DriverGroup;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.GuestGroup;
 import backend.backend.domain.entities.Request;
@@ -65,13 +68,14 @@ public class RequestRepository implements IRequestRepository {
     }
 
     @Override
-    public State getRequestState(int requestId) {
-
+    public State getRequestState(Request request) {
         try {
 
-            TypedQuery<State> query = _entityManager.createQuery("SELECT r.state FROM Request r", State.class);
+            TypedQuery<State> query = _entityManager.createQuery(
+                    "SELECT hs.state FROM HistoricStates hs WHERE hs.request = :request",
+                    State.class);
 
-            return query.getSingleResult();
+            return query.setParameter("request", request).getSingleResult();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -85,11 +89,17 @@ public class RequestRepository implements IRequestRepository {
 
         Query updateQuery = _entityManager
                 .createQuery("UPDATE HistoricStates hs SET hs.state = :state WHERE hs.request = :requestId");
-        updateQuery.setParameter("state", state.ordinal());
-        updateQuery.setParameter("requestId", request.getId());
+        updateQuery.setParameter("requestId", request);
+        updateQuery.setParameter("state", state);
 
         updateQuery.executeUpdate();
 
+    }
+
+    @Override
+    @Transactional
+    public void addDriver(Request request, Driver driver, BigDecimal kilometers) {
+        _entityManager.persist(new DriverGroup(kilometers, request, driver));
     }
 
 }

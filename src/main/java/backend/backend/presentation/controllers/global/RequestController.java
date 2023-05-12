@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend.backend.application.services.request.CreateRequestService;
+import backend.backend.application.services.request.CreateSuspendedRequest;
 import backend.backend.application.services.request.GetAllRequestService;
 import backend.backend.application.services.request.GetRequestService;
 import backend.backend.application.services.worker.manager.CompleteRequestService;
@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 public class RequestController {
 
     @Autowired
-    private CreateRequestService createRequestService;
+    private CreateSuspendedRequest createSuspendedRequest;
 
     @Autowired
     private GetRequestService getRequestService;
@@ -57,7 +57,7 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAnyAuthority('Rececionista')")
+    @PreAuthorize("hasAuthority('Rececionista')")
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 
@@ -69,12 +69,11 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAnyAuthority('Rececionista')")
     // TODO: Alterar status response to CREATED
     @PostMapping("/create")
-    private ResponseEntity<?> createRequest(@Valid @RequestBody ContentRequest request) {
+    public ResponseEntity<String> createRequest(@Valid @RequestBody ContentRequest request) {
 
-        this.createRequestService.handle(request);
+        this.createSuspendedRequest.handle(request);
 
         return ResponseEntity
                 .ok()
@@ -83,13 +82,13 @@ public class RequestController {
     }
 
     @PostMapping("/handle")
-    private ResponseEntity<?> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
+    public ResponseEntity<?> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
 
         this.completeRequestService.handle(request);
 
         return ResponseEntity
                 .ok()
-                .body("Request was submited to validation");
+                .body("O pedido foi enviado para o condutor principal");
 
     }
 

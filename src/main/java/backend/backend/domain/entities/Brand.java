@@ -17,6 +17,9 @@ import java.util.Set;
 @Entity
 public class Brand {
 
+    public Brand() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 
 @Repository
@@ -28,5 +29,8 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     Integer getRandomManager();
 
     Optional<Guest> findById(Integer id);
+
+    @Query(value = "SELECT g.idDrivers FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Motorista' AND g.id = ?1")
+    Optional<Driver> getDriver(int id);
 
 }

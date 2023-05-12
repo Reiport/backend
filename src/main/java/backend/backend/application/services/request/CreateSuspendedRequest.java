@@ -14,6 +14,8 @@ import backend.backend.application.common.interfaces.repositories.IHistoricState
 import backend.backend.application.common.interfaces.repositories.IPostalCodeRepository;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
+import backend.backend.application.services.worker.manager.GetContainerByIdService;
+import backend.backend.application.services.worker.manager.GetTruckByIdService;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.PostalCode;
@@ -23,10 +25,16 @@ import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.errors.client.ClientNotFoundException;
 
 @Service
-public class CreateRequestService {
+public class CreateSuspendedRequest {
 
     @Autowired
     private IAuthorizationFacade _authorizationFacade;
+
+    @Autowired
+    private GetTruckByIdService getTruckByIdService;
+
+    @Autowired
+    private GetContainerByIdService getContainerByIdService;
 
     @Autowired
     private IRequestRepository _requestRepository;
@@ -64,13 +72,15 @@ public class CreateRequestService {
 
         Request createdRequest = _requestRepository.save(
                 new Request(
+                        request.isHasVehicleClient() ? getTruckByIdService.handle(request.getVehicleLicense()) : null,
+                        request.isHasContainerClient() ? getContainerByIdService.handle(request.getContainerLicense())
+                                : null,
                         BigDecimal.valueOf(request.getCargoWeight()),
                         LocalDate.parse(request.getDeadline(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         request.getPortDest(),
                         request.getStreetDest(),
                         request.getPortOri(),
                         request.getStreetOri(),
-                        BigDecimal.valueOf(request.getDeliveryPrice()),
                         postalCodeDest == null ? foundPostalCodeDest : postalCodeDest, // If not Exist Create's
                                                                                        // the new postal Code if
                                                                                        // the validation is

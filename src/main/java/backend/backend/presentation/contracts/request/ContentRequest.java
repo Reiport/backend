@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ContentRequest {
 
+    private String vehicleLicense;
+    private String containerLicense;
+    private boolean hasVehicleClient;
+    private boolean hasContainerClient;
     private Double cargoWeight;
     private String deadline;
     private Integer portDest;
@@ -17,7 +21,6 @@ public class ContentRequest {
     private String streetOri;
     private String postalCodeOri;
     private Integer portOri;
-    private Double deliveryPrice;
     private Integer clientId;
 
 }

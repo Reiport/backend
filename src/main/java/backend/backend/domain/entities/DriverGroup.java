@@ -20,11 +20,11 @@ public class DriverGroup {
     @Column(nullable = false, precision = 11, scale = 2)
     private BigDecimal kilometers;
 
-    @Column(nullable = false)
+    @Column
     private Character type;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;
@@ -41,5 +41,12 @@ public class DriverGroup {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver", nullable = false)
     private Driver driver;
+
+    public DriverGroup(BigDecimal kilometers, Request request, Driver driver) {
+        this.kilometers = kilometers;
+        this.request = request;
+        this.driver = driver;
+        this.type = 'p';
+    }
 
 }

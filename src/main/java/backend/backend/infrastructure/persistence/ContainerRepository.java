@@ -1,0 +1,31 @@
+package backend.backend.infrastructure.persistence;
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
+
+import backend.backend.application.common.interfaces.repositories.IContainerRepository;
+import backend.backend.domain.entities.Container;
+import jakarta.persistence.TypedQuery;
+
+@Repository
+public class ContainerRepository extends BaseRepository implements IContainerRepository {
+
+    @Override
+    public Optional<Container> getContainerById(String license) {
+
+        try {
+
+            TypedQuery<Container> query = _entityManager.createQuery(
+                    "SELECT c FROM Container c WHERE c.license = :license",
+                    Container.class);
+
+            return Optional.of(query.setParameter("license", license).getSingleResult());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+}

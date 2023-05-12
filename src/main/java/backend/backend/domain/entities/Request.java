@@ -65,19 +65,22 @@ public class Request {
     public Request() {
     }
 
-    public Request(BigDecimal cargoWeight, LocalDate deadline, Integer portDest, String streetDest, Integer portOri,
-            String streetOri, BigDecimal deliveryPrice, PostalCode postalCodeDest, PostalCode postalCodeOri,
+    public Request(Vehicle truck, Container container,
+            BigDecimal cargoWeight, LocalDate deadline, Integer portDest, String streetDest, Integer portOri,
+            String streetOri, PostalCode postalCodeDest, PostalCode postalCodeOri,
             Guest client) {
+        this.license = truck;
+        this.containerLicense = container;
         this.cargoWeight = cargoWeight;
         this.deadline = deadline;
         this.portDest = portDest;
         this.streetDest = streetDest;
         this.portOri = portOri;
         this.streetOri = streetOri;
-        this.deliveryPrice = deliveryPrice;
         this.postalCodeDest = postalCodeDest;
         this.postalCodeOri = postalCodeOri;
         this.client = client;
+        this.deliveryPrice = BigDecimal.valueOf(1);
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
