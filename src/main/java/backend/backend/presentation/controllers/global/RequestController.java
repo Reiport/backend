@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.driver.StartDeliver;
 import backend.backend.application.services.request.CreateSuspendedRequest;
 import backend.backend.application.services.request.GetAllRequestService;
 import backend.backend.application.services.request.GetRequestMembersService;
@@ -45,6 +46,9 @@ public class RequestController {
 
     @Autowired
     private CompleteRequestService completeRequestService;
+
+    @Autowired
+    private StartDeliver startDeliver;
 
     @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/")
@@ -91,7 +95,6 @@ public class RequestController {
 
     }
 
-    // TODO: Alterar status response to CREATED
     @PreAuthorize("hasAuthority('Rececionista')")
     @PostMapping("/create")
     public ResponseEntity<String> createRequest(@Valid @RequestBody ContentRequest request) {
@@ -106,13 +109,25 @@ public class RequestController {
 
     @PreAuthorize("hasAuthority('Gestor')")
     @PostMapping("/handle")
-    public ResponseEntity<?> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
+    public ResponseEntity<String> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
 
         this.completeRequestService.handle(request);
 
         return ResponseEntity
                 .ok()
                 .body("O pedido foi enviado para o condutor principal");
+
+    }
+
+    @PreAuthorize("hasAuthority('Motorista')")
+    @PostMapping("/accept")
+    public ResponseEntity<?> acceptDelivery(@RequestParam int id) {
+
+        this.startDeliver.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi aceite, e em procedimento!");
 
     }
 
