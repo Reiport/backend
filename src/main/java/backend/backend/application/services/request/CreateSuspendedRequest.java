@@ -48,7 +48,6 @@ public class CreateSuspendedRequest {
     @Autowired
     private IHistoricStateRepository _historicStateRepository;
 
-    // TODO: Verificar se este funciona corretamente
     @Transactional
     public void handle(ContentRequest request) {
 
@@ -96,11 +95,11 @@ public class CreateSuspendedRequest {
                         createdRequest,
                         foundClient.get()));
 
-        // TODO: Este codigo não verifica se o manager já está num request!
         // TODO: De alguma forma avisar que este request está disponivel para cena
-        _requestRepository.linkGuest(
-                authUser,
-                createdRequest);
+        _requestRepository.linkGuest(authUser, createdRequest);
+        _requestRepository.linkGuest(foundClient.get(), createdRequest);
+
+        // TODO: Este codigo não verifica se o manager já está num request!
 
     }
 
