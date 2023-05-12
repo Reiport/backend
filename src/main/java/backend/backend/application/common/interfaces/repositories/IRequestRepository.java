@@ -2,6 +2,7 @@ package backend.backend.application.common.interfaces.repositories;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Optional;
 
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
@@ -16,7 +17,15 @@ public interface IRequestRepository {
 
     Request save(Request request);
 
+    /**
+     * Link the Guest User to the Request
+     *
+     * @param guest
+     * @param request
+     */
     void linkGuest(Guest guest, Request request);
+
+    Optional<Collection<Guest>> getGroupGuests(Request request);
 
     State getRequestState(Request request);
 

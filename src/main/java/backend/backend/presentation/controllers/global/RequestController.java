@@ -15,18 +15,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.application.services.request.CreateSuspendedRequest;
 import backend.backend.application.services.request.GetAllRequestService;
+import backend.backend.application.services.request.GetRequestMembersService;
 import backend.backend.application.services.request.GetRequestService;
 import backend.backend.application.services.worker.manager.CompleteRequestService;
+import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
 import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.contracts.request.RequestResponse;
+import backend.backend.presentation.mappers.GuestMapper;
 import backend.backend.presentation.mappers.RequestMapper;
 import jakarta.validation.Valid;
 
 @RequestMapping("/requests")
 @RestController
 public class RequestController {
+
+    @Autowired
+    private GetRequestMembersService getRequestMembersService;
 
     @Autowired
     private CreateSuspendedRequest createSuspendedRequest;
@@ -69,7 +75,24 @@ public class RequestController {
 
     }
 
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
+    @GetMapping("/members")
+    public ResponseEntity<?> getRequestMembers(@RequestParam int id) {
+
+        Collection<Guest> members = getRequestMembersService.handle(id);
+
+        var result = members.stream()
+                .map(guest -> GuestMapper.INSTANCE.toWorkerResponse(guest))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(result);
+
+    }
+
     // TODO: Alterar status response to CREATED
+    @PreAuthorize("hasAuthority('Rececionista')")
     @PostMapping("/create")
     public ResponseEntity<String> createRequest(@Valid @RequestBody ContentRequest request) {
 
@@ -81,6 +104,7 @@ public class RequestController {
 
     }
 
+    @PreAuthorize("hasAuthority('Gestor')")
     @PostMapping("/handle")
     public ResponseEntity<?> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
 

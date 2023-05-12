@@ -2,6 +2,7 @@ package backend.backend.infrastructure.persistence;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -100,6 +101,21 @@ public class RequestRepository implements IRequestRepository {
     @Transactional
     public void addDriver(Request request, Driver driver, BigDecimal kilometers) {
         _entityManager.persist(new DriverGroup(kilometers, request, driver));
+    }
+
+    @Override
+    public Optional<Collection<Guest>> getGroupGuests(Request request) {
+        try {
+
+            TypedQuery<Guest> query = _entityManager.createQuery(
+                    "SELECT gg.guest FROM GuestGroup gg WHERE gg.request = :request",
+                    Guest.class);
+
+            return Optional.of(query.setParameter("request", request).getResultList());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }
