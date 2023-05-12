@@ -3,6 +3,7 @@ package backend.backend.application.services.worker.manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
 import backend.backend.application.services.request.GetRequestService;
@@ -18,6 +19,9 @@ public class CompleteRequestService {
     // TODO: Change how do i get drivers
     @Autowired
     private IUserRepository userRepository;
+
+    @Autowired
+    private IAuthorizationFacade authorizationFacade;
 
     @Autowired
     private GetTruckByIdService getTruckByIdService;
@@ -54,7 +58,7 @@ public class CompleteRequestService {
             workingRequest.setLicense(getTruckByIdService.handle(request.getVehicleLicense()));
 
         // Alterar o estado do request
-        _requestRepository.changeState(workingRequest, State.SCHEDULED);
+        _requestRepository.changeState(workingRequest, State.SCHEDULED, authorizationFacade.getAuthenticatedUser());
 
         // Set driver or Drivers to request
         _requestRepository.addDriver(workingRequest, userRepository.getDriver(request.getDriverId()).get(),

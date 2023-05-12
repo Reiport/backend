@@ -29,7 +29,7 @@ public interface IRequestRepository {
 
     State getRequestState(Request request);
 
-    void changeState(Request request, State state);
+    void changeState(Request request, State state, Guest guest);
 
     /**
      * This method will add drivers to the request

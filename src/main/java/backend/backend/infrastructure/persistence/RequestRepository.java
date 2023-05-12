@@ -11,11 +11,11 @@ import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.DriverGroup;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.GuestGroup;
+import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -73,7 +73,7 @@ public class RequestRepository implements IRequestRepository {
         try {
 
             TypedQuery<State> query = _entityManager.createQuery(
-                    "SELECT hs.state FROM HistoricStates hs WHERE hs.request = :request",
+                    "SELECT hs.state FROM HistoricStates hs WHERE hs.request = :request ORDER BY hs.id DESC LIMIT 1",
                     State.class);
 
             return query.setParameter("request", request).getSingleResult();
@@ -86,15 +86,8 @@ public class RequestRepository implements IRequestRepository {
 
     @Override
     @Transactional
-    public void changeState(Request request, State state) {
-
-        Query updateQuery = _entityManager
-                .createQuery("UPDATE HistoricStates hs SET hs.state = :state WHERE hs.request = :requestId");
-        updateQuery.setParameter("requestId", request);
-        updateQuery.setParameter("state", state);
-
-        updateQuery.executeUpdate();
-
+    public void changeState(Request request, State state, Guest user) {
+        _entityManager.persist(new HistoricStates(state, request, user));
     }
 
     @Override
