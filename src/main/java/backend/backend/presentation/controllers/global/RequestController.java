@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.driver.FinishDeliver;
 import backend.backend.application.services.driver.StartDeliver;
 import backend.backend.application.services.request.CreateSuspendedRequest;
 import backend.backend.application.services.request.GetAllRequestService;
@@ -49,6 +50,9 @@ public class RequestController {
 
     @Autowired
     private StartDeliver startDeliver;
+
+    @Autowired
+    private FinishDeliver finishDeliver;
 
     @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/")
@@ -128,6 +132,18 @@ public class RequestController {
         return ResponseEntity
                 .ok()
                 .body("O pedido foi aceite, e em procedimento!");
+
+    }
+
+    @PreAuthorize("hasAuthority('Motorista')")
+    @PostMapping("/finish")
+    public ResponseEntity<?> finishDelivery(@RequestParam int id) {
+
+        this.finishDeliver.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi completo, aguarda dados de pagamento!");
 
     }
 

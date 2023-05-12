@@ -29,7 +29,7 @@ public class ClientController {
 
     @PreAuthorize("hasAnyAuthority('Rececionista, Admin')")
     @GetMapping("/")
-    private ResponseEntity<Collection<WorkerResponse>> getAllClients() {
+    public ResponseEntity<Collection<WorkerResponse>> getAllClients() {
 
         Collection<Guest> clients = getAllClientsService.handle();
 
