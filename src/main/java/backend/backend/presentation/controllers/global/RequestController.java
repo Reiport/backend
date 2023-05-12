@@ -46,7 +46,7 @@ public class RequestController {
     @Autowired
     private CompleteRequestService completeRequestService;
 
-    @PreAuthorize("hasAuthority('Rececionista')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/")
     public ResponseEntity<Collection<RequestResponse>> getAllRequests() {
 
@@ -63,7 +63,7 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAuthority('Rececionista')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 

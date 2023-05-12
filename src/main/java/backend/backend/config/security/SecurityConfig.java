@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -52,7 +53,12 @@ public class SecurityConfig {
         return (AuthenticationManager) configuration.getAuthenticationManager();
     }
 
-    // TODO: Fix Authorization
+    public OncePerRequestFilter authorizationFilter() {
+        return new AuthorizationMiddleware(
+                userDetailsService,
+                jwtGenerator());
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -69,9 +75,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(
-                        new AuthorizationMiddleware(
-                                userDetailsService,
-                                jwtGenerator()),
+                        authorizationFilter(),
                         UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
