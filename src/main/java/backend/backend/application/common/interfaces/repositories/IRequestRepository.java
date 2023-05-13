@@ -25,7 +25,15 @@ public interface IRequestRepository {
      */
     void linkGuest(Guest guest, Request request);
 
+    /**
+     * Get all working guests in request
+     *
+     * @param request
+     * @return
+     */
     Optional<Collection<Guest>> getGroupGuests(Request request);
+
+    Optional<Guest> getClient(Request request);
 
     State getRequestState(Request request);
 

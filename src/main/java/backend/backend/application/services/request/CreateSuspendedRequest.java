@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
+import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IHistoricStateRepository;
 import backend.backend.application.common.interfaces.repositories.IPostalCodeRepository;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
@@ -47,6 +48,9 @@ public class CreateSuspendedRequest {
 
     @Autowired
     private IHistoricStateRepository _historicStateRepository;
+
+    @Autowired
+    private IMailSender mailSender;
 
     @Transactional
     public void handle(ContentRequest request) {
@@ -95,9 +99,24 @@ public class CreateSuspendedRequest {
                         createdRequest,
                         foundClient.get()));
 
+        Guest randomManager = _userRepository.getRandomManager();
+
         // TODO: De alguma forma avisar que este request está disponivel para cena
         _requestRepository.linkGuest(authUser, createdRequest);
         _requestRepository.linkGuest(foundClient.get(), createdRequest);
+        _requestRepository.linkGuest(randomManager, createdRequest);
+
+        mailSender.sendEmail(
+                "Pedido Atualizado",
+                foundClient.get().getEmail(),
+                "requestSentVerify",
+                null);
+
+        mailSender.sendEmail(
+                "Pedido submetido para ser aprovado",
+                randomManager.getEmail(),
+                "requestSentVerify",
+                null);
 
         // TODO: Este codigo não verifica se o manager já está num request!
 

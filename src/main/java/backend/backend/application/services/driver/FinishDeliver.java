@@ -3,11 +3,10 @@ package backend.backend.application.services.driver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import backend.backend.application.common.interfaces.IAuthorizationFacade;
+import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.request.GetRequestService;
 import backend.backend.domain.entities.Request;
-import backend.backend.domain.entities.State;
 
 @Service
 public class FinishDeliver {
@@ -19,7 +18,7 @@ public class FinishDeliver {
     private IRequestRepository requestRepository;
 
     @Autowired
-    private IAuthorizationFacade authorizationFacade;
+    private IMailSender mailSender;
 
     public void handle(int requestId) {
 
@@ -27,7 +26,11 @@ public class FinishDeliver {
 
         Request workingRequest = getRequestService.handle(requestId);
 
-        requestRepository.changeState(workingRequest, State.COMPLETED, authorizationFacade.getAuthenticatedUser());
+        mailSender.sendEmail(
+                "Entrega Concluída",
+                requestRepository.getClient(workingRequest).get().getEmail(),
+                "requestAproved",
+                null);
 
     }
 

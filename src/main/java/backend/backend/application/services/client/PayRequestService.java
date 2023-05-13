@@ -1,4 +1,4 @@
-package backend.backend.application.services.driver;
+package backend.backend.application.services.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 
 @Service
-public class StartDeliver {
+public class PayRequestService {
 
     @Autowired
     private IAuthorizationFacade authorizationFacade;
@@ -26,14 +26,20 @@ public class StartDeliver {
     private IMailSender mailSender;
 
     public void handle(int requestId) {
+
+        // Check Request
+        // Verify How does the Client Pay? Now, or ...
+        // How to actually pay
+
         Request workingRequest = getRequestService.handle(requestId);
-        requestRepository.changeState(workingRequest, State.EXECUTION, authorizationFacade.getAuthenticatedUser());
+        requestRepository.changeState(workingRequest, State.PAYED, authorizationFacade.getAuthenticatedUser());
 
         mailSender.sendEmail(
-                "Pedido Atualizado",
-                requestRepository.getClient(workingRequest).get().getEmail(),
+                "Confirmação de Pagamento",
+                authorizationFacade.getAuthenticatedUser().getEmail(),
                 "requestAproved",
                 null);
+
     }
 
 }

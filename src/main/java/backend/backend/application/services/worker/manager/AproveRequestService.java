@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
+import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
 import backend.backend.application.services.request.GetRequestService;
@@ -14,7 +15,7 @@ import backend.backend.presentation.errors.request.RequestAlreadyCompletedExcept
 import jakarta.transaction.Transactional;
 
 @Service
-public class CompleteRequestService {
+public class AproveRequestService {
 
     // TODO: Change how do i get drivers
     @Autowired
@@ -34,6 +35,9 @@ public class CompleteRequestService {
 
     @Autowired
     private IRequestRepository _requestRepository;
+
+    @Autowired
+    private IMailSender mailSender;
 
     // TODO: Implement an middleware that verifies in each route that user can mess
     // around in the request
@@ -69,7 +73,20 @@ public class CompleteRequestService {
                     request.getKilometers());
 
         // Send it to principal driver
-        // TODO: Is missing send the request to the driver
+        // Send Email with the information of request, explaining what to do to the
+        // driver
+        mailSender.sendEmail(
+                "Novo pedido de entrega",
+                userRepository.findById(request.getDriverId()).get().getEmail(),
+                "driverNewRequest",
+                null);
+
+        // Send Email with the change of state, explaining that the request was aproved
+        mailSender.sendEmail(
+                "Pedido Atualizado",
+                _requestRepository.getClient(workingRequest).get().getEmail(),
+                "requestAproved",
+                null);
 
     }
 

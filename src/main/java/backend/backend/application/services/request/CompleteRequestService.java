@@ -1,4 +1,4 @@
-package backend.backend.application.services.driver;
+package backend.backend.application.services.request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
-import backend.backend.application.services.request.GetRequestService;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 
 @Service
-public class StartDeliver {
+public class CompleteRequestService {
 
     @Autowired
     private IAuthorizationFacade authorizationFacade;
@@ -25,15 +24,18 @@ public class StartDeliver {
     @Autowired
     private IMailSender mailSender;
 
-    public void handle(int requestId) {
-        Request workingRequest = getRequestService.handle(requestId);
-        requestRepository.changeState(workingRequest, State.EXECUTION, authorizationFacade.getAuthenticatedUser());
+    public void handle(int id) {
+
+        // Gera Fatura em via ao cliente
+        Request workingRequest = getRequestService.handle(id);
+        requestRepository.changeState(workingRequest, State.COMPLETED, authorizationFacade.getAuthenticatedUser());
 
         mailSender.sendEmail(
-                "Pedido Atualizado",
+                "Fatura Pagamento",
                 requestRepository.getClient(workingRequest).get().getEmail(),
-                "requestAproved",
+                "driverNewRequest",
                 null);
+
     }
 
 }

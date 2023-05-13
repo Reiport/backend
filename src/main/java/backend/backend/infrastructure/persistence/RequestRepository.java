@@ -111,4 +111,19 @@ public class RequestRepository implements IRequestRepository {
         }
     }
 
+    @Override
+    public Optional<Guest> getClient(Request request) {
+        try {
+
+            TypedQuery<Guest> query = _entityManager.createQuery(
+                    "SELECT gg.guest FROM GuestGroup gg WHERE gg.request = :request AND gg.guest.guestType = 1",
+                    Guest.class);
+
+            return Optional.of(query.setParameter("request", request).getSingleResult());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 }

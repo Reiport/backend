@@ -35,7 +35,6 @@ public class AuthenticationController {
     @Autowired
     private ValidateAccountService validateAccountService;
 
-    // Only for clients
     @PostMapping("/register")
     private ResponseEntity<AuthenticationResult> register(@Valid @RequestBody RegisterRequest request) {
 

@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.client.PayRequestService;
 import backend.backend.application.services.driver.FinishDeliver;
 import backend.backend.application.services.driver.StartDeliver;
+import backend.backend.application.services.request.CompleteRequestService;
 import backend.backend.application.services.request.CreateSuspendedRequest;
 import backend.backend.application.services.request.GetAllRequestService;
 import backend.backend.application.services.request.GetRequestMembersService;
 import backend.backend.application.services.request.GetRequestService;
-import backend.backend.application.services.worker.manager.CompleteRequestService;
+import backend.backend.application.services.worker.manager.AproveRequestService;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
@@ -46,13 +48,19 @@ public class RequestController {
     private GetAllRequestService getAllRequestService;
 
     @Autowired
-    private CompleteRequestService completeRequestService;
+    private AproveRequestService aproveRequestService;
 
     @Autowired
     private StartDeliver startDeliver;
 
     @Autowired
     private FinishDeliver finishDeliver;
+
+    @Autowired
+    private CompleteRequestService completeRequestService;
+
+    @Autowired
+    private PayRequestService payRequestService;
 
     @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/")
@@ -115,7 +123,7 @@ public class RequestController {
     @PostMapping("/handle")
     public ResponseEntity<String> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
 
-        this.completeRequestService.handle(request);
+        this.aproveRequestService.handle(request);
 
         return ResponseEntity
                 .ok()
@@ -144,6 +152,30 @@ public class RequestController {
         return ResponseEntity
                 .ok()
                 .body("O pedido foi completo, aguarda dados de pagamento!");
+
+    }
+
+    @PreAuthorize("hasAuthority('Rececionista')")
+    @PostMapping("/complete")
+    public ResponseEntity<?> completeDelivery(@RequestParam int id) {
+
+        this.completeRequestService.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi pago com sucesso!");
+
+    }
+
+    @PreAuthorize("hasAuthority('Cliente')")
+    @PostMapping("/payment")
+    public ResponseEntity<?> payDelivery(@RequestParam int id) {
+
+        this.payRequestService.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi pago com sucesso!");
 
     }
 
