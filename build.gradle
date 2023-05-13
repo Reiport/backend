@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
 
+	implementation group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf', version: '9.1.22'
+
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
