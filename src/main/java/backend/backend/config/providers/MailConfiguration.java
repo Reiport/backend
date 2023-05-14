@@ -8,7 +8,9 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import backend.backend.application.common.interfaces.IMailSender;
+import backend.backend.application.common.interfaces.IPDFGenerator;
 import backend.backend.infrastructure.providers.JavaMailProvider;
+import backend.backend.infrastructure.providers.PDFGeneratorProvider;
 
 @Configuration
 public class MailConfiguration {
@@ -37,6 +39,11 @@ public class MailConfiguration {
 
         return templateEngine;
 
+    }
+
+    @Bean
+    public IPDFGenerator pGenerator() {
+        return new PDFGeneratorProvider();
     }
 
     @Bean

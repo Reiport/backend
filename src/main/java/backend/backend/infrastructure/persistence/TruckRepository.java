@@ -1,5 +1,6 @@
 package backend.backend.infrastructure.persistence;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,22 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
                     Vehicle.class);
 
             return Optional.of(query.setParameter("license", license).getSingleResult());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public Collection<Vehicle> getTrucks() {
+
+        try {
+
+            TypedQuery<Vehicle> query = _entityManager.createQuery("SELECT v FROM Vehicle v",
+                    Vehicle.class);
+
+            return query.getResultList();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

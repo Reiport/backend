@@ -1,5 +1,7 @@
 package backend.backend.infrastructure.persistence;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -26,6 +28,22 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+
+    @Override
+    public List<Container> getAllContainers() {
+        try {
+
+            TypedQuery<Container> query = _entityManager.createQuery("SELECT c FROM Container c",
+                    Container.class);
+
+            var ola = query.getResultList();
+            System.out.println("");
+
+            return ola;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }

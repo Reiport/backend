@@ -1,5 +1,8 @@
 package backend.backend.presentation.controllers.manager;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.worker.manager.GetAllContainersService;
 import backend.backend.application.services.worker.manager.GetContainerByIdService;
 import backend.backend.domain.entities.Container;
 import backend.backend.presentation.contracts.container.ContainerResponse;
@@ -20,6 +24,9 @@ public class ContainerController {
     @Autowired
     private GetContainerByIdService getContainerByIdService;
 
+    @Autowired
+    private GetAllContainersService getAllContainersService;
+
     @PreAuthorize("hasAuthority('Gestor')")
     @GetMapping()
     public ResponseEntity<ContainerResponse> getContainerById(@RequestParam String license) {
@@ -27,6 +34,17 @@ public class ContainerController {
         Container container = getContainerByIdService.handle(license);
 
         return ResponseEntity.ok(ContainerMapper.INSTANCE.toContainerResponse(container));
+    }
+
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/")
+    public ResponseEntity<Collection<ContainerResponse>> getAllContainers() {
+
+        Collection<Container> container = getAllContainersService.handle();
+
+        return ResponseEntity
+                .ok(container.stream().map(cont -> ContainerMapper.INSTANCE.toContainerResponse(cont))
+                        .collect(Collectors.toList()));
     }
 
 }

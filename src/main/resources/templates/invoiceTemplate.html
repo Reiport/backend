@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .layout {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 40px;
+      }
+
+      .layout p {
+        font-size: 10px;
+      }
+
+      .layout strong {
+        font-size: 12px;
+      }
+
+      .header {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+      }
+
+      .header-1 {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+      }
+
+      .header-1 img {
+        height: 100px;
+        width: 100px;
+        margin-bottom: 10px;
+      }
+
+      .header-2 {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+      }
+
+      .sheet {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+      }
+
+      .classifier {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        border-bottom: 2px solid black;
+      }
+
+      .content {
+        margin-top: 20px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+      }
+
+      .content strong {
+        margin: 10px 0;
+        font-size: 12px;
+      }
+
+      .content table {
+        padding: 10px 20px;
+        border-top: 2px solid black;
+        text-align: center;
+      }
+
+      .content table:nth-child(2) {
+        border-bottom: 2px solid black;
+        padding-top: 10px;
+      }
+
+      .content th {
+        font-size: 10px;
+        font-weight: normal;
+        text-align: center;
+      }
+
+      .content td {
+        padding-top: 10px;
+        font-size: 12px;
+        text-align: normal;
+        word-wrap: break-word;
+      }
+
+      .footer-1 {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+      }
+
+      .footer-1 .content {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <div>
+        <div class="header">
+          <div class="header-1">
+            <img src="reiport.svg" alt="" />
+            <span>
+              <strong
+                >Mapa de Rigor - Mediação <br />
+                Imobliaria Unipessoal, Lda</strong
+              >
+            </span>
+            <span>
+              <strong>Travessa Sá e Melo, nº 533 <br />4470-116</strong>
+            </span>
+            <span>
+              <strong>Contribuinte nº: 5091</strong>
+              <p th:text="${to}"></p>
+              <p>Capital Social: 5.000.00€</p>
+              <p>Registrada na C.R.C. MAIA</p>
+            </span>
+          </div>
+          <div class="header-2">
+            <span class="classifier">
+              <strong>Fatura</strong>
+              <p>Original</p>
+              <strong>FAC 001/262</strong>
+            </span>
+            <span class="sheet">
+              <p>ATCUD: JFKSFDR9-262</p>
+              <p>Folha Nº 1 de 1</p>
+            </span>
+            <div style="height: 100px"></div>
+            <span>
+              <p>Exmos. (s) Senhor(es)</p>
+              <p>Dupla Ambição - Mediação Imobiliária, Lda</p>
+              <p>Avenida Xanana Gusmão, 333</p>
+            </span>
+            <span> <p>4460-840 Vila Nova de Gaia</p> </span>
+          </div>
+        </div>
+        <div class="content">
+          <table>
+            <tr>
+              <th>Emitido em</th>
+              <th>Condições de Pagamento</th>
+              <th>Vencimento em</th>
+            </tr>
+            <tr>
+              <td><strong>2023-03-24</strong></td>
+              <td><strong>Pronto Pagamento</strong></td>
+              <td><strong>2023-03-24</strong></td>
+            </tr>
+          </table>
+          <table>
+            <tr>
+              <th>V/Documento</th>
+              <th>Cliente nº</th>
+              <th>V/Contribuinte</th>
+              <th>Transporte</th>
+            </tr>
+            <tr>
+              <td></td>
+              <td><strong>330</strong></td>
+              <td><strong>516351494</strong></td>
+              <td><strong>V/Viatura</strong></td>
+            </tr>
+          </table>
+          <strong
+            >Este documento não contitui documento de transporte, nos termos de
+            Decreto-Lei nº147/2003</strong
+          >
+          <table>
+            <tr>
+              <th>REFERÊNCIA</th>
+              <th>DESCRIÇÃO</th>
+              <th>QUANTIDADE</th>
+              <th>UNI</th>
+              <th>P.VENDA S/IVA</th>
+              <th>DESC</th>
+              <th>VALOR LIQUIDO</th>
+              <th>IVA</th>
+            </tr>
+            <tr>
+              <td>Comissões</td>
+              <td></td>
+              <td>1,00</td>
+              <td>UNI</td>
+              <td>5.000.00€</td>
+              <td></td>
+              <td>5.000.00€</td>
+              <td>23%</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <footer>
+        <p>
+          Observações: Referente a 50% da comissão da partilha com Dupla Ambição
+          - AM18800, ímovél com vossa ref. DA-10-244, o remanescente será
+          liquidado na escritura.
+        </p>
+        <div class="footer-1">
+          <div class="content" style="width: 50%">
+            <table>
+              <tr>
+                <th>Incidência</th>
+                <th>TAXA</th>
+                <th>Valor IVA</th>
+              </tr>
+              <tr>
+                <td>5.000.00</td>
+                <td>23%</td>
+                <td>1.150,00</td>
+              </tr>
+              <tr>
+                <td>0,00</td>
+                <td>0%</td>
+                <td>0,00</td>
+              </tr>
+              <tr>
+                <td>0,00</td>
+                <td>0%</td>
+                <td>0,00</td>
+              </tr>
+              <tr>
+                <td>0,00</td>
+                <td>0%</td>
+                <td>0,00</td>
+              </tr>
+              <tr>
+                <td>0,00</td>
+                <td>0%</td>
+                <td>0,00</td>
+              </tr>
+            </table>
+          </div>
+          <div class="content" style="width: 50%">
+            <table style="text-align: left; font-size: 10px">
+              <tr style="font-size: 12px">
+                <th style="text-align: left">TOTAL BRUTO</th>
+                <th style="text-align: right">5.000,00 EUR</th>
+              </tr>
+              <tr>
+                <td>DESCONTO LINHA</td>
+                <td style="text-align: right">0,00 EUR</td>
+              </tr>
+              <tr>
+                <td>DESCONTO GLOBAL</td>
+                <td style="text-align: right">0,00 EUR</td>
+              </tr>
+              <tr>
+                <td>TOTAL LIQUÍDO</td>
+                <td style="text-align: right">5.000,00 EUR</td>
+              </tr>
+              <tr>
+                <td>TOTAL IVA</td>
+                <td style="text-align: right">1.150,00 EUR</td>
+              </tr>
+              <tr>
+                <td>TOTAL PORTES</td>
+                <td style="text-align: right">0,00 EUR</td>
+              </tr>
+            </table>
+            <div class="total">
+              <span>
+                <strong>TOTAL</strong>
+              </span>
+              <span style="text-align: right">
+                <strong
+                  >6.150,00 <br />
+                  EUR</strong
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
