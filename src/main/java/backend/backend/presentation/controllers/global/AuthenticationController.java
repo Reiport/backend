@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.backend.application.services.authentication.ForgotPasswordService;
 import backend.backend.application.services.authentication.LoginService;
 import backend.backend.application.services.authentication.RegisterUserService;
+import backend.backend.application.services.authentication.RenewAuthenticationTokensService;
 import backend.backend.application.services.authentication.ValidateAccountService;
 import backend.backend.application.services.authentication.common.AuthenticationResult;
 import backend.backend.presentation.contracts.authentication.ForgotPasswordRequest;
@@ -34,6 +35,9 @@ public class AuthenticationController {
 
     @Autowired
     private ValidateAccountService validateAccountService;
+
+    @Autowired
+    private RenewAuthenticationTokensService renewAuthenticationTokensService;
 
     @PostMapping("/register")
     private ResponseEntity<AuthenticationResult> register(@Valid @RequestBody RegisterRequest request) {
@@ -63,6 +67,17 @@ public class AuthenticationController {
         var tokens = this.loginService.handle(new LoginRequest(
                 request.getEmail(),
                 request.getPassword()));
+
+        return ResponseEntity
+                .ok()
+                .body(tokens);
+
+    }
+
+    @GetMapping("/tokens")
+    private ResponseEntity<AuthenticationResult> tokens(@RequestParam String refreshToken) {
+
+        var tokens = this.renewAuthenticationTokensService.handle(refreshToken);
 
         return ResponseEntity
                 .ok()
