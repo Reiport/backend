@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RequestResponse {
 
+    private int id;
     private Boolean truckAvailability;
     private Boolean containerAvailability;
     private BigDecimal cargoWeight;
@@ -26,6 +27,8 @@ public class RequestResponse {
     private String containerLicense;
     private String containerLicenseSecond;
     private String license;
+    private String createdAt;
+    private String state;
     private WorkerResponse client;
     private int invoice_id;
 

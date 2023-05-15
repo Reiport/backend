@@ -19,7 +19,6 @@ public interface RequestMapper {
     @Mapping(target = "containerLicenseSecond", source = "containerLicenseSecond.license")
     @Mapping(target = "license", source = "license.license")
     @Mapping(target = "invoice_id", source = "invoice.id")
-    @Mapping(target = "client.id", ignore = true)
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
     RequestResponse toRequestResponse(Request request);

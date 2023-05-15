@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -20,6 +21,9 @@ import java.util.Set;
 @Data
 @Entity
 public class Request {
+
+    @Transient
+    private State state;
 
     @Id
     @Column(nullable = false, updatable = false)

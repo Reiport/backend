@@ -43,7 +43,6 @@ public interface GuestMapper {
     @Mapping(target = "password", ignore = true)
     Guest registerWorkerRequestToGuest(RegisterWorkerRequest request);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "postalCode", source = "postalCode.id")
     @Mapping(target = "guestType", source = "guestType.name")
     WorkerResponse toWorkerResponse(Guest guest);
