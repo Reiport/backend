@@ -7,7 +7,9 @@ import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
-import backend.backend.application.services.request.GetRequestService;
+import backend.backend.application.services.ContainerService;
+import backend.backend.application.services.RequestService;
+import backend.backend.application.services.TruckService;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
@@ -25,13 +27,13 @@ public class AproveRequestService {
     private IAuthorizationFacade authorizationFacade;
 
     @Autowired
-    private GetTruckByIdService getTruckByIdService;
+    private TruckService truckService;
 
     @Autowired
-    private GetContainerByIdService getContainerByIdService;
+    private ContainerService containerService;
 
     @Autowired
-    private GetRequestService getRequestService;
+    private RequestService requestService;
 
     @Autowired
     private IRequestRepository _requestRepository;
@@ -48,18 +50,18 @@ public class AproveRequestService {
         // TODO: Verify is Drivers are in work
 
         // Get Request
-        Request workingRequest = getRequestService.handle(request.getRequestId());
+        Request workingRequest = requestService.getRequest(request.getRequestId());
 
         if (_requestRepository.getRequestState(workingRequest) == State.SCHEDULED)
             throw new RequestAlreadyCompletedException();
 
         // Select Vehicles from Manager or Has Client
         if (!request.isHasClientContainer())
-            workingRequest.setContainerLicense(getContainerByIdService.handle(request.getContainerLicense()));
+            workingRequest.setContainerLicense(containerService.getContainerByLicense(request.getContainerLicense()));
 
         // Select Containers from Manager or Has Client
         if (!request.isHasClientTruck())
-            workingRequest.setLicense(getTruckByIdService.handle(request.getVehicleLicense()));
+            workingRequest.setLicense(truckService.getTruckById(request.getVehicleLicense()));
 
         // Alterar o estado do request
         _requestRepository.changeState(workingRequest, State.SCHEDULED, authorizationFacade.getAuthenticatedUser());

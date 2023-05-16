@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.RequestService;
 import backend.backend.application.services.client.PayRequestService;
 import backend.backend.application.services.driver.FinishDeliver;
 import backend.backend.application.services.driver.StartDeliver;
 import backend.backend.application.services.request.CompleteRequestService;
 import backend.backend.application.services.request.CreateSuspendedRequest;
-import backend.backend.application.services.request.GetAllRequestService;
-import backend.backend.application.services.request.GetRequestMembersService;
-import backend.backend.application.services.request.GetRequestService;
 import backend.backend.application.services.worker.manager.AproveRequestService;
+import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
-import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.RequestInfo;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
 import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.contracts.request.RequestResponse;
+import backend.backend.presentation.contracts.worker.DriverResponse;
 import backend.backend.presentation.mappers.GuestMapper;
 import backend.backend.presentation.mappers.RequestMapper;
 import jakarta.validation.Valid;
@@ -36,16 +36,10 @@ import jakarta.validation.Valid;
 public class RequestController {
 
     @Autowired
-    private GetRequestMembersService getRequestMembersService;
+    private RequestService requestService;
 
     @Autowired
     private CreateSuspendedRequest createSuspendedRequest;
-
-    @Autowired
-    private GetRequestService getRequestService;
-
-    @Autowired
-    private GetAllRequestService getAllRequestService;
 
     @Autowired
     private AproveRequestService aproveRequestService;
@@ -66,11 +60,45 @@ public class RequestController {
     @GetMapping("/")
     public ResponseEntity<Collection<RequestResponse>> getAllRequests() {
 
-        Collection<Request> result = this.getAllRequestService.handle();
+        Collection<RequestInfo> result = this.requestService.getAllRequests();
 
         var response = result
                 .stream()
-                .map(request -> RequestMapper.INSTANCE.toRequestResponse(request))
+                .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+
+    }
+
+    @PreAuthorize("hasAuthority('Rececionista')")
+    @GetMapping("/client")
+    public ResponseEntity<Collection<RequestResponse>> getAllRequestFromClient(@RequestParam int id) {
+
+        Collection<RequestInfo> result = this.requestService.getAllRequestOfClient(id);
+
+        var response = result
+                .stream()
+                .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+
+    }
+
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/drivers")
+    public ResponseEntity<Collection<DriverResponse>> getAllDriversFromRequest(@RequestParam int id) {
+
+        Collection<Driver> result = this.requestService.getAllDrivers(id);
+
+        var response = result
+                .stream()
+                .map(request -> GuestMapper.INSTANCE.toDriverResponse(request))
                 .collect(Collectors.toList());
 
         return ResponseEntity
@@ -83,7 +111,7 @@ public class RequestController {
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 
-        var result = this.getRequestService.handle(id);
+        var result = this.requestService.getRequest(id);
 
         return ResponseEntity
                 .ok()
@@ -95,7 +123,7 @@ public class RequestController {
     @GetMapping("/members")
     public ResponseEntity<?> getRequestMembers(@RequestParam int id) {
 
-        Collection<Guest> members = getRequestMembersService.handle(id);
+        Collection<Guest> members = requestService.getRequestMembers(id);
 
         var result = members.stream()
                 .map(guest -> GuestMapper.INSTANCE.toWorkerResponse(guest))

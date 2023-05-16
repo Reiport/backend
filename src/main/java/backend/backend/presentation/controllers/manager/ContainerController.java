@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend.backend.application.services.worker.manager.GetAllContainersService;
-import backend.backend.application.services.worker.manager.GetContainerByIdService;
+import backend.backend.application.services.ContainerService;
 import backend.backend.domain.entities.Container;
 import backend.backend.presentation.contracts.container.ContainerResponse;
 import backend.backend.presentation.mappers.ContainerMapper;
@@ -22,16 +21,13 @@ import backend.backend.presentation.mappers.ContainerMapper;
 public class ContainerController {
 
     @Autowired
-    private GetContainerByIdService getContainerByIdService;
-
-    @Autowired
-    private GetAllContainersService getAllContainersService;
+    private ContainerService containerService;
 
     @PreAuthorize("hasAuthority('Gestor')")
     @GetMapping()
     public ResponseEntity<ContainerResponse> getContainerById(@RequestParam String license) {
 
-        Container container = getContainerByIdService.handle(license);
+        Container container = containerService.getContainerByLicense(license);
 
         return ResponseEntity.ok(ContainerMapper.INSTANCE.toContainerResponse(container));
     }
@@ -40,7 +36,7 @@ public class ContainerController {
     @GetMapping("/")
     public ResponseEntity<Collection<ContainerResponse>> getAllContainers() {
 
-        Collection<Container> container = getAllContainersService.handle();
+        Collection<Container> container = containerService.getAllContainers();
 
         return ResponseEntity
                 .ok(container.stream().map(cont -> ContainerMapper.INSTANCE.toContainerResponse(cont))

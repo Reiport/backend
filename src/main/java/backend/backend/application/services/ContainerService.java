@@ -1,4 +1,4 @@
-package backend.backend.application.services.worker.manager;
+package backend.backend.application.services;
 
 import java.util.Collection;
 
@@ -9,13 +9,17 @@ import backend.backend.application.common.interfaces.repositories.IContainerRepo
 import backend.backend.domain.entities.Container;
 
 @Service
-public class GetAllContainersService {
+public class ContainerService {
 
     @Autowired
     private IContainerRepository containerRepository;
 
-    public Collection<Container> handle() {
+    public Collection<Container> getAllContainers() {
         return containerRepository.getAllContainers();
+    }
+
+    public Container getContainerByLicense(String lincense) {
+        return this.containerRepository.getContainerById(lincense);
     }
 
 }

@@ -17,7 +17,7 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     Optional<Guest> findByEmail(String email);
 
     @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Cliente' AND g.id = ?1")
-    Optional<Guest> findClientById(int id);
+    Guest findClientById(int id);
 
     @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name <> 'Cliente'")
     Collection<Guest> getAllWorkers();
@@ -35,6 +35,9 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     Driver getRandomDriver();
 
     Optional<Guest> findById(Integer id);
+
+    @Query("SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name <> 'Cliente' AND g.id = ?1")
+    Guest findWorkerById(int id);
 
     @Query(value = "SELECT g.idDrivers FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Motorista' AND g.id = ?1")
     Optional<Driver> getDriver(int id);

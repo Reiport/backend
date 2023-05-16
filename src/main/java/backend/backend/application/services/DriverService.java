@@ -1,4 +1,4 @@
-package backend.backend.application.services.worker;
+package backend.backend.application.services;
 
 import java.util.Collection;
 
@@ -9,12 +9,12 @@ import backend.backend.application.common.interfaces.repositories.IUserRepositor
 import backend.backend.domain.entities.Driver;
 
 @Service
-public class GetAllDriversService {
+public class DriverService {
 
     @Autowired
     private IUserRepository userRepository;
 
-    public Collection<Driver> handle() {
+    public Collection<Driver> getAllDrivers() {
         return userRepository.getFullDrivers();
     }
 

@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend.backend.application.services.worker.manager.GetAllTrucksService;
-import backend.backend.application.services.worker.manager.GetTruckByIdService;
+import backend.backend.application.services.TruckService;
 import backend.backend.domain.entities.Vehicle;
 import backend.backend.presentation.contracts.vehicle.TruckResponse;
 import backend.backend.presentation.mappers.TruckMapper;
@@ -22,16 +21,13 @@ import backend.backend.presentation.mappers.TruckMapper;
 public class TruckController {
 
     @Autowired
-    private GetTruckByIdService getTruckByIdService;
-
-    @Autowired
-    private GetAllTrucksService getAllTrucksService;
+    private TruckService truckService;
 
     @PreAuthorize("hasAuthority('Gestor')")
     @GetMapping()
     public ResponseEntity<TruckResponse> getTruckById(@RequestParam String license) {
 
-        Vehicle truck = getTruckByIdService.handle(license);
+        Vehicle truck = truckService.getTruckById(license);
 
         return ResponseEntity.ok(TruckMapper.INSTANCE.ToTruckResponse(truck));
     }
@@ -40,7 +36,7 @@ public class TruckController {
     @GetMapping("/")
     public ResponseEntity<Collection<TruckResponse>> getTrucks() {
 
-        Collection<Vehicle> result = getAllTrucksService.handle();
+        Collection<Vehicle> result = truckService.getAllTrucks();
 
         return ResponseEntity.ok(result.stream()
                 .map(vehicle -> TruckMapper.INSTANCE.ToTruckResponse(vehicle))

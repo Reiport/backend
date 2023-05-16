@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend.backend.application.services.worker.GetAllDriversService;
+import backend.backend.application.services.DriverService;
 import backend.backend.domain.entities.Driver;
 import backend.backend.presentation.contracts.worker.DriverResponse;
 import backend.backend.presentation.mappers.GuestMapper;
@@ -19,7 +19,7 @@ import backend.backend.presentation.mappers.GuestMapper;
 public class DriverController {
 
     @Autowired
-    private GetAllDriversService getAllDriversService;
+    private DriverService driverService;
 
     public DriverResponse getDriverById() {
         return null;
@@ -28,7 +28,7 @@ public class DriverController {
     @GetMapping("/")
     public ResponseEntity<Collection<DriverResponse>> getAllDrivers() {
 
-        Collection<Driver> result = getAllDriversService.handle();
+        Collection<Driver> result = driverService.getAllDrivers();
 
         return ResponseEntity.ok().body(result
                 .stream()

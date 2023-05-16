@@ -1,7 +1,6 @@
 package backend.backend.infrastructure.persistence;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +12,7 @@ import jakarta.persistence.TypedQuery;
 public class ContainerRepository extends BaseRepository implements IContainerRepository {
 
     @Override
-    public Optional<Container> getContainerById(String license) {
+    public Container getContainerById(String license) {
 
         try {
 
@@ -21,7 +20,7 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
                     "SELECT c FROM Container c WHERE c.license = :license",
                     Container.class);
 
-            return Optional.of(query.setParameter("license", license).getSingleResult());
+            return query.setParameter("license", license).getSingleResult();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

@@ -1,7 +1,6 @@
 package backend.backend.infrastructure.persistence;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +12,7 @@ import jakarta.persistence.TypedQuery;
 public class TruckRepository extends BaseRepository implements ITruckRepository {
 
     @Override
-    public Optional<Vehicle> getTruckById(String license) {
+    public Vehicle getTruckById(String license) {
 
         try {
 
@@ -21,7 +20,7 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
                     "SELECT v FROM Vehicle v WHERE v.license = :license",
                     Vehicle.class);
 
-            return Optional.of(query.setParameter("license", license).getSingleResult());
+            return query.setParameter("license", license).getSingleResult();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

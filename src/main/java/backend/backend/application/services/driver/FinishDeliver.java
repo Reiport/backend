@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
-import backend.backend.application.services.request.GetRequestService;
+import backend.backend.application.services.RequestService;
 import backend.backend.domain.entities.Request;
 
 @Service
 public class FinishDeliver {
 
     @Autowired
-    private GetRequestService getRequestService;
+    private RequestService requestService;
 
     @Autowired
     private IRequestRepository requestRepository;
@@ -24,7 +24,7 @@ public class FinishDeliver {
 
         // TODO: Send Guias
 
-        Request workingRequest = getRequestService.handle(requestId);
+        Request workingRequest = requestService.getRequest(requestId);
 
         mailSender.sendEmail(
                 "Entrega Concluída",

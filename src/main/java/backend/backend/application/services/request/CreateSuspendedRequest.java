@@ -3,7 +3,6 @@ package backend.backend.application.services.request;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +14,14 @@ import backend.backend.application.common.interfaces.repositories.IHistoricState
 import backend.backend.application.common.interfaces.repositories.IPostalCodeRepository;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
-import backend.backend.application.services.worker.manager.GetContainerByIdService;
-import backend.backend.application.services.worker.manager.GetTruckByIdService;
+import backend.backend.application.services.ContainerService;
+import backend.backend.application.services.TruckService;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.PostalCode;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 import backend.backend.presentation.contracts.request.ContentRequest;
-import backend.backend.presentation.errors.client.ClientNotFoundException;
 
 @Service
 public class CreateSuspendedRequest {
@@ -32,10 +30,10 @@ public class CreateSuspendedRequest {
     private IAuthorizationFacade _authorizationFacade;
 
     @Autowired
-    private GetTruckByIdService getTruckByIdService;
+    private TruckService truckService;
 
     @Autowired
-    private GetContainerByIdService getContainerByIdService;
+    private ContainerService containerService;
 
     @Autowired
     private IRequestRepository _requestRepository;
@@ -62,11 +60,7 @@ public class CreateSuspendedRequest {
         Guest authUser = _authorizationFacade.getAuthenticatedUser();
 
         // Create Request without vehicles
-        Optional<Guest> foundClient = _userRepository.findClientById(request.getClientId());
-
-        if (foundClient.isEmpty()) {
-            throw new ClientNotFoundException();
-        }
+        Guest foundClient = _userRepository.findClientById(request.getClientId());
 
         // TODO: Most likely change this, to assigning the postal code manually
         PostalCode foundPostalCodeDest = _postalCodeRepository.findByCode(request.getPostalCodeDest());
@@ -75,8 +69,9 @@ public class CreateSuspendedRequest {
 
         Request createdRequest = _requestRepository.save(
                 new Request(
-                        request.isHasVehicleClient() ? getTruckByIdService.handle(request.getVehicleLicense()) : null,
-                        request.isHasContainerClient() ? getContainerByIdService.handle(request.getContainerLicense())
+                        request.isHasVehicleClient() ? truckService.getTruckById(request.getVehicleLicense()) : null,
+                        request.isHasContainerClient()
+                                ? containerService.getContainerByLicense(request.getContainerLicense())
                                 : null,
                         BigDecimal.valueOf(request.getCargoWeight()),
                         LocalDate.parse(request.getDeadline(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
@@ -89,7 +84,7 @@ public class CreateSuspendedRequest {
                                                                                        // the validation is
                                                                                        // correct
                         postalCodeOri == null ? foundPostalCodeOri : postalCodeOri,
-                        foundClient.get()));
+                        foundClient));
         ;
 
         // Update Historic States - Worker Started Request
@@ -97,18 +92,18 @@ public class CreateSuspendedRequest {
                 new HistoricStates(
                         State.SUSPENDED,
                         createdRequest,
-                        foundClient.get()));
+                        foundClient));
 
         Guest randomManager = _userRepository.getRandomManager();
 
         // TODO: De alguma forma avisar que este request está disponivel para cena
         _requestRepository.linkGuest(authUser, createdRequest);
-        _requestRepository.linkGuest(foundClient.get(), createdRequest);
+        _requestRepository.linkGuest(foundClient, createdRequest);
         _requestRepository.linkGuest(randomManager, createdRequest);
 
         mailSender.sendEmail(
                 "Pedido Atualizado",
-                foundClient.get().getEmail(),
+                foundClient.getEmail(),
                 "requestSentVerify",
                 null);
 

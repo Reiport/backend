@@ -7,11 +7,14 @@ import java.util.Optional;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
 
 public interface IRequestRepository {
 
-    Collection<Request> getAllRequests();
+    Collection<RequestInfo> getAllRequests(Guest user);
+
+    Collection<RequestInfo> getRequestToEvaluate(Guest user);
 
     Request getRequestById(int id);
 
@@ -31,9 +34,11 @@ public interface IRequestRepository {
      * @param request
      * @return
      */
-    Optional<Collection<Guest>> getGroupGuests(Request request);
+    Collection<Guest> getGroupGuests(Request request);
 
     Optional<Guest> getClient(Request request);
+
+    Collection<Driver> getAllDrivers(Request request);
 
     State getRequestState(Request request);
 

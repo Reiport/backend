@@ -1,4 +1,4 @@
-package backend.backend.application.services.worker.manager;
+package backend.backend.application.services;
 
 import java.util.Collection;
 
@@ -9,13 +9,17 @@ import backend.backend.application.common.interfaces.repositories.ITruckReposito
 import backend.backend.domain.entities.Vehicle;
 
 @Service
-public class GetAllTrucksService {
+public class TruckService {
 
     @Autowired
     private ITruckRepository truckRepository;
 
-    public Collection<Vehicle> handle() {
+    public Collection<Vehicle> getAllTrucks() {
         return truckRepository.getTrucks();
+    }
+
+    public Vehicle getTruckById(String license) {
+        return truckRepository.getTruckById(license);
     }
 
 }

@@ -71,7 +71,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**")
                 .permitAll()
-                .requestMatchers("/ping").permitAll()
+                .requestMatchers("/try").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(

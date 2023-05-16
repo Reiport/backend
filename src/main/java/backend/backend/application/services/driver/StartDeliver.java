@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
-import backend.backend.application.services.request.GetRequestService;
+import backend.backend.application.services.RequestService;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 
@@ -17,7 +17,7 @@ public class StartDeliver {
     private IAuthorizationFacade authorizationFacade;
 
     @Autowired
-    private GetRequestService getRequestService;
+    private RequestService requestService;
 
     @Autowired
     private IRequestRepository requestRepository;
@@ -26,7 +26,7 @@ public class StartDeliver {
     private IMailSender mailSender;
 
     public void handle(int requestId) {
-        Request workingRequest = getRequestService.handle(requestId);
+        Request workingRequest = requestService.getRequest(requestId);
         requestRepository.changeState(workingRequest, State.EXECUTION, authorizationFacade.getAuthenticatedUser());
 
         mailSender.sendEmail(

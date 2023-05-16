@@ -13,6 +13,7 @@ import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.GuestGroup;
 import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -41,7 +42,8 @@ public class RequestRepository implements IRequestRepository {
 
         try {
 
-            TypedQuery<Request> query = _entityManager.createQuery("SELECT r FROM Request r WHERE r.id = :id",
+            TypedQuery<Request> query = _entityManager.createQuery(
+                    "SELECT r FROM Request r WHERE r.id = :id",
                     Request.class);
 
             return query.setParameter("id", id).getSingleResult();
@@ -53,14 +55,15 @@ public class RequestRepository implements IRequestRepository {
     }
 
     @Override
-    public Collection<Request> getAllRequests() {
+    public Collection<RequestInfo> getAllRequests(Guest guest) {
 
         try {
 
-            TypedQuery<Request> query = _entityManager.createQuery("SELECT r FROM Request r",
-                    Request.class);
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri INNER JOIN GuestGroup gg WHERE gg.guest = :guest AND gg.request.id = ri.id",
+                    RequestInfo.class);
 
-            return query.getResultList();
+            return query.setParameter("guest", guest).getResultList();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -97,14 +100,14 @@ public class RequestRepository implements IRequestRepository {
     }
 
     @Override
-    public Optional<Collection<Guest>> getGroupGuests(Request request) {
+    public Collection<Guest> getGroupGuests(Request request) {
         try {
 
             TypedQuery<Guest> query = _entityManager.createQuery(
                     "SELECT gg.guest FROM GuestGroup gg WHERE gg.request = :request",
                     Guest.class);
 
-            return Optional.of(query.setParameter("request", request).getResultList());
+            return query.setParameter("request", request).getResultList();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -120,6 +123,36 @@ public class RequestRepository implements IRequestRepository {
                     Guest.class);
 
             return Optional.of(query.setParameter("request", request).getSingleResult());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Collection<Driver> getAllDrivers(Request request) {
+        try {
+
+            TypedQuery<Driver> query = _entityManager.createQuery(
+                    "SELECT dg.driver FROM DriverGroup dg WHERE dg.request = :request",
+                    Driver.class);
+
+            return query.setParameter("request", request).getResultList();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Collection<RequestInfo> getRequestToEvaluate(Guest user) {
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri",
+                    RequestInfo.class);
+
+            return query.getResultList();
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

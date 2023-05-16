@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.WorkerService;
 import backend.backend.application.services.authentication.RegisterWorkerService;
-import backend.backend.application.services.worker.GetAllWorkersService;
-import backend.backend.application.services.worker.GetWorkerById;
 import backend.backend.domain.entities.Guest;
 import backend.backend.presentation.contracts.authentication.RegisterWorkerRequest;
 import backend.backend.presentation.contracts.worker.WorkerResponse;
@@ -30,16 +29,13 @@ public class ManageWorkerAccount {
     private RegisterWorkerService registerWorkerService;
 
     @Autowired
-    private GetAllWorkersService getAllWorkersService;
-
-    @Autowired
-    private GetWorkerById getWorkerById;
+    private WorkerService workerService;
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/workers/")
     public ResponseEntity<Collection<WorkerResponse>> getAllWorkers() {
 
-        var workers = getAllWorkersService.handle(10);
+        var workers = workerService.getAllWorker(10);
 
         var response = workers
                 .stream()
@@ -56,7 +52,7 @@ public class ManageWorkerAccount {
     @GetMapping("/workers")
     public ResponseEntity<WorkerResponse> getWorkerById(@RequestParam int id) {
 
-        Guest result = getWorkerById.handle(id);
+        Guest result = workerService.getWorker(id);
 
         return ResponseEntity
                 .ok()
