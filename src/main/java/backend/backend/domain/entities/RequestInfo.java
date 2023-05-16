@@ -11,10 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "requestinfo")
+@NoArgsConstructor
 public class RequestInfo {
 
     @Id

@@ -10,4 +10,10 @@ public interface ITruckRepository {
 
     Collection<Vehicle> getTrucks();
 
+    Vehicle save(Vehicle vehicle);
+
+    void deleteByLicense(String license);
+
+    void updateTruck(String license, Vehicle vehicle);
+
 }

@@ -21,6 +21,9 @@ import java.util.Set;
 @Entity
 public class Container {
 
+    public Container() {
+    }
+
     @Id
     @Column(nullable = false, updatable = false, length = 11)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

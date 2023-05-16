@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Table(name = "vehicle")
 @Data
 @Entity
+@NoArgsConstructor
 public class Vehicle {
 
     @Id
@@ -39,13 +41,13 @@ public class Vehicle {
     private BigDecimal maxSupportedWeight;
 
     @Column(nullable = false)
-    private Boolean isInUse;
+    private Boolean isInUse = false;
 
     @Column
     private Fuel fuel;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;
