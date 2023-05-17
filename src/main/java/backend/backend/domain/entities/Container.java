@@ -45,13 +45,13 @@ public class Container {
     private BigDecimal maxSupportedWeight;
 
     @Column(nullable = false)
-    private Boolean isInUse;
+    private Boolean isInUse = false;
 
     @Column(nullable = false)
     private Type type;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;

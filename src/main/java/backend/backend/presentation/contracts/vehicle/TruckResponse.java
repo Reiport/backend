@@ -3,7 +3,7 @@ package backend.backend.presentation.contracts.vehicle;
 import java.math.BigDecimal;
 
 import backend.backend.domain.entities.Fuel;
-import backend.backend.presentation.contracts.model.ModelResponse;
+import backend.backend.presentation.contracts.info.ModelResponse;
 import lombok.Getter;
 import lombok.Setter;
 

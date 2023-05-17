@@ -1,4 +1,4 @@
-package backend.backend.presentation.contracts.model;
+package backend.backend.presentation.contracts.info;
 
 import java.time.LocalDate;
 

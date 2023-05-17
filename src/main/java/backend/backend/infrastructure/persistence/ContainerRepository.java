@@ -1,11 +1,13 @@
 package backend.backend.infrastructure.persistence;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.IContainerRepository;
 import backend.backend.domain.entities.Container;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.TypedQuery;
 
 @Repository
@@ -42,6 +44,27 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public Container createContainer(Container container) {
+
+        try {
+            _entityManager.persist(container);
+        } catch (EntityExistsException e) {
+            throw new RuntimeException("Tente registar o contentor com uma licença diferente");
+        }
+
+        return container;
+
+    }
+
+    @Override
+    public void deleteByLincense(String license) {
+        Container container = getContainerById(license);
+
+        container.setDeletedAt(LocalDate.now());
+        _entityManager.merge(container);
     }
 
 }

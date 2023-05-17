@@ -10,4 +10,8 @@ public interface IContainerRepository {
 
     Collection<Container> getAllContainers();
 
+    Container createContainer(Container container);
+
+    void deleteByLincense(String license);
+
 }

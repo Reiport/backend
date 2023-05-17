@@ -51,4 +51,6 @@ public interface IRequestRepository {
      */
     void addDriver(Request request, Driver driver, BigDecimal kilometers);
 
+    void deleteRequestById(int requestId);
+
 }

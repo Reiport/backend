@@ -3,22 +3,21 @@ package backend.backend.presentation.contracts.container;
 import java.math.BigDecimal;
 
 import backend.backend.domain.entities.Type;
-import backend.backend.presentation.contracts.info.ModelResponse;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ContainerResponse {
+public class ContainerRequest {
 
+    private String brand;
+    private String model;
     private String license;
     private BigDecimal width;
     private BigDecimal length;
     private BigDecimal depth;
     private String color;
     private BigDecimal maxSupportedWeight;
-    private Boolean isInUse;
     private Type type;
-    private ModelResponse model;
 
 }
