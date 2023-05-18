@@ -65,7 +65,7 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(
                 new ErrorResponse(
                         status,
-                        "You don't have acess to this operation",
+                        "Não podes realizar esta operação",
                         request.getRequestURL().toString()),
                 status);
 

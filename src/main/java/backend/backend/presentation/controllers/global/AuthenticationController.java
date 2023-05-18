@@ -91,7 +91,7 @@ public class AuthenticationController {
         this.forgotPasswordService.handle(request);
 
         return ResponseEntity
-                .ok("Email de recuperação enviado!");
+                .ok("Foi enviado um novo email de recuperação");
     }
 
     @GetMapping("/validate_account")

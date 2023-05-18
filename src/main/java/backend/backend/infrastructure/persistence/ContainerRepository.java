@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.IContainerRepository;
 import backend.backend.domain.entities.Container;
+import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.TypedQuery;
 
@@ -25,7 +26,7 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
             return query.setParameter("license", license).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DBException(e.getMessage());
         }
 
     }
@@ -42,7 +43,7 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
 
             return ola;
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DBException(e.getMessage());
         }
     }
 
@@ -52,7 +53,7 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
         try {
             _entityManager.persist(container);
         } catch (EntityExistsException e) {
-            throw new RuntimeException("Tente registar o contentor com uma licença diferente");
+            throw new DBException("Tente registar o contentor com uma licença diferente");
         }
 
         return container;

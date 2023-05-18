@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.ITruckRepository;
 import backend.backend.domain.entities.Vehicle;
+import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -25,7 +26,7 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
             return query.setParameter("license", license).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não foi encontrado nehum veiculo");
+            throw new DBException("Não foi encontrado nehum veiculo");
         }
 
     }
@@ -40,7 +41,7 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
             trucks = _entityManager.createQuery("SELECT v FROM Vehicle v where v.deletedAt is null", Vehicle.class)
                     .getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Não existe nehum veiculo registado");
+            throw new DBException("Não existe nehum veiculo registado");
         }
 
         return trucks;
@@ -53,7 +54,7 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
         try {
             _entityManager.persist(vehicle);
         } catch (Exception e) {
-            throw new RuntimeException("Tente registar o veiculo com uma licença diferente");
+            throw new DBException("Tente registar o veiculo com uma licença diferente");
         }
 
         return vehicle;

@@ -61,4 +61,8 @@ public class RequestService {
         return requestRepository.getRequestState(workingRequest);
     }
 
+    public Collection<RequestInfo> getRequestToEvaluate() {
+        return this.requestRepository.getRequestToEvaluate(authorizationFacade.getAuthenticatedUser());
+    }
+
 }

@@ -15,6 +15,7 @@ import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
+import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -49,7 +50,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("id", id).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não foi encontrado nenhum pedido");
+            throw new DBException("Não foi encontrado nenhum pedido");
         }
 
     }
@@ -66,7 +67,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("guest", guest).getResultList();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não existe nehnum pedido ainda registado");
+            throw new DBException("Não existe nehnum pedido ainda registado");
         }
 
     }
@@ -82,7 +83,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("request", request).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não foi encontrado o estado do pedido");
+            throw new DBException("Não foi encontrado o estado do pedido");
         }
 
     }
@@ -110,7 +111,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("request", request).getResultList();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não existe nenhum membro no pedido");
+            throw new DBException("Não existe nenhum membro no pedido");
         }
     }
 
@@ -125,7 +126,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("request", request).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não foi encontrado nenhum cliente pertencente ao pedido");
+            throw new DBException("Não foi encontrado nenhum cliente pertencente ao pedido");
         }
     }
 
@@ -140,7 +141,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("request", request).getResultList();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não foram encontrados nenhums motoristas associados ao pedido");
+            throw new DBException("Não foram encontrados nenhums motoristas associados ao pedido");
         }
     }
 
@@ -149,13 +150,13 @@ public class RequestRepository implements IRequestRepository {
         try {
 
             TypedQuery<RequestInfo> query = _entityManager.createQuery(
-                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r WHERE ri.state = 1 AND r.id = ri.id AND r.deletedAt is null",
+                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r WHERE ri.state = 1 AND r.id = ri.id AND r.deletedAt is null AND ri.guest = :guest",
                     RequestInfo.class);
 
-            return query.getResultList();
+            return query.setParameter("guest", user).getResultList();
 
         } catch (Exception e) {
-            throw new RuntimeException("Não há nenhum pedido para avaliar");
+            throw new DBException("Não há nenhum pedido para avaliar");
         }
     }
 
@@ -175,5 +176,4 @@ public class RequestRepository implements IRequestRepository {
         return oldRequest;
 
     }
-
 }
