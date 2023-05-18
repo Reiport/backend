@@ -167,4 +167,13 @@ public class RequestRepository implements IRequestRepository {
         _entityManager.merge(request);
     }
 
+    @Override
+    public Request updateRequest(Request request) {
+
+        Request oldRequest = getRequestById(request.getId());
+
+        return oldRequest;
+
+    }
+
 }

@@ -52,4 +52,6 @@ public interface IRequestRepository {
 
     void deleteRequestById(int requestId);
 
+    Request updateRequest(Request oldRequest);
+
 }

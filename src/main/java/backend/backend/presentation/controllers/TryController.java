@@ -23,6 +23,7 @@ public class TryController {
         map.put("david.shot@reiport-entreprise.trl", passwordEncoder.encode("C&H/+u]w,Pre6mt!"));
         map.put("steven.cooper@reiport-entreprise.trl", passwordEncoder.encode("$59rh3zz4TW7=w1["));
         map.put("cavas.callahan@reiport-entreprise.trl", passwordEncoder.encode("5ZNwai,EZE68pv&m"));
+        map.put("karen.deadshot@reiport-entreprise.trl", passwordEncoder.encode("firekingforever"));
 
         return ResponseEntity.ok().body(map);
     }

@@ -40,7 +40,7 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     Guest findWorkerById(int id);
 
     @Query(value = "SELECT g.idDrivers FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Motorista' AND g.id = ?1")
-    Optional<Driver> getDriver(int id);
+    Driver getDriver(int id);
 
     @Query(value = "SELECT d FROM Driver d")
     Collection<Driver> getFullDrivers();

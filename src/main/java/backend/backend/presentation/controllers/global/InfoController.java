@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ public class InfoController {
     @Autowired
     private InfoService infoService;
 
+    @PreAuthorize("hasAuthority('Rececionista') and hasAuthority('Gestor')")
     @GetMapping("/brands")
     public ResponseEntity<Collection<BrandResponse>> getAllBrands() {
 
@@ -37,6 +39,7 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('Rececionista') and hasAuthority('Gestor')")
     @GetMapping("/models")
     public ResponseEntity<Collection<ModelResponse>> getAllModels(@RequestParam int brandId) {
 
@@ -50,6 +53,7 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('Rececionista') and hasAuthority('Gestor')")
     @GetMapping("/countries")
     public ResponseEntity<Collection<CountryResponse>> getAllCountries() {
 

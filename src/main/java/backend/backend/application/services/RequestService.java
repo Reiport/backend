@@ -25,6 +25,10 @@ public class RequestService {
     @Autowired
     private IAuthorizationFacade authorizationFacade;
 
+    public boolean checkMemberShip(Request request, Guest guest) {
+        return !this.getRequestMembers(request.getId()).isEmpty();
+    }
+
     public Collection<Driver> getAllDrivers(int requestId) {
         return requestRepository.getAllDrivers(requestRepository.getRequestById(requestId));
     }
@@ -47,6 +51,10 @@ public class RequestService {
 
     public void deleteRequest(int requestId) {
         requestRepository.deleteRequestById(requestId);
+    }
+
+    public Request updateRequest(Request oldRequest) {
+        return requestRepository.updateRequest(oldRequest);
     }
 
     public Object getState(Request workingRequest) {

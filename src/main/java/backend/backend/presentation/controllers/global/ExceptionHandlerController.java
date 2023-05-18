@@ -17,57 +17,58 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-        @ExceptionHandler(BaseException.class)
-        public ResponseEntity<ErrorResponse> handleBadRequest(BaseException e, HttpServletRequest request)
-                        throws IOException {
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(BaseException e, HttpServletRequest request)
+            throws IOException {
 
-                return new ResponseEntity<>(
-                                new ErrorResponse(
-                                                e.getStatus(),
-                                                e.getMessage(),
-                                                request.getRequestURL().toString()),
-                                e.getStatus());
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        e.getStatus(),
+                        e.getMessage(),
+                        request.getRequestURL().toString()),
+                e.getStatus());
 
-        }
+    }
 
-        @ExceptionHandler(Exception.class)
-        public ResponseEntity<ErrorResponse> handleInternalServerError(Exception e, HttpServletRequest request)
-                        throws IOException {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerError(Exception e, HttpServletRequest request)
+            throws IOException {
 
-                HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 500
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 500
 
-                // converting the stack trace to String
-                StringWriter stringWriter = new StringWriter();
-                PrintWriter printWriter = new PrintWriter(stringWriter);
-                e.printStackTrace(printWriter);
+        // converting the stack trace to String
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        e.printStackTrace(printWriter);
 
-                return new ResponseEntity<>(
-                                new ErrorResponse(
-                                                status,
-                                                e.getMessage(),
-                                                request.getRequestURL().toString()),
-                                status);
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        status,
+                        e.getMessage(),
+                        request.getRequestURL().toString()),
+                status);
 
-        }
+    }
 
-        @ExceptionHandler(AccessDeniedException.class)
-        public ResponseEntity<ErrorResponse> handleInternalServerError(AccessDeniedException e,
-                        HttpServletRequest request)
-                        throws IOException {
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerError(AccessDeniedException e,
+            HttpServletRequest request)
+            throws IOException {
 
-                HttpStatus status = HttpStatus.FORBIDDEN; // 403
+        HttpStatus status = HttpStatus.FORBIDDEN; // 403
 
-                // converting the stack trace to String
-                StringWriter stringWriter = new StringWriter();
-                PrintWriter printWriter = new PrintWriter(stringWriter);
-                e.printStackTrace(printWriter);
+        // converting the stack trace to String
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        e.printStackTrace(printWriter);
 
-                return new ResponseEntity<>(
-                                new ErrorResponse(
-                                                status,
-                                                "You don't have acess to this operation",
-                                                request.getRequestURL().toString()),
-                                status);
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        status,
+                        "You don't have acess to this operation",
+                        request.getRequestURL().toString()),
+                status);
 
-        }
+    }
+
 }

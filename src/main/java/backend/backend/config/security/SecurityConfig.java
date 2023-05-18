@@ -23,6 +23,7 @@ import backend.backend.application.common.interfaces.IJwtGenerator;
 import backend.backend.config.settings.JwtConfiguration;
 import backend.backend.infrastructure.providers.authentication.JwtGenerator;
 import backend.backend.presentation.middlewares.AuthorizationMiddleware;
+import backend.backend.presentation.middlewares.MemberShipMiddleware;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -30,6 +31,8 @@ import lombok.RequiredArgsConstructor;
 @EnableConfigurationProperties
 @EnableMethodSecurity()
 public class SecurityConfig {
+
+    private final MemberShipMiddleware memberShipMiddleware;
 
     private final UserDetailsService userDetailsService;
 
@@ -76,7 +79,8 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(
                         authorizationFilter(),
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(memberShipMiddleware, AuthorizationMiddleware.class);
 
         return http.build();
 

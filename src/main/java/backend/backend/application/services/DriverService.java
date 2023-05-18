@@ -14,6 +14,10 @@ public class DriverService {
     @Autowired
     private IUserRepository userRepository;
 
+    public Driver getDriverById(int id) {
+        return userRepository.getDriver(id);
+    }
+
     public Collection<Driver> getAllDrivers() {
         return userRepository.getFullDrivers();
     }

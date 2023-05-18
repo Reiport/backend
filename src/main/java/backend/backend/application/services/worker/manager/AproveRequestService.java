@@ -69,7 +69,7 @@ public class AproveRequestService {
         _requestRepository.changeState(workingRequest, State.SCHEDULED, authorizationFacade.getAuthenticatedUser());
 
         // Set driver or Drivers to request
-        primeDriver = userRepository.getDriver(request.getDriverId()).get();
+        primeDriver = userRepository.getDriver(request.getDriverId());
 
         if (primeDriver.getIsWorking())
             throw new RuntimeException("Não é possivel adicionar o motorista "
@@ -77,15 +77,16 @@ public class AproveRequestService {
 
         _requestRepository.addDriver(workingRequest, primeDriver, request.getKilometers());
 
-        optionalDriver = userRepository.getDriver(request.getOptionalDriverId()).get();
+        if (request.isOptionalDriver()) {
+            optionalDriver = userRepository.getDriver(request.getOptionalDriverId());
 
-        if (optionalDriver.getIsWorking())
-            throw new RuntimeException("Não é possivel adicionar o motorista "
-                    + primeDriver.getGuest_id().getFirstName() + " porque está atualmente num trabalho");
+            if (optionalDriver.getIsWorking())
+                throw new RuntimeException("Não é possivel adicionar o motorista "
+                        + primeDriver.getGuest_id().getFirstName() + " porque está atualmente num trabalho");
 
-        if (request.isOptionalDriver())
             _requestRepository.addDriver(workingRequest, optionalDriver,
                     request.getKilometers());
+        }
 
         // Send it to principal driver
         // Send Email with the information of request, explaining what to do to the
