@@ -21,6 +21,19 @@ import java.util.Set;
 @NoArgsConstructor
 public class Vehicle {
 
+    public Vehicle(String license, Integer power, Integer displacement, BigDecimal tank, String color,
+            BigDecimal maxSupportedWeight, Boolean isInUse, Fuel fuel, Model model) {
+        this.license = license;
+        this.power = power;
+        this.displacement = displacement;
+        this.tank = tank;
+        this.color = color;
+        this.maxSupportedWeight = maxSupportedWeight;
+        this.isInUse = isInUse;
+        this.fuel = fuel;
+        this.model = model;
+    }
+
     @Id
     @Column(nullable = false, updatable = false, length = 8)
     private String license;
@@ -47,7 +60,7 @@ public class Vehicle {
     private Fuel fuel;
 
     @Column
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDate createdAt;
 
     @Column
     private LocalDate updatedAt;

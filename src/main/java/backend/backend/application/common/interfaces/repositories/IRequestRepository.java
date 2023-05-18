@@ -54,4 +54,6 @@ public interface IRequestRepository {
 
     Request updateRequest(Request oldRequest);
 
+    RequestInfo getRequestInfoById(int requestId);
+
 }

@@ -25,7 +25,7 @@ public class InfoController {
     @Autowired
     private InfoService infoService;
 
-    @PreAuthorize("hasAuthority('Rececionista') and hasAuthority('Gestor')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/brands")
     public ResponseEntity<Collection<BrandResponse>> getAllBrands() {
 
@@ -39,7 +39,7 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('Rececionista') and hasAuthority('Gestor')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/models")
     public ResponseEntity<Collection<ModelResponse>> getAllModels(@RequestParam int brandId) {
 
@@ -53,7 +53,7 @@ public class InfoController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasAuthority('Rececionista') and hasAuthority('Gestor')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/countries")
     public ResponseEntity<Collection<CountryResponse>> getAllCountries() {
 

@@ -31,20 +31,19 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
 
     }
 
-    // TODO: Fix this
     @Override
     public Collection<Vehicle> getTrucks() {
 
-        Collection<Vehicle> trucks;
-
         try {
-            trucks = _entityManager.createQuery("SELECT v FROM Vehicle v where v.deletedAt is null", Vehicle.class)
-                    .getResultList();
+
+            TypedQuery<Vehicle> query = _entityManager
+                    .createQuery("SELECT v FROM Vehicle v WHERE v.deletedAt is null", Vehicle.class);
+
+            return query.getResultList();
+
         } catch (Exception e) {
             throw new DBException("Não existe nehum veiculo registado");
         }
-
-        return trucks;
 
     }
 

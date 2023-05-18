@@ -111,11 +111,11 @@ public class RequestController {
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 
-        var result = this.requestService.getRequest(id);
+        var result = this.requestService.getRequestInfo(id);
 
         return ResponseEntity
                 .ok()
-                .body(RequestMapper.INSTANCE.toRequestResponse(result));
+                .body(RequestMapper.INSTANCE.toRequestInfoResponse(result));
 
     }
 

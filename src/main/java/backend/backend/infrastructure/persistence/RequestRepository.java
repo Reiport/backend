@@ -176,4 +176,19 @@ public class RequestRepository implements IRequestRepository {
         return oldRequest;
 
     }
+
+    @Override
+    public RequestInfo getRequestInfoById(int requestId) {
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r WHERE ri.id = :id AND ri.id = r.id AND r.deletedAt is null",
+                    RequestInfo.class);
+
+            return query.setParameter("id", requestId).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum pedido");
+        }
+    }
 }

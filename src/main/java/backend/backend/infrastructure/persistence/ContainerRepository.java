@@ -10,6 +10,7 @@ import backend.backend.domain.entities.Container;
 import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 @Repository
 public class ContainerRepository extends BaseRepository implements IContainerRepository {
@@ -26,7 +27,7 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
             return query.setParameter("license", license).getSingleResult();
 
         } catch (Exception e) {
-            throw new DBException(e.getMessage());
+            throw new DBException("Não foi encontrado nenhum contentor");
         }
 
     }
@@ -35,18 +36,18 @@ public class ContainerRepository extends BaseRepository implements IContainerRep
     public List<Container> getAllContainers() {
         try {
 
-            TypedQuery<Container> query = _entityManager.createQuery("SELECT c FROM Container c",
+            TypedQuery<Container> query = _entityManager.createQuery(
+                    "SELECT c FROM Container c WHERE c.deletedAt is null",
                     Container.class);
 
-            var ola = query.getResultList();
-            System.out.println("");
+            return query.getResultList();
 
-            return ola;
         } catch (Exception e) {
-            throw new DBException(e.getMessage());
+            throw new DBException("Não foi encontrado nenhum contentor");
         }
     }
 
+    @Transactional
     @Override
     public Container createContainer(Container container) {
 

@@ -49,6 +49,10 @@ public class RequestService {
         return requestRepository.getRequestById(requestId);
     }
 
+    public RequestInfo getRequestInfo(int requestId) {
+        return requestRepository.getRequestInfoById(requestId);
+    }
+
     public void deleteRequest(int requestId) {
         requestRepository.deleteRequestById(requestId);
     }
