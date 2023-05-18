@@ -49,4 +49,8 @@ public class RequestService {
         requestRepository.deleteRequestById(requestId);
     }
 
+    public Object getState(Request workingRequest) {
+        return requestRepository.getRequestState(workingRequest);
+    }
+
 }

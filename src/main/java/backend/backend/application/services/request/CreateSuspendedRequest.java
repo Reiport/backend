@@ -96,7 +96,6 @@ public class CreateSuspendedRequest {
 
         Guest randomManager = _userRepository.getRandomManager();
 
-        // TODO: De alguma forma avisar que este request está disponivel para cena
         _requestRepository.linkGuest(authUser, createdRequest);
         _requestRepository.linkGuest(foundClient, createdRequest);
         _requestRepository.linkGuest(randomManager, createdRequest);
@@ -112,8 +111,6 @@ public class CreateSuspendedRequest {
                 randomManager.getEmail(),
                 "requestSentVerify",
                 null);
-
-        // TODO: Este codigo não verifica se o manager já está num request!
 
     }
 

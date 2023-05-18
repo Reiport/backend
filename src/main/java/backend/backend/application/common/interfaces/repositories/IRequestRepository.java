@@ -2,7 +2,6 @@ package backend.backend.application.common.interfaces.repositories;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Optional;
 
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
@@ -36,7 +35,7 @@ public interface IRequestRepository {
      */
     Collection<Guest> getGroupGuests(Request request);
 
-    Optional<Guest> getClient(Request request);
+    Guest getClient(Request request);
 
     Collection<Driver> getAllDrivers(Request request);
 

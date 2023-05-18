@@ -9,6 +9,7 @@ import backend.backend.application.common.interfaces.repositories.IRequestReposi
 import backend.backend.application.services.RequestService;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
+import backend.backend.presentation.errors.request.RequestStateViolated;
 
 @Service
 public class PayRequestService {
@@ -27,11 +28,14 @@ public class PayRequestService {
 
     public void handle(int requestId) {
 
+        Request workingRequest = requestService.getRequest(requestId);
+
+        if (requestService.getState(workingRequest) != State.COMPLETED)
+            throw new RequestStateViolated();
+
         // Check Request
         // Verify How does the Client Pay? Now, or ...
-        // How to actually pay
 
-        Request workingRequest = requestService.getRequest(requestId);
         requestRepository.changeState(workingRequest, State.PAYED, authorizationFacade.getAuthenticatedUser());
 
         mailSender.sendEmail(

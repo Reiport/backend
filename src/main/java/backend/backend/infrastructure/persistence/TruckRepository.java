@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.ITruckRepository;
 import backend.backend.domain.entities.Vehicle;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -53,7 +52,7 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
 
         try {
             _entityManager.persist(vehicle);
-        } catch (EntityExistsException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Tente registar o veiculo com uma licença diferente");
         }
 

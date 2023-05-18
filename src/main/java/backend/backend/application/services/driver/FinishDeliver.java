@@ -6,7 +6,10 @@ import org.springframework.stereotype.Service;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.RequestService;
+import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.State;
+import backend.backend.presentation.errors.request.RequestStateViolated;
 
 @Service
 public class FinishDeliver {
@@ -22,13 +25,18 @@ public class FinishDeliver {
 
     public void handle(int requestId) {
 
-        // TODO: Send Guias
+        Guest client;
 
         Request workingRequest = requestService.getRequest(requestId);
 
+        client = requestRepository.getClient(workingRequest);
+
+        if (requestService.getState(workingRequest) != State.EXECUTION)
+            throw new RequestStateViolated();
+
         mailSender.sendEmail(
                 "Entrega Concluída",
-                requestRepository.getClient(workingRequest).get().getEmail(),
+                client.getEmail(),
                 "requestAproved",
                 null);
 

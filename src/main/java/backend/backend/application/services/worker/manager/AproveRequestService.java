@@ -10,16 +10,17 @@ import backend.backend.application.common.interfaces.repositories.IUserRepositor
 import backend.backend.application.services.ContainerService;
 import backend.backend.application.services.RequestService;
 import backend.backend.application.services.TruckService;
+import backend.backend.domain.entities.Driver;
+import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
-import backend.backend.presentation.errors.request.RequestAlreadyCompletedException;
+import backend.backend.presentation.errors.request.RequestStateViolated;
 import jakarta.transaction.Transactional;
 
 @Service
 public class AproveRequestService {
 
-    // TODO: Change how do i get drivers
     @Autowired
     private IUserRepository userRepository;
 
@@ -47,13 +48,14 @@ public class AproveRequestService {
     @Transactional
     public void handle(ContentCompleteRequest request) {
 
-        // TODO: Verify is Drivers are in work
-
-        // Get Request
+        Driver primeDriver;
+        Driver optionalDriver;
         Request workingRequest = requestService.getRequest(request.getRequestId());
 
-        if (_requestRepository.getRequestState(workingRequest) == State.SCHEDULED)
-            throw new RequestAlreadyCompletedException();
+        Guest client = _requestRepository.getClient(workingRequest);
+
+        if (requestService.getState(workingRequest) != State.SUSPENDED)
+            throw new RequestStateViolated();
 
         // Select Vehicles from Manager or Has Client
         if (!request.isHasClientContainer())
@@ -67,11 +69,22 @@ public class AproveRequestService {
         _requestRepository.changeState(workingRequest, State.SCHEDULED, authorizationFacade.getAuthenticatedUser());
 
         // Set driver or Drivers to request
-        _requestRepository.addDriver(workingRequest, userRepository.getDriver(request.getDriverId()).get(),
-                request.getKilometers());
+        primeDriver = userRepository.getDriver(request.getDriverId()).get();
+
+        if (primeDriver.getIsWorking())
+            throw new RuntimeException("Não é possivel adicionar o motorista "
+                    + primeDriver.getGuest_id().getFirstName() + " porque está atualmente num trabalho");
+
+        _requestRepository.addDriver(workingRequest, primeDriver, request.getKilometers());
+
+        optionalDriver = userRepository.getDriver(request.getOptionalDriverId()).get();
+
+        if (optionalDriver.getIsWorking())
+            throw new RuntimeException("Não é possivel adicionar o motorista "
+                    + primeDriver.getGuest_id().getFirstName() + " porque está atualmente num trabalho");
 
         if (request.isOptionalDriver())
-            _requestRepository.addDriver(workingRequest, userRepository.getDriver(request.getOptionalDriverId()).get(),
+            _requestRepository.addDriver(workingRequest, optionalDriver,
                     request.getKilometers());
 
         // Send it to principal driver
@@ -79,14 +92,14 @@ public class AproveRequestService {
         // driver
         mailSender.sendEmail(
                 "Novo pedido de entrega",
-                userRepository.findById(request.getDriverId()).get().getEmail(),
+                primeDriver.getGuest_id().getEmail(),
                 "driverNewRequest",
                 null);
 
         // Send Email with the change of state, explaining that the request was aproved
         mailSender.sendEmail(
                 "Pedido Atualizado",
-                _requestRepository.getClient(workingRequest).get().getEmail(),
+                client.getEmail(),
                 "requestAproved",
                 null);
 

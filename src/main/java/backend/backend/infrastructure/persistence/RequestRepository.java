@@ -3,7 +3,6 @@ package backend.backend.infrastructure.persistence;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -116,14 +115,14 @@ public class RequestRepository implements IRequestRepository {
     }
 
     @Override
-    public Optional<Guest> getClient(Request request) {
+    public Guest getClient(Request request) {
         try {
 
             TypedQuery<Guest> query = _entityManager.createQuery(
                     "SELECT gg.guest FROM GuestGroup gg WHERE gg.request = :request AND gg.guest.guestType = 1",
                     Guest.class);
 
-            return Optional.of(query.setParameter("request", request).getSingleResult());
+            return query.setParameter("request", request).getSingleResult();
 
         } catch (Exception e) {
             throw new RuntimeException("Não foi encontrado nenhum cliente pertencente ao pedido");

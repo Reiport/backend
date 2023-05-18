@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
-import backend.backend.application.common.interfaces.IPDFGenerator;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.RequestService;
+import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
+import backend.backend.presentation.errors.request.RequestStateViolated;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CompleteRequestService {
@@ -29,13 +31,19 @@ public class CompleteRequestService {
     @Autowired
     private IMailSender mailSender;
 
-    @Autowired
-    private IPDFGenerator pdfGenerator;
-
+    @Transactional
     public void handle(int id) {
 
-        // Gera Fatura em via ao cliente
+        Guest client;
+
         Request workingRequest = requestService.getRequest(id);
+
+        client = requestRepository.getClient(workingRequest);
+
+        if (requestService.getState(workingRequest) != State.EXECUTION) {
+            throw new RequestStateViolated();
+        }
+
         requestRepository.changeState(workingRequest, State.COMPLETED, authorizationFacade.getAuthenticatedUser());
 
         Map<String, Object> map = new HashMap<>();
@@ -43,15 +51,13 @@ public class CompleteRequestService {
 
         mailSender.sendEmail(
                 "Test",
-                requestRepository.getClient(workingRequest).get().getEmail(),
+                client.getEmail(),
                 "invoiceTemplate",
                 map);
 
-        pdfGenerator.generatePDF();
-
         mailSender.sendEmail(
                 "Fatura Pagamento",
-                requestRepository.getClient(workingRequest).get().getEmail(),
+                client.getEmail(),
                 "driverNewRequest",
                 null);
 

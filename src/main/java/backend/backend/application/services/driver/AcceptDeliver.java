@@ -7,11 +7,13 @@ import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.RequestService;
+import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
+import backend.backend.presentation.errors.request.RequestStateViolated;
 
 @Service
-public class StartDeliver {
+public class AcceptDeliver {
 
     @Autowired
     private IAuthorizationFacade authorizationFacade;
@@ -26,12 +28,21 @@ public class StartDeliver {
     private IMailSender mailSender;
 
     public void handle(int requestId) {
+
+        Guest client;
+
         Request workingRequest = requestService.getRequest(requestId);
+
+        client = requestRepository.getClient(workingRequest);
+
+        if (requestService.getState(workingRequest) != State.SCHEDULED)
+            throw new RequestStateViolated();
+
         requestRepository.changeState(workingRequest, State.EXECUTION, authorizationFacade.getAuthenticatedUser());
 
         mailSender.sendEmail(
                 "Pedido Atualizado",
-                requestRepository.getClient(workingRequest).get().getEmail(),
+                client.getEmail(),
                 "requestAproved",
                 null);
     }
