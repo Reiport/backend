@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @Table(name = "drivergroup")
 @Data
 @Entity
+@NoArgsConstructor
 public class DriverGroup {
 
     @Column(nullable = false, precision = 11, scale = 2)

@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend.backend.application.services.client.GetAllClientsService;
-import backend.backend.application.services.client.GetClientById;
+import backend.backend.application.services.ClientService;
 import backend.backend.domain.entities.Guest;
 import backend.backend.presentation.contracts.worker.WorkerResponse;
 import backend.backend.presentation.mappers.GuestMapper;
@@ -22,16 +21,13 @@ import backend.backend.presentation.mappers.GuestMapper;
 public class ClientController {
 
     @Autowired
-    private GetAllClientsService getAllClientsService;
+    private ClientService clientService;
 
-    @Autowired
-    private GetClientById getClientById;
-
-    @PreAuthorize("hasAnyAuthority('Rececionista, Admin')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Admin')")
     @GetMapping("/")
-    private ResponseEntity<Collection<WorkerResponse>> getAllClients() {
+    public ResponseEntity<Collection<WorkerResponse>> getAllClients() {
 
-        Collection<Guest> clients = getAllClientsService.handle();
+        Collection<Guest> clients = clientService.getAllClients();
 
         var response = clients
                 .stream()
@@ -44,11 +40,11 @@ public class ClientController {
 
     }
 
-    @PreAuthorize("hasAnyAuthority('Rececionista, Admin')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Admin')")
     @GetMapping()
     public ResponseEntity<WorkerResponse> getClientById(@RequestParam int id) {
 
-        Guest response = getClientById.handle(id);
+        Guest response = clientService.getClientById(id);
 
         return ResponseEntity
                 .ok()

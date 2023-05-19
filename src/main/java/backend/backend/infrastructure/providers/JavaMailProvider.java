@@ -13,7 +13,7 @@ import jakarta.mail.internet.MimeMessage;
 
 public class JavaMailProvider implements IMailSender {
 
-    private static final String MAIL_FROM = "60ed2cc11c-c2a2b8+1@inbox.mailtrap.io";
+    private static final String MAIL_FROM = "no-replay@reiport.trl";
 
     @Autowired
     private JavaMailSender javaMailSender;

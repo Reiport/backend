@@ -1,8 +1,8 @@
 package backend.backend.infrastructure.persistence;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,9 @@ import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.GuestGroup;
 import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
+import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -41,29 +43,31 @@ public class RequestRepository implements IRequestRepository {
 
         try {
 
-            TypedQuery<Request> query = _entityManager.createQuery("SELECT r FROM Request r WHERE r.id = :id",
+            TypedQuery<Request> query = _entityManager.createQuery(
+                    "SELECT r FROM Request r WHERE r.id = :id AND r.deletedAt is null",
                     Request.class);
 
             return query.setParameter("id", id).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DBException("Não foi encontrado nenhum pedido");
         }
 
     }
 
     @Override
-    public Collection<Request> getAllRequests() {
+    public Collection<RequestInfo> getAllRequests(Guest guest) {
 
         try {
 
-            TypedQuery<Request> query = _entityManager.createQuery("SELECT r FROM Request r",
-                    Request.class);
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri INNER JOIN GuestGroup gg INNER JOIN Request r WHERE gg.guest = :guest AND gg.request.id = ri.id AND r.id = ri.id AND r.deletedAt is null",
+                    RequestInfo.class);
 
-            return query.getResultList();
+            return query.setParameter("guest", guest).getResultList();
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DBException("Não existe nehnum pedido ainda registado");
         }
 
     }
@@ -79,7 +83,7 @@ public class RequestRepository implements IRequestRepository {
             return query.setParameter("request", request).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DBException("Não foi encontrado o estado do pedido");
         }
 
     }
@@ -97,18 +101,94 @@ public class RequestRepository implements IRequestRepository {
     }
 
     @Override
-    public Optional<Collection<Guest>> getGroupGuests(Request request) {
+    public Collection<Guest> getGroupGuests(Request request) {
         try {
 
             TypedQuery<Guest> query = _entityManager.createQuery(
                     "SELECT gg.guest FROM GuestGroup gg WHERE gg.request = :request",
                     Guest.class);
 
-            return Optional.of(query.setParameter("request", request).getResultList());
+            return query.setParameter("request", request).getResultList();
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new DBException("Não existe nenhum membro no pedido");
         }
     }
 
+    @Override
+    public Guest getClient(Request request) {
+        try {
+
+            TypedQuery<Guest> query = _entityManager.createQuery(
+                    "SELECT gg.guest FROM GuestGroup gg WHERE gg.request = :request AND gg.guest.guestType = 1",
+                    Guest.class);
+
+            return query.setParameter("request", request).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum cliente pertencente ao pedido");
+        }
+    }
+
+    @Override
+    public Collection<Driver> getAllDrivers(Request request) {
+        try {
+
+            TypedQuery<Driver> query = _entityManager.createQuery(
+                    "SELECT dg.driver FROM DriverGroup dg WHERE dg.request = :request",
+                    Driver.class);
+
+            return query.setParameter("request", request).getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("Não foram encontrados nenhums motoristas associados ao pedido");
+        }
+    }
+
+    @Override
+    public Collection<RequestInfo> getRequestToEvaluate(Guest user) {
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r WHERE ri.state = 1 AND r.id = ri.id AND r.deletedAt is null AND ri.guest = :guest",
+                    RequestInfo.class);
+
+            return query.setParameter("guest", user).getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("Não há nenhum pedido para avaliar");
+        }
+    }
+
+    @Override
+    public void deleteRequestById(int requestId) {
+        Request request = getRequestById(requestId);
+
+        request.setDeletedAt(LocalDate.now());
+        _entityManager.merge(request);
+    }
+
+    @Override
+    public Request updateRequest(Request request) {
+
+        Request oldRequest = getRequestById(request.getId());
+
+        return oldRequest;
+
+    }
+
+    @Override
+    public RequestInfo getRequestInfoById(int requestId) {
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r WHERE ri.id = :id AND ri.id = r.id AND r.deletedAt is null",
+                    RequestInfo.class);
+
+            return query.setParameter("id", requestId).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum pedido");
+        }
+    }
 }

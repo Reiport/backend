@@ -17,7 +17,7 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     Optional<Guest> findByEmail(String email);
 
     @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Cliente' AND g.id = ?1")
-    Optional<Guest> findClientById(int id);
+    Guest findClientById(int id);
 
     @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name <> 'Cliente'")
     Collection<Guest> getAllWorkers();
@@ -25,12 +25,24 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     @Query(value = "SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Cliente'")
     Collection<Guest> getAllClients();
 
-    @Query(value = "SELECT g.id FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Gestor' ORDER BY RANDOM() LIMIT 1")
-    Integer getRandomManager();
+    @Query(value = "SELECT g FROM GuestGroup gg INNER JOIN gg.guest g INNER JOIN g.guestType gt WHERE gt.name = 'Gestor' AND gg.exitDate is not null ORDER BY RANDOM() LIMIT 1")
+    Guest getRandomManager();
+
+    @Query(value = "SELECT g FROM GuestGroup gg INNER JOIN gg.guest g INNER JOIN g.guestType gt WHERE gt.name = 'Rececionista' AND gg.exitDate is not null ORDER BY RANDOM() LIMIT 1")
+    Guest getRandomAtendent();
+
+    @Query(value = "SELECT g FROM GuestGroup gg INNER JOIN gg.guest g INNER JOIN g.guestType gt WHERE gt.name = 'Motorista' AND gg.exitDate is not null ORDER BY RANDOM() LIMIT 1")
+    Driver getRandomDriver();
 
     Optional<Guest> findById(Integer id);
 
+    @Query("SELECT g FROM Guest g INNER JOIN g.guestType gt WHERE gt.name <> 'Cliente' AND g.id = ?1")
+    Guest findWorkerById(int id);
+
     @Query(value = "SELECT g.idDrivers FROM Guest g INNER JOIN g.guestType gt WHERE gt.name = 'Motorista' AND g.id = ?1")
-    Optional<Driver> getDriver(int id);
+    Driver getDriver(int id);
+
+    @Query(value = "SELECT d FROM Driver d")
+    Collection<Driver> getFullDrivers();
 
 }

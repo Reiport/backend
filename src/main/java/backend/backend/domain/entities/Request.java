@@ -27,6 +27,9 @@ public class Request {
     private Integer id;
 
     @Column(nullable = false)
+    private String companyName;
+
+    @Column(nullable = false)
     private Boolean truckAvailability = false;
 
     @Column(nullable = false)

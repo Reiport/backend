@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.IPostalCodeRepository;
 import backend.backend.domain.entities.PostalCode;
+import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -25,7 +26,7 @@ public class PostalCodeRepository implements IPostalCodeRepository {
             return query.setParameter("code", postalCode).getSingleResult();
 
         } catch (Exception e) {
-            throw new RuntimeException("There is no Postal Code");
+            throw new DBException("There is no Postal Code");
         }
 
     }

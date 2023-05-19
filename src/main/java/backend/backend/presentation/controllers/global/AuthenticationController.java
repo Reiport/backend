@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.backend.application.services.authentication.ForgotPasswordService;
 import backend.backend.application.services.authentication.LoginService;
 import backend.backend.application.services.authentication.RegisterUserService;
+import backend.backend.application.services.authentication.RenewAuthenticationTokensService;
 import backend.backend.application.services.authentication.ValidateAccountService;
 import backend.backend.application.services.authentication.common.AuthenticationResult;
 import backend.backend.presentation.contracts.authentication.ForgotPasswordRequest;
@@ -35,7 +36,9 @@ public class AuthenticationController {
     @Autowired
     private ValidateAccountService validateAccountService;
 
-    // Only for clients
+    @Autowired
+    private RenewAuthenticationTokensService renewAuthenticationTokensService;
+
     @PostMapping("/register")
     private ResponseEntity<AuthenticationResult> register(@Valid @RequestBody RegisterRequest request) {
 
@@ -71,13 +74,24 @@ public class AuthenticationController {
 
     }
 
+    @GetMapping("/tokens")
+    private ResponseEntity<AuthenticationResult> tokens(@RequestParam String refreshToken) {
+
+        var tokens = this.renewAuthenticationTokensService.handle(refreshToken);
+
+        return ResponseEntity
+                .ok()
+                .body(tokens);
+
+    }
+
     @PostMapping("/forgotpassword")
     private ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
 
         this.forgotPasswordService.handle(request);
 
         return ResponseEntity
-                .ok("Email de recuperação enviado!");
+                .ok("Foi enviado um novo email de recuperação");
     }
 
     @GetMapping("/validate_account")

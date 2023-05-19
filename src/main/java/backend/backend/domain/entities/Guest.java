@@ -28,8 +28,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 public class Guest implements UserDetails {
 
-    // private final Collection<GuestType> role = new ArrayList<>();
-
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

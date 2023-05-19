@@ -13,16 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.backend.application.services.RequestService;
+import backend.backend.application.services.client.PayRequestService;
+import backend.backend.application.services.driver.FinishDeliver;
+import backend.backend.application.services.driver.AcceptDeliver;
+import backend.backend.application.services.request.CompleteRequestService;
 import backend.backend.application.services.request.CreateSuspendedRequest;
-import backend.backend.application.services.request.GetAllRequestService;
-import backend.backend.application.services.request.GetRequestMembersService;
-import backend.backend.application.services.request.GetRequestService;
-import backend.backend.application.services.worker.manager.CompleteRequestService;
+import backend.backend.application.services.worker.manager.AproveRequestService;
+import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
-import backend.backend.domain.entities.Request;
+import backend.backend.domain.entities.RequestInfo;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
 import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.contracts.request.RequestResponse;
+import backend.backend.presentation.contracts.worker.DriverResponse;
 import backend.backend.presentation.mappers.GuestMapper;
 import backend.backend.presentation.mappers.RequestMapper;
 import jakarta.validation.Valid;
@@ -32,29 +36,69 @@ import jakarta.validation.Valid;
 public class RequestController {
 
     @Autowired
-    private GetRequestMembersService getRequestMembersService;
+    private RequestService requestService;
 
     @Autowired
     private CreateSuspendedRequest createSuspendedRequest;
 
     @Autowired
-    private GetRequestService getRequestService;
+    private AproveRequestService aproveRequestService;
 
     @Autowired
-    private GetAllRequestService getAllRequestService;
+    private AcceptDeliver startDeliver;
+
+    @Autowired
+    private FinishDeliver finishDeliver;
 
     @Autowired
     private CompleteRequestService completeRequestService;
+
+    @Autowired
+    private PayRequestService payRequestService;
 
     @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("/")
     public ResponseEntity<Collection<RequestResponse>> getAllRequests() {
 
-        Collection<Request> result = this.getAllRequestService.handle();
+        Collection<RequestInfo> result = this.requestService.getAllRequests();
 
         var response = result
                 .stream()
-                .map(request -> RequestMapper.INSTANCE.toRequestResponse(request))
+                .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+
+    }
+
+    @PreAuthorize("hasAuthority('Rececionista')")
+    @GetMapping("/client")
+    public ResponseEntity<Collection<RequestResponse>> getAllRequestFromClient(@RequestParam int id) {
+
+        Collection<RequestInfo> result = this.requestService.getAllRequestOfClient(id);
+
+        var response = result
+                .stream()
+                .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+
+    }
+
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/drivers")
+    public ResponseEntity<Collection<DriverResponse>> getAllDriversFromRequest(@RequestParam int id) {
+
+        Collection<Driver> result = this.requestService.getAllDrivers(id);
+
+        var response = result
+                .stream()
+                .map(request -> GuestMapper.INSTANCE.toDriverResponse(request))
                 .collect(Collectors.toList());
 
         return ResponseEntity
@@ -67,11 +111,11 @@ public class RequestController {
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 
-        var result = this.getRequestService.handle(id);
+        var result = this.requestService.getRequestInfo(id);
 
         return ResponseEntity
                 .ok()
-                .body(RequestMapper.INSTANCE.toRequestResponse(result));
+                .body(RequestMapper.INSTANCE.toRequestInfoResponse(result));
 
     }
 
@@ -79,7 +123,7 @@ public class RequestController {
     @GetMapping("/members")
     public ResponseEntity<?> getRequestMembers(@RequestParam int id) {
 
-        Collection<Guest> members = getRequestMembersService.handle(id);
+        Collection<Guest> members = requestService.getRequestMembers(id);
 
         var result = members.stream()
                 .map(guest -> GuestMapper.INSTANCE.toWorkerResponse(guest))
@@ -91,7 +135,6 @@ public class RequestController {
 
     }
 
-    // TODO: Alterar status response to CREATED
     @PreAuthorize("hasAuthority('Rececionista')")
     @PostMapping("/create")
     public ResponseEntity<String> createRequest(@Valid @RequestBody ContentRequest request) {
@@ -100,19 +143,82 @@ public class RequestController {
 
         return ResponseEntity
                 .ok()
-                .body("Request was submited to validation");
+                .body("O pedido foi submetido para avaliação");
 
     }
 
     @PreAuthorize("hasAuthority('Gestor')")
     @PostMapping("/handle")
-    public ResponseEntity<?> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
+    public ResponseEntity<String> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
 
-        this.completeRequestService.handle(request);
+        this.aproveRequestService.handle(request);
 
         return ResponseEntity
                 .ok()
                 .body("O pedido foi enviado para o condutor principal");
+
+    }
+
+    @PreAuthorize("hasAuthority('Motorista')")
+    @PostMapping("/accept")
+    public ResponseEntity<?> acceptDelivery(@RequestParam int id) {
+
+        this.startDeliver.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi aceite, encontra-se em procedimento!");
+
+    }
+
+    @PreAuthorize("hasAuthority('Motorista')")
+    @PostMapping("/finish")
+    public ResponseEntity<?> finishDelivery(@RequestParam int id) {
+
+        this.finishDeliver.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("A entrega do pedido foi completa");
+
+    }
+
+    @PreAuthorize("hasAuthority('Rececionista')")
+    @PostMapping("/complete")
+    public ResponseEntity<?> completeDelivery(@RequestParam int id) {
+
+        this.completeRequestService.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi finalizado, espera-se dados de pagamento");
+
+    }
+
+    @PreAuthorize("hasAuthority('Cliente')")
+    @PostMapping("/payment")
+    public ResponseEntity<?> payDelivery(@RequestParam int id) {
+
+        this.payRequestService.handle(id);
+
+        return ResponseEntity
+                .ok()
+                .body("O pedido foi pago com sucesso!");
+
+    }
+
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/evaluate")
+    public ResponseEntity<Collection<RequestResponse>> requestToEvaluate() {
+
+        Collection<RequestInfo> result = this.requestService.getRequestToEvaluate();
+
+        return ResponseEntity
+                .ok()
+                .body(result
+                        .stream()
+                        .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                        .collect(Collectors.toList()));
 
     }
 

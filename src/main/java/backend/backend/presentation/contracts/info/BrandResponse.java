@@ -1,4 +1,4 @@
-package backend.backend.presentation.contracts.model;
+package backend.backend.presentation.contracts.info;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class BrandResponse {
 
+    private int id;
     private String name;
     private String logo;
 

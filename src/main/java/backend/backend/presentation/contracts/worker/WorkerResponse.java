@@ -11,6 +11,8 @@ public class WorkerResponse {
 
     private int id;
 
+    private String email;
+
     private String firstName;
 
     private String lastName;

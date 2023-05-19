@@ -2,6 +2,8 @@ package backend.backend.presentation.contracts.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,41 +14,42 @@ import lombok.NoArgsConstructor;
 @Getter
 public class RegisterRequest {
 
-    @Email()
-    @NotBlank()
+    @Email(message = "Porfavor introduza um email valido: user@reiport.trl")
+    @NotEmpty(message = "Porfavor preencha o campo: email")
     private String email;
 
-    @Size(min = 5, max = 10)
-    @NotBlank()
+    @NotBlank(message = "Porfavor preencha o campo: password")
+    @Size(min = 8, max = 16, message = "A password tem de ter pelo menos de 8 a 16 caracteres")
     private String password;
 
-    @NotBlank()
+    @NotBlank(message = "Porfavor preencha o campo: nome própio")
     private String firstName;
 
-    @NotBlank()
+    @NotBlank(message = "Porfavor preencha o campo: sobrenome")
     private String lastName;
 
-    @NotBlank()
+    @NotBlank(message = "Porfavor preencha o campo: data de nascimento")
     private String birthDate;
 
-    @Size(min = 9, max = 9)
-    @NotBlank()
+    @Size(min = 9, max = 9, message = "Introduza o nif válido com 9 caracteres")
+    @NotBlank(message = "Porfavor preencha o campo: nif")
     private String nif;
 
-    @NotBlank()
+    @NotEmpty(message = "Porfavor preencha o campo: rua")
     private String street;
 
+    @NotNull(message = "Porfavor preencha o campo: número da porta")
     private Integer port;
 
-    @Size(min = 9, max = 9)
-    @NotBlank()
+    @Size(min = 9, max = 9, message = "Introduza um número de telefone válido com 9 caracteres")
+    @NotEmpty(message = "Porfavor preencha o campo: telefone")
     private String telephone;
 
-    @Size(min = 8, max = 8)
-    @NotBlank()
+    @Size(min = 8, max = 8, message = "Introduza um codigo postal válido com 8 caracteres")
+    @NotEmpty(message = "Porfavor preencha o campo: codigo postal")
     private String postalCode;
 
-    @NotBlank
+    @NotEmpty(message = "Porfavor preencha o campo: tipo de funcionario")
     private String guestType;
 
 }

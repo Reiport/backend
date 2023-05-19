@@ -4,8 +4,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import backend.backend.domain.entities.Brand;
+import backend.backend.domain.entities.Country;
 import backend.backend.domain.entities.Model;
-import backend.backend.presentation.contracts.model.ModelResponse;
+import backend.backend.presentation.contracts.info.BrandResponse;
+import backend.backend.presentation.contracts.info.CountryResponse;
+import backend.backend.presentation.contracts.info.ModelResponse;
 
 @Mapper
 public interface ModelMapper {
@@ -20,5 +24,11 @@ public interface ModelMapper {
     @Mapping(target = "modelVehicles", ignore = true)
     @Mapping(target = "brand", ignore = true)
     Model ToModel(ModelResponse modelResponse);
+
+    ModelResponse toModelResponse(Model model);
+
+    CountryResponse toCountryResponse(Country country);
+
+    BrandResponse toBrandResponse(Brand country);
 
 }

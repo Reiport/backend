@@ -1,11 +1,19 @@
 package backend.backend.application.common.interfaces.repositories;
 
-import java.util.Optional;
+import java.util.Collection;
 
 import backend.backend.domain.entities.Vehicle;
 
 public interface ITruckRepository {
 
-    Optional<Vehicle> getTruckById(String license);
+    Vehicle getTruckById(String license);
+
+    Collection<Vehicle> getTrucks();
+
+    Vehicle save(Vehicle vehicle);
+
+    void deleteByLicense(String license);
+
+    void updateTruck(String license, Vehicle vehicle);
 
 }

@@ -3,8 +3,6 @@ package backend.backend.domain.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,9 +19,11 @@ import java.util.Set;
 @Entity
 public class Container {
 
+    public Container() {
+    }
+
     @Id
     @Column(nullable = false, updatable = false, length = 11)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String license;
 
     @Column(nullable = false, precision = 7, scale = 2)
@@ -42,13 +42,13 @@ public class Container {
     private BigDecimal maxSupportedWeight;
 
     @Column(nullable = false)
-    private Boolean isInUse;
+    private Boolean isInUse = false;
 
     @Column(nullable = false)
     private Type type;
 
     @Column
-    private LocalDate createdAt;
+    private LocalDate createdAt = LocalDate.now();
 
     @Column
     private LocalDate updatedAt;

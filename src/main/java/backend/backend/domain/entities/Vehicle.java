@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,7 +18,21 @@ import java.util.Set;
 @Table(name = "vehicle")
 @Data
 @Entity
+@NoArgsConstructor
 public class Vehicle {
+
+    public Vehicle(String license, Integer power, Integer displacement, BigDecimal tank, String color,
+            BigDecimal maxSupportedWeight, Boolean isInUse, Fuel fuel, Model model) {
+        this.license = license;
+        this.power = power;
+        this.displacement = displacement;
+        this.tank = tank;
+        this.color = color;
+        this.maxSupportedWeight = maxSupportedWeight;
+        this.isInUse = isInUse;
+        this.fuel = fuel;
+        this.model = model;
+    }
 
     @Id
     @Column(nullable = false, updatable = false, length = 8)
@@ -39,7 +54,7 @@ public class Vehicle {
     private BigDecimal maxSupportedWeight;
 
     @Column(nullable = false)
-    private Boolean isInUse;
+    private Boolean isInUse = false;
 
     @Column
     private Fuel fuel;

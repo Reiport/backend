@@ -8,12 +8,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Table(name = "guestgroup")
 @Data
 @Entity
+@NoArgsConstructor
 public class GuestGroup {
 
     @Column

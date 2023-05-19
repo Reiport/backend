@@ -3,7 +3,7 @@ package backend.backend.domain.entities;
 public enum State {
     EXECUTION,
     SUSPENDED,
-    CANCELLED,
+    DELIVERED,
     COMPLETED,
     SCHEDULED,
     PAYED

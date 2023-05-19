@@ -69,9 +69,9 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**")
+                .requestMatchers("/auth/**", "/resetpassword")
                 .permitAll()
-                .requestMatchers("/ping").permitAll()
+                .requestMatchers("/try").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(
