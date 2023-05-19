@@ -3,6 +3,8 @@ package backend.backend.application.services.request;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,17 +102,23 @@ public class CreateSuspendedRequest {
         _requestRepository.linkGuest(foundClient, createdRequest);
         _requestRepository.linkGuest(randomManager, createdRequest);
 
+        Map<String, Object> options = new HashMap<>();
+        options.put("request", createdRequest.getId());
+        options.put("name", foundClient.getFirstName() + " " + foundClient.getLastName());
+
         mailSender.sendEmail(
-                "Pedido Atualizado",
+                "Pedido submetido para ser aprovado",
                 foundClient.getEmail(),
                 "requestSentVerify",
-                null);
+                options);
+
+        options.put("name", randomManager.getFirstName() + " " + randomManager.getLastName());
 
         mailSender.sendEmail(
                 "Pedido submetido para ser aprovado",
                 randomManager.getEmail(),
                 "requestSentVerify",
-                null);
+                options);
 
     }
 

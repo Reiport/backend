@@ -1,4 +1,109 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <h1>The request was aproved!</h1>
+  <header>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+      :root {
+        --title-color: #414347;
+        --text-color: #767676;
+        --btn-color: #043276;
+        --separator-color: #f5f5f5;
+      }
+
+      * {
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+        font-family: Lato, Helvetica, sans-serif;
+      }
+
+      h1 {
+        font-size: 24px;
+        color: var(--title-color);
+        font-weight: bold;
+      }
+
+      p {
+        font-size: 16px;
+        color: var(--text-color);
+        font-weight: bold;
+      }
+
+      body {
+        padding: 0px 40px 0 40px;
+        box-shadow: 0px 4px 40px rgba(66, 71, 76, 0.15);
+      }
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .layout img {
+        height: 150px;
+      }
+
+      button {
+        padding: 10px 84px;
+        background-color: var(--btn-color);
+        color: white;
+        border-radius: 10px;
+      }
+
+      .header {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        justify-content: space-between;
+      }
+
+      .content {
+        display: inline-flex;
+        flex-direction: column;
+      }
+
+      .content button {
+        margin: 50% 10%;
+      }
+
+      .separator {
+        content: "";
+        height: 10px;
+        border-top: 2px solid var(--separator-color);
+      }
+
+      .footer {
+        display: inline;
+        font-size: 14px;
+        color: var(--text-color);
+        font-weight: bold;
+      }
+
+      .footer a {
+        color: var(--btn-color);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </header>
+  <body>
+    <div class="layout">
+      <div class="header">
+        <div class="content">
+          <h1 th:text="${'Olá, '+ name + ' !'}"></h1>
+          <p
+            th:text="${'O pedido nº ' + request + ' foi aprovado. Tem data de entrega prevista para os dias xx/xx/xxxx a xx/xx/xxxx. Que partirá de ' + ori + ' e entregará em ' + dest + ' .'}"
+          ></p>
+          <button>Abrir na web</button>
+        </div>
+        <img src="pdf/reiport.svg" alt="" />
+      </div>
+      <div class="separator"></div>
+      <div class="footer">
+        Precisa de ajuda?
+        <a>Entre em contacto com a nossa equipa de assistência</a>
+      </div>
+    </div>
+  </body>
 </html>

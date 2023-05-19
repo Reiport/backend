@@ -40,26 +40,27 @@ public class CompleteRequestService {
 
         client = requestRepository.getClient(workingRequest);
 
-        if (requestService.getState(workingRequest) != State.EXECUTION) {
+        if (requestService.getState(workingRequest) != State.DELIVERED) {
             throw new RequestStateViolated();
         }
 
         requestRepository.changeState(workingRequest, State.COMPLETED, authorizationFacade.getAuthenticatedUser());
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("to", "5091");
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", client.getFirstName() + " "
+                + client.getLastName());
 
-        mailSender.sendEmail(
-                "Test",
-                client.getEmail(),
-                "invoiceTemplate",
-                map);
+        // mailSender.sendEmail(
+        // "Test",
+        // client.getEmail(),
+        // "invoiceTemplate",
+        // data);
 
         mailSender.sendEmail(
                 "Fatura Pagamento",
                 client.getEmail(),
-                "driverNewRequest",
-                null);
+                "invoice",
+                data);
 
     }
 

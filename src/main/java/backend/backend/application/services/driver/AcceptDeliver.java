@@ -1,5 +1,8 @@
 package backend.backend.application.services.driver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,11 +43,15 @@ public class AcceptDeliver {
 
         requestRepository.changeState(workingRequest, State.EXECUTION, authorizationFacade.getAuthenticatedUser());
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", client.getFirstName() + " "
+                + client.getLastName());
+
         mailSender.sendEmail(
                 "Pedido Atualizado",
                 client.getEmail(),
-                "requestAproved",
-                null);
+                "startDeliver",
+                data);
     }
 
 }
