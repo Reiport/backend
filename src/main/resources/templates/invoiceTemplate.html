@@ -156,18 +156,17 @@
             <img src="reiport.svg" alt="" />
             <span>
               <strong
-                >Mapa de Rigor - Mediação <br />
-                Imobiliária Unipessoal, Lda</strong
+                >Reiport - Transportadora <br />
+                de Pesados, Lda</strong
               >
             </span>
             <span>
-              <strong>Travessa Sá e Melo, nº 533 <br />4470-116</strong>
+              <strong>Rua dos Verdes, nº 1000 <br />4490-568</strong>
             </span>
             <span>
-              <strong>Contribuinte nº: 5091</strong>
+              <strong>Contribuinte nº: 2887</strong>
               <p th:text="${to}"></p>
-              <p>Capital Social: 5.000.00€</p>
-              <p>Registada na C.R.C. MAIA</p>
+              <p>Capital Social: 500.000.00€</p>
             </span>
           </div>
           <div class="header-2">
@@ -177,16 +176,18 @@
               <strong>FAC 001/262</strong>
             </span>
             <span class="sheet">
-              <p>ATCUD: JFKSFDR9-262</p>
-              <p>Folha Nº 1 de 1</p>
+              <p>ATCUD: HJFBSHI9-262</p>
+«              <p>Folha Nº 1 de 1</p>
             </span>
             <div style="height: 100px"></div>
             <span>
-              <p>Exmos. (s) Senhor(es)</p>
-              <p>Dupla Ambição - Mediação Imobiliária, Lda</p>
-              <p>Avenida Xanana Gusmão, 333</p>
+              <p>Exmo(a). Senhor(a)</p>
+              <p><span th:text="${name}"></span></p>
+              <p><span th:text="${street}"></span>, <span th:text="${port}"></span></p>
             </span>
-            <span> <p>4460-840 Vila Nova de Gaia</p> </span>
+            <span>
+              <p><span th:text="${postalCode}"></span><span th:text="${locality}"></span></p>
+            </span>
           </div>
         </div>
         <div class="content">
@@ -197,33 +198,26 @@
               <th>Vencimento em</th>
             </tr>
             <tr>
-              <td><strong>2023-03-24</strong></td>
+              <td><strong><span th:text="${emissionDate}"></span></strong></td>
               <td><strong>Pronto Pagamento</strong></td>
-              <td><strong>2023-03-24</strong></td>
+              <td><strong><span th:text="${limitDate}"></span></strong></td>
             </tr>
           </table>
           <table>
             <tr>
-              <th>V/Documento</th>
+              <th>V/Pedido</th>
               <th>Cliente nº</th>
               <th>V/Contribuinte</th>
-              <th>Transporte</th>
             </tr>
             <tr>
-              <td></td>
-              <td><strong>330</strong></td>
-              <td><strong>516351494</strong></td>
-              <td><strong>V/Viatura</strong></td>
+              <td><span th:text="${request}"></span></td>
+              <td><strong><span th:text="${clientId}"></span></strong></td>
+              <td><strong><span th:text="${nif}"></span></strong></td>
             </tr>
           </table>
-          <strong
-            >Este documento não constitui documento de transporte, nos termos de
-            Decreto-Lei nº147/2003</strong
-          >
           <table>
             <tr>
               <th>REFERÊNCIA</th>
-              <th>DESCRIÇÃO</th>
               <th>QUANTIDADE</th>
               <th>UNI</th>
               <th>P.VENDA S/IVA</th>
@@ -233,23 +227,17 @@
             </tr>
             <tr>
               <td>Comissões</td>
-              <td></td>
-              <td>1,00</td>
+              <td><span th:text="${qtCargo}"></span> Tons</td>
               <td>UNI</td>
-              <td>5.000.00€</td>
+              <td><span th:text="${value}"></span></td>
               <td></td>
-              <td>5.000.00€</td>
+              <td><span th:text="${value}"></span></td>
               <td>23%</td>
             </tr>
           </table>
         </div>
       </div>
       <footer>
-        <p>
-          Observações: Referente a 50% da comissão da partilha com Dupla Ambição
-          - AM18800, imóvel com vossa ref. DA-10-244, o remanescente será
-          liquidado na escritura.
-        </p>
         <div class="footer-1">
           <div class="content" style="width: 50%">
             <table>
@@ -259,9 +247,9 @@
                 <th>Valor IVA</th>
               </tr>
               <tr>
-                <td>5.000.00</td>
+                <td><span th:text="${value}"></span></td>
                 <td>23%</td>
-                <td>1.150,00</td>
+                <td><span th:text="${ivaValue}"></span></td>
               </tr>
               <tr>
                 <td>0,00</td>
@@ -289,7 +277,7 @@
             <table style="text-align: left; font-size: 10px">
               <tr style="font-size: 12px">
                 <th style="text-align: left">TOTAL BRUTO</th>
-                <th style="text-align: right">5.000,00 EUR</th>
+                <th style="text-align: right"><span th:text="${value}"></span></th>
               </tr>
               <tr>
                 <td>DESCONTO LINHA</td>
@@ -301,15 +289,11 @@
               </tr>
               <tr>
                 <td>TOTAL LIQUÍDO</td>
-                <td style="text-align: right">5.000,00 EUR</td>
+                <td style="text-align: right"><span th:text="${value}"></span></td>
               </tr>
               <tr>
                 <td>TOTAL IVA</td>
-                <td style="text-align: right">1.150,00 EUR</td>
-              </tr>
-              <tr>
-                <td>TOTAL PORTES</td>
-                <td style="text-align: right">0,00 EUR</td>
+                <td style="text-align: right"><span th:text="${ivaValue}"></span></td>
               </tr>
             </table>
             <div class="total">
@@ -318,7 +302,7 @@
               </span>
               <span style="text-align: right">
                 <strong
-                  >6.150,00 <br />
+                  ><span th:text="${totalValue}"></span> <br />
                   EUR</strong
                 >
               </span>

@@ -83,6 +83,7 @@ public class Request {
         this.postalCodeDest = postalCodeDest;
         this.postalCodeOri = postalCodeOri;
         this.client = client;
+        // TODO: valor a pagar é sempre 1
         this.deliveryPrice = BigDecimal.valueOf(1);
     }
 
