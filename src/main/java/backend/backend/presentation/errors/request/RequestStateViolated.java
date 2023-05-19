@@ -8,7 +8,7 @@ public class RequestStateViolated extends BaseException {
 
     public RequestStateViolated() {
         super(
-                "Não é possivel realizar esta operação, porque o estado do pedido assim não o permite",
+                "Não é possível realizar esta operação, porque o estado do pedido assim não o permite",
                 HttpStatus.BAD_REQUEST);
     }
 

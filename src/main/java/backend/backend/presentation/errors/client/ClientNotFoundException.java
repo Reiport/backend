@@ -8,7 +8,7 @@ public class ClientNotFoundException extends BaseException {
 
     public ClientNotFoundException() {
         super(
-                "No client was found!",
+                "Cliente não encontrado!",
                 HttpStatus.BAD_REQUEST);
     }
 

@@ -6,7 +6,7 @@ public class UserAlreadyRegisteredException extends BaseException {
 
     public UserAlreadyRegisteredException() {
         super(
-                "This user is already registered!",
+                "Este utilizador já se encontra registado!",
                 HttpStatus.BAD_REQUEST);
     }
 }

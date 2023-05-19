@@ -8,7 +8,7 @@ public class WasNotFoundAnyGroupRequest extends BaseException {
 
     public WasNotFoundAnyGroupRequest() {
         super(
-                "Não foi encontrado ningêm pertencente a este pedido", HttpStatus.BAD_GATEWAY);
+                "Não foi encontrado ninguém pertencente a este pedido", HttpStatus.BAD_GATEWAY);
     }
 
 }

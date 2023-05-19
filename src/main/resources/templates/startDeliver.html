@@ -1,106 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <header>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>O transporte foi iniciado</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
-
-      :root {
-        --title-color: #414347;
-        --text-color: #767676;
-        --btn-color: #043276;
-        --separator-color: #f5f5f5;
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.4;
+        color: #414347;
       }
 
-      * {
-        margin: 0;
-        padding: 10px;
-        box-sizing: border-box;
-        font-family: Lato, Helvetica, sans-serif;
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
       }
 
       h1 {
         font-size: 24px;
-        color: var(--title-color);
         font-weight: bold;
+        margin-top: 0;
       }
 
       p {
         font-size: 16px;
-        color: var(--text-color);
         font-weight: bold;
+        margin-bottom: 20px;
       }
 
-      body {
-        padding: 0px 40px 0 40px;
-        box-shadow: 0px 4px 40px rgba(66, 71, 76, 0.15);
-      }
-
-      .layout {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .layout img {
-        height: 150px;
-      }
-
-      button {
-        padding: 10px 84px;
-        background-color: var(--btn-color);
-        color: white;
-        border-radius: 10px;
-      }
-
-      .header {
-        display: flex;
-        flex-direction: row;
-        height: 100vh;
-        justify-content: space-between;
-      }
-
-      .content {
-        display: inline-flex;
-        flex-direction: column;
-      }
-
-      .content button {
-        margin: 50% 10%;
-      }
-
-      .separator {
-        content: "";
-        height: 10px;
-        border-top: 2px solid var(--separator-color);
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #043276;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
       }
 
       .footer {
-        display: inline;
         font-size: 14px;
-        color: var(--text-color);
-        font-weight: bold;
+        margin-top: 20px;
       }
 
       .footer a {
-        color: var(--btn-color);
+        color: #043276;
         text-decoration: underline;
-        cursor: pointer;
+      }
+
+      /* Media queries */
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        p {
+          font-size: 14px;
+        }
       }
     </style>
-  </header>
+  </head>
   <body>
-    <div class="layout">
-      <div class="header">
-        <div class="content">
-          <h1 th:text="${'Olá, '+ name + ' !'}"></h1>
-          <p>A entrega foi iniciada.</p>
-          <button>Abrir na web</button>
-        </div>
-        <img src="pdf/reiport.svg" alt="" />
-      </div>
-      <div class="separator"></div>
+    <div class="container">
+      <h1>Olá, <span th:text="${name}"></span>!</h1>
+      <p> O transporte do pedido nº <span th:text="${request}"></span> foi iniciado.</p>
+      <a href="#" class="button">Abrir na web</a>
       <div class="footer">
-        Precisa de ajuda?
-        <a>Entre em contacto com a nossa equipa de assistência</a>
+        Precisa de ajuda? <a href="#">Entre em contacto com a nossa equipe de assistência</a>
       </div>
     </div>
   </body>

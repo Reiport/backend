@@ -46,6 +46,7 @@ public class PayRequestService {
         Map<String, Object> data = new HashMap<>();
         data.put("name", workingUser.getFirstName() + " "
                 + workingUser.getLastName());
+        data.put("request", workingRequest.getId());
 
         mailSender.sendEmail(
                 "Confirmação de Pagamento",

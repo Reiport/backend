@@ -46,6 +46,7 @@ public class AcceptDeliver {
         Map<String, Object> data = new HashMap<>();
         data.put("name", client.getFirstName() + " "
                 + client.getLastName());
+        data.put("request", workingRequest.getId());
 
         mailSender.sendEmail(
                 "Pedido Atualizado",

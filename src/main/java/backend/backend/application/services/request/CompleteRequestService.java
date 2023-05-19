@@ -49,6 +49,7 @@ public class CompleteRequestService {
         Map<String, Object> data = new HashMap<>();
         data.put("name", client.getFirstName() + " "
                 + client.getLastName());
+        data.put("request", workingRequest.getId());
 
         // mailSender.sendEmail(
         // "Test",
@@ -59,7 +60,7 @@ public class CompleteRequestService {
         mailSender.sendEmail(
                 "Fatura Pagamento",
                 client.getEmail(),
-                "invoice",
+                "invoiceTemplate",
                 data);
 
     }

@@ -8,7 +8,7 @@ public class WorkerNotFoundException extends BaseException {
 
     public WorkerNotFoundException() {
         super(
-                "No worker was found!",
+                "Funcionário não encontrado!",
                 HttpStatus.BAD_REQUEST);
     }
 
