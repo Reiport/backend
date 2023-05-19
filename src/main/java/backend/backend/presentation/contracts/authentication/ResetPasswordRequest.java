@@ -13,12 +13,12 @@ import lombok.Setter;
 @Getter
 public class ResetPasswordRequest {
 
-    @NotBlank
-    @Size(min = 8, max = 16)
+    @NotBlank(message = "Porfavor preencha o campo: password")
+    @Size(min = 8, max = 16, message = "A password tem de ter pelo menos de 8 a 16 caracteres")
     private String password;
 
-    @NotBlank
-    @Size(min = 8, max = 16)
+    @NotBlank(message = "Porfavor preencha o campo: password")
+    @Size(min = 8, max = 16, message = "A password tem de ter pelo menos de 8 a 16 caracteres")
     private String confirmPassword;
 
 }

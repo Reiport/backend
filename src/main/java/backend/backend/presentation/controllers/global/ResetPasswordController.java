@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import backend.backend.application.services.authentication.ResetPasswordService;
 import backend.backend.application.services.authentication.common.ResetPassword;
 import backend.backend.presentation.contracts.authentication.ResetPasswordRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -19,7 +20,7 @@ public class ResetPasswordController {
 
     @PostMapping("/resetpassword")
     private ResponseEntity<?> resetPassword(@RequestParam String token,
-            @RequestBody ResetPasswordRequest request) {
+            @Valid @RequestBody ResetPasswordRequest request) {
 
         this.resetPasswordService.handle(
                 new ResetPassword(

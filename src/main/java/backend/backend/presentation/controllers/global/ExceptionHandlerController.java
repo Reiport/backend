@@ -3,9 +3,12 @@ package backend.backend.presentation.controllers.global;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.security.access.AccessDeniedException;
@@ -66,6 +69,32 @@ public class ExceptionHandlerController {
                 new ErrorResponse(
                         status,
                         "Não podes realizar esta operação",
+                        request.getRequestURL().toString()),
+                status);
+
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerError(MethodArgumentNotValidException e,
+            HttpServletRequest request)
+            throws IOException {
+
+        HttpStatus status = HttpStatus.BAD_GATEWAY;
+
+        // converting the stack trace to String
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        e.printStackTrace(printWriter);
+
+        Map<String, String> errorMap = new HashMap<>();
+        e.getBindingResult().getFieldErrors().forEach(error -> {
+            errorMap.put(error.getField(), error.getDefaultMessage());
+        });
+
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        status,
+                        errorMap,
                         request.getRequestURL().toString()),
                 status);
 

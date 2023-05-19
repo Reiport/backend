@@ -20,7 +20,7 @@ public class ErrorResponse {
 
     private String status;
 
-    private String message;
+    private Object message;
 
     private String path;
 
@@ -30,7 +30,7 @@ public class ErrorResponse {
 
     public ErrorResponse(
             HttpStatus httpStatus,
-            String message,
+            Object message,
             String path) {
         this();
 
