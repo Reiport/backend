@@ -1,5 +1,7 @@
 package backend.backend.application.services.request;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,17 +51,25 @@ public class CompleteRequestService {
         Map<String, Object> data = new HashMap<>();
         data.put("name", client.getFirstName() + " "
                 + client.getLastName());
-
-        // mailSender.sendEmail(
-        // "Test",
-        // client.getEmail(),
-        // "invoiceTemplate",
-        // data);
+        data.put("street", client.getStreet());
+        data.put("port", client.getPort());
+        data.put("postalCode", client.getPostalCode().getId());
+        data.put("locality", client.getPostalCode().getLocality());
+        data.put("emissionDate", LocalDate.now());
+        data.put("limitDate", LocalDate.now().plusDays(365));
+        data.put("request", workingRequest.getId());
+        data.put("clientId", client.getId());
+        data.put("nif", client.getNif());
+        data.put("qtCargo", workingRequest.getCargoWeight());
+        data.put("value", workingRequest.getDeliveryPrice());
+        data.put("ivaValue", workingRequest.getDeliveryPrice().multiply(BigDecimal.valueOf(0.23)));
+        data.put("totalValue", workingRequest.getDeliveryPrice()
+                .add(workingRequest.getDeliveryPrice().multiply(BigDecimal.valueOf(0.23))));
 
         mailSender.sendEmail(
                 "Fatura Pagamento",
                 client.getEmail(),
-                "invoice",
+                "invoiceTemplate",
                 data);
 
     }

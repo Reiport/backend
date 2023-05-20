@@ -1,17 +1,83 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<h1>Welcom to Reiport!</h1>
-<br>
-<p>If you want to work here are the credentials</p>
-<p>
-    email:
-<p th:text="${email}">
-</p>
-<p>
-    password:
-<p th:text="${password}"></p>
-</p>
-<br>
-<p>We wish good luck working for us!</p>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bem-vindo à Reiport</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.4;
+        color: #414347;
+      }
 
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 0;
+      }
+
+      p {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #043276;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .footer {
+        font-size: 14px;
+        margin-top: 20px;
+      }
+
+      .footer a {
+        color: #043276;
+        text-decoration: underline;
+      }
+
+      /* Media queries */
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bem-vindo à Reiport!</h1>
+      <p>
+        Enviamos o seu e-mail da empresa, bem como a palavra-chave
+        respetiva.
+      </p>
+      <p> E-mail: <span th:text="${email}"></span></p>
+      <p> Palavra-chave: <span th:text="${password}"></span></p>
+      <a href="#" class="button">Abrir na web</a>
+      <div class="footer">
+        Precisa de ajuda? <a href="#">Entre em contacto com a nossa equipe de assistência</a>
+      </div>
+    </div>
+  </body>
 </html>

@@ -6,7 +6,7 @@ public class PasswordsNotEqualException extends BaseException {
 
     public PasswordsNotEqualException() {
         super(
-                "Passwords don't match",
+                "As palavras-chaves não coincidem",
                 HttpStatus.BAD_REQUEST);
     }
 }

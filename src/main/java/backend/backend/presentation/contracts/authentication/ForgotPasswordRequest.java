@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ForgotPasswordRequest {
 
-    @Email(message = "Porfavor introduza um email valido: user@reiport.trl")
-    @NotEmpty(message = "Porfavor preencha o campo: email")
+    @Email(message = "Por favor introduza um email válido: user@reiport.trl")
+    @NotEmpty(message = "Por favor preencha o campo: email")
     private String email;
 
 }

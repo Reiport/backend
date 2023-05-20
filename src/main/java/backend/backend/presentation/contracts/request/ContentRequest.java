@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ContentRequest {
 
-    @NotEmpty(message = "Preencher campo: licensa do veiculo")
+    @NotEmpty(message = "Preencher campo: licença do veiculo")
     private String vehicleLicense;
 
-    @NotEmpty(message = "Preencher campo: licensa do contentor")
+    @NotEmpty(message = "Preencher campo: licença do contentor")
     private String containerLicense;
+
+    private String containerLicenseSecond;
 
     @NotNull(message = "Preencher campo: veiculo é do cliente")
     private boolean hasVehicleClient;
@@ -32,7 +34,7 @@ public class ContentRequest {
     @NotNull(message = "Preencher campo: porta destino")
     private Integer portDest;
 
-    @NotEmpty(message = "Preencher campo: codigo postal destino")
+    @NotEmpty(message = "Preencher campo: código postal destino")
     private String postalCodeDest;
 
     @NotEmpty(message = "Preencher campo: rua destino")
@@ -41,7 +43,7 @@ public class ContentRequest {
     @NotEmpty(message = "Preencher campo: rua origem")
     private String streetOri;
 
-    @NotEmpty(message = "Preencher campo: codigo postal origem")
+    @NotEmpty(message = "Preencher campo: código postal origem")
     private String postalCodeOri;
 
     @NotNull(message = "Preencher campo: porta origem")

@@ -11,8 +11,8 @@ spring:
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 25
-    username: 7f6b1bdb601444
-    password: 48612a2a50c119
+    username: 0fb86f7cff91d9
+    password: b01cafa8babb35
   datasource:
     url: jdbc:postgresql://0.0.0.0:5432/reiport
     username: postgres

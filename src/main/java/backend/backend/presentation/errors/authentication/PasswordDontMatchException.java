@@ -6,7 +6,7 @@ public class PasswordDontMatchException extends BaseException {
 
     public PasswordDontMatchException() {
         super(
-                "The Email or password are wrong!",
+                "O email ou a palavra-chave está incorreto!",
                 HttpStatus.BAD_REQUEST);
     }
 

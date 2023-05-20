@@ -6,7 +6,7 @@ public class TokenIsNoLongerValid extends BaseException {
 
     public TokenIsNoLongerValid() {
         super(
-                "Porfavor tente autenticar-se novamente mais tarde",
+                "Por favor, tente autenticar-se novamente mais tarde.",
                 HttpStatus.BAD_REQUEST);
     }
 
