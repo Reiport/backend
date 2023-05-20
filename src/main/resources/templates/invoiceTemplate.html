@@ -186,7 +186,7 @@
               <p><span th:text="${street}"></span>, <span th:text="${port}"></span></p>
             </span>
             <span>
-              <p><span th:text="${postalCode}"></span><span th:text="${locality}"></span></p>
+              <p><span th:text="${postalCode}"> </span><span th:text="${locality}"></span></p>
             </span>
           </div>
         </div>
@@ -217,7 +217,6 @@
           </table>
           <table>
             <tr>
-              <th>REFERÊNCIA</th>
               <th>QUANTIDADE</th>
               <th>UNI</th>
               <th>P.VENDA S/IVA</th>
@@ -226,7 +225,6 @@
               <th>IVA</th>
             </tr>
             <tr>
-              <td>Comissões</td>
               <td><span th:text="${qtCargo}"></span> Tons</td>
               <td>UNI</td>
               <td><span th:text="${value}"></span></td>

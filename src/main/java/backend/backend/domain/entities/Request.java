@@ -84,7 +84,27 @@ public class Request {
         this.postalCodeOri = postalCodeOri;
         this.client = client;
         // TODO: valor a pagar é sempre 1
-        this.deliveryPrice = BigDecimal.valueOf(1);
+        // this.deliveryPrice = BigDecimal.valueOf(1);
+    }
+
+    public Request(Vehicle truck, Container container, Container secContainer,
+            BigDecimal cargoWeight, LocalDate deadline, Integer portDest, String streetDest, Integer portOri,
+            String streetOri, PostalCode postalCodeDest, PostalCode postalCodeOri,
+            Guest client) {
+        this.license = truck;
+        this.containerLicense = container;
+        this.containerLicenseSecond = secContainer;
+        this.cargoWeight = cargoWeight;
+        this.deadline = deadline;
+        this.portDest = portDest;
+        this.streetDest = streetDest;
+        this.portOri = portOri;
+        this.streetOri = streetOri;
+        this.postalCodeDest = postalCodeDest;
+        this.postalCodeOri = postalCodeOri;
+        this.client = client;
+        // TODO: valor a pagar é sempre 1
+        // this.deliveryPrice = BigDecimal.valueOf(1);
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

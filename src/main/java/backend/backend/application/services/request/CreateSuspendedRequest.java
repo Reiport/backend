@@ -75,6 +75,9 @@ public class CreateSuspendedRequest {
                         request.isHasContainerClient()
                                 ? containerService.getContainerByLicense(request.getContainerLicense())
                                 : null,
+                        request.isHasContainerClient()
+                                ? containerService.getContainerByLicense(request.getContainerLicenseSecond())
+                                : null,
                         BigDecimal.valueOf(request.getCargoWeight()),
                         LocalDate.parse(request.getDeadline(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         request.getPortDest(),
