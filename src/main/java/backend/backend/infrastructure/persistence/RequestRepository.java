@@ -150,7 +150,7 @@ public class RequestRepository implements IRequestRepository {
         try {
 
             TypedQuery<RequestInfo> query = _entityManager.createQuery(
-                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r WHERE ri.state = 1 AND r.id = ri.id AND r.deletedAt is null AND ri.guest = :guest",
+                    "SELECT ri FROM RequestInfo ri INNER JOIN GuestGroup gg INNER JOIN Request r WHERE gg.guest = :guest AND gg.request.id = ri.id AND r.id = ri.id AND ri.state = 1 AND r.deletedAt is null",
                     RequestInfo.class);
 
             return query.setParameter("guest", user).getResultList();

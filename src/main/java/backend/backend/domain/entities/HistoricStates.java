@@ -29,9 +29,6 @@ public class HistoricStates {
     private LocalDate startDate = LocalDate.now();
 
     @Column
-    private LocalDate createdAt = LocalDate.now();
-
-    @Column
     private State state;
 
     @Column

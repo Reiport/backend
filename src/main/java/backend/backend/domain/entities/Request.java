@@ -68,10 +68,13 @@ public class Request {
     public Request() {
     }
 
-    public Request(Vehicle truck, Container container,
+    public Request(
+            String companyName,
+            Vehicle truck, Container container,
             BigDecimal cargoWeight, LocalDate deadline, Integer portDest, String streetDest, Integer portOri,
             String streetOri, PostalCode postalCodeDest, PostalCode postalCodeOri,
             Guest client) {
+        this.companyName = companyName;
         this.license = truck;
         this.containerLicense = container;
         this.cargoWeight = cargoWeight;

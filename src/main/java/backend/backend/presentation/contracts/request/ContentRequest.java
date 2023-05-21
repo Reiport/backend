@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ContentRequest {
 
-    @NotEmpty(message = "Preencher campo: licensa do veiculo")
+    @NotEmpty(message = "Preencher campo: nome da empresa")
+    private String companyName;
+
     private String vehicleLicense;
 
-    @NotEmpty(message = "Preencher campo: licensa do contentor")
     private String containerLicense;
 
     @NotNull(message = "Preencher campo: veiculo é do cliente")
