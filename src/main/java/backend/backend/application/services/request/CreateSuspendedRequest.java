@@ -69,15 +69,17 @@ public class CreateSuspendedRequest {
 
         PostalCode foundPostalCodeOri = _postalCodeRepository.findByCode(request.getPostalCodeOri());
 
+        // ,
+        // request.isHasContainerClient()
+        // ? containerService.getContainerByLicense(request.getContainerLicenseSecond())
+        // : null,
+
         Request createdRequest = _requestRepository.save(
                 new Request(
                         request.getCompanyName(),
                         request.isHasVehicleClient() ? truckService.getTruckById(request.getVehicleLicense()) : null,
                         request.isHasContainerClient()
                                 ? containerService.getContainerByLicense(request.getContainerLicense())
-                                : null,
-                        request.isHasContainerClient()
-                                ? containerService.getContainerByLicense(request.getContainerLicenseSecond())
                                 : null,
                         BigDecimal.valueOf(request.getCargoWeight()),
                         LocalDate.parse(request.getDeadline(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
