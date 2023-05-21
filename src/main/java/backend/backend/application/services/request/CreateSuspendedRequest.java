@@ -71,6 +71,7 @@ public class CreateSuspendedRequest {
 
         Request createdRequest = _requestRepository.save(
                 new Request(
+                        request.getCompanyName(),
                         request.isHasVehicleClient() ? truckService.getTruckById(request.getVehicleLicense()) : null,
                         request.isHasContainerClient()
                                 ? containerService.getContainerByLicense(request.getContainerLicense())
