@@ -42,4 +42,17 @@ public class DriverController {
 
     }
 
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/available")
+    public ResponseEntity<Collection<DriverResponse>> getAllAvailable() {
+
+        Collection<Driver> result = driverService.getAllAvailable();
+
+        return ResponseEntity.ok().body(result
+                .stream()
+                .map(driver -> GuestMapper.INSTANCE.toDriverResponse(driver))
+                .collect(Collectors.toList()));
+
+    }
+
 }

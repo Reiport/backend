@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.application.services.TruckService;
 import backend.backend.domain.entities.Vehicle;
+import backend.backend.presentation.contracts.SimpleResponse;
 import backend.backend.presentation.contracts.vehicle.TruckRequest;
 import backend.backend.presentation.contracts.vehicle.TruckResponse;
 import backend.backend.presentation.mappers.TruckMapper;
@@ -50,16 +51,16 @@ public class TruckController {
 
     @PreAuthorize("hasAuthority('Gestor')")
     @PostMapping("/create")
-    public ResponseEntity<String> createTruck(@Valid @RequestBody TruckRequest request) {
+    public ResponseEntity<SimpleResponse> createTruck(@Valid @RequestBody TruckRequest request) {
         truckService.createTruck(request);
-        return ResponseEntity.ok().body("O veiculo foi adicionado");
+        return ResponseEntity.ok().body(new SimpleResponse("O veiculo foi adicionado"));
     }
 
     @PreAuthorize("hasAuthority('Gestor')")
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteTruck(@RequestParam String license) {
+    public ResponseEntity<SimpleResponse> deleteTruck(@RequestParam String license) {
         truckService.deleteTruck(license);
-        return ResponseEntity.ok().body("O veiculo foi removido");
+        return ResponseEntity.ok().body(new SimpleResponse("O veiculo foi removido"));
     }
 
 }

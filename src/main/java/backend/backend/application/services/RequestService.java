@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
+import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
+import backend.backend.domain.entities.Vehicle;
 
 @Service
 public class RequestService {
@@ -31,6 +33,14 @@ public class RequestService {
 
     public Collection<Driver> getAllDrivers(int requestId) {
         return requestRepository.getAllDrivers(requestRepository.getRequestById(requestId));
+    }
+
+    public Vehicle getVehicle(int requestId) {
+        return requestRepository.getVehicle(requestRepository.getRequestById(requestId));
+    }
+
+    public Container getContainer(Integer id) {
+        return requestRepository.getContainer(requestRepository.getRequestById(id));
     }
 
     public Collection<RequestInfo> getAllRequestOfClient(int id) {

@@ -20,15 +20,22 @@ import backend.backend.application.services.driver.AcceptDeliver;
 import backend.backend.application.services.request.CompleteRequestService;
 import backend.backend.application.services.request.CreateSuspendedRequest;
 import backend.backend.application.services.worker.manager.AproveRequestService;
+import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.RequestInfo;
+import backend.backend.domain.entities.Vehicle;
+import backend.backend.presentation.contracts.SimpleResponse;
+import backend.backend.presentation.contracts.container.ContainerResponse;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
 import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.contracts.request.RequestResponse;
+import backend.backend.presentation.contracts.vehicle.TruckResponse;
 import backend.backend.presentation.contracts.worker.DriverResponse;
+import backend.backend.presentation.mappers.ContainerMapper;
 import backend.backend.presentation.mappers.GuestMapper;
 import backend.backend.presentation.mappers.RequestMapper;
+import backend.backend.presentation.mappers.TruckMapper;
 import jakarta.validation.Valid;
 
 @RequestMapping("/requests")
@@ -107,6 +114,30 @@ public class RequestController {
 
     }
 
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/vehicle")
+    public ResponseEntity<TruckResponse> getVehicleFromRequest(@RequestParam Integer id) {
+
+        Vehicle vehicle = this.requestService.getVehicle(id);
+
+        return ResponseEntity
+                .ok()
+                .body(TruckMapper.INSTANCE.ToTruckResponse(vehicle));
+
+    }
+
+    @PreAuthorize("hasAuthority('Gestor')")
+    @GetMapping("/container")
+    public ResponseEntity<ContainerResponse> getContainerFromRequest(@RequestParam Integer id) {
+
+        Container container = this.requestService.getContainer(id);
+
+        return ResponseEntity
+                .ok()
+                .body(ContainerMapper.INSTANCE.toContainerResponse(container));
+
+    }
+
     @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
@@ -137,73 +168,73 @@ public class RequestController {
 
     @PreAuthorize("hasAuthority('Rececionista')")
     @PostMapping("/create")
-    public ResponseEntity<String> createRequest(@Valid @RequestBody ContentRequest request) {
+    public ResponseEntity<SimpleResponse> createRequest(@Valid @RequestBody ContentRequest request) {
 
         this.createSuspendedRequest.handle(request);
 
         return ResponseEntity
                 .ok()
-                .body("O pedido foi submetido para avaliação");
+                .body(new SimpleResponse("O pedido foi submetido para avaliação"));
 
     }
 
     @PreAuthorize("hasAuthority('Gestor')")
     @PostMapping("/handle")
-    public ResponseEntity<String> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
+    public ResponseEntity<SimpleResponse> handleRequest(@Valid @RequestBody ContentCompleteRequest request) {
 
         this.aproveRequestService.handle(request);
 
         return ResponseEntity
                 .ok()
-                .body("O pedido foi enviado para o condutor principal");
+                .body(new SimpleResponse("O pedido foi enviado para o condutor principal"));
 
     }
 
     @PreAuthorize("hasAuthority('Motorista')")
     @PostMapping("/accept")
-    public ResponseEntity<?> acceptDelivery(@RequestParam int id) {
+    public ResponseEntity<SimpleResponse> acceptDelivery(@RequestParam int id) {
 
         this.startDeliver.handle(id);
 
         return ResponseEntity
                 .ok()
-                .body("O pedido foi aceite, encontra-se em procedimento!");
+                .body(new SimpleResponse("O pedido foi aceite, encontra-se em procedimento!"));
 
     }
 
     @PreAuthorize("hasAuthority('Motorista')")
     @PostMapping("/finish")
-    public ResponseEntity<?> finishDelivery(@RequestParam int id) {
+    public ResponseEntity<SimpleResponse> finishDelivery(@RequestParam int id) {
 
         this.finishDeliver.handle(id);
 
         return ResponseEntity
                 .ok()
-                .body("A entrega do pedido foi completa");
+                .body(new SimpleResponse("A entrega do pedido foi completa"));
 
     }
 
     @PreAuthorize("hasAuthority('Rececionista')")
     @PostMapping("/complete")
-    public ResponseEntity<?> completeDelivery(@RequestParam int id) {
+    public ResponseEntity<SimpleResponse> completeDelivery(@RequestParam int id) {
 
         this.completeRequestService.handle(id);
 
         return ResponseEntity
                 .ok()
-                .body("O pedido foi finalizado, espera-se dados de pagamento");
+                .body(new SimpleResponse("O pedido foi finalizado, espera-se dados de pagamento"));
 
     }
 
     @PreAuthorize("hasAuthority('Cliente')")
     @PostMapping("/payment")
-    public ResponseEntity<?> payDelivery(@RequestParam int id) {
+    public ResponseEntity<SimpleResponse> payDelivery(@RequestParam int id) {
 
         this.payRequestService.handle(id);
 
         return ResponseEntity
                 .ok()
-                .body("O pedido foi pago com sucesso!");
+                .body(new SimpleResponse("O pedido foi pago com sucesso!"));
 
     }
 

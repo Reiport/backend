@@ -22,4 +22,8 @@ public class DriverService {
         return userRepository.getFullDrivers();
     }
 
+    public Collection<Driver> getAllAvailable() {
+        return userRepository.getFullAvailableDrivers();
+    }
+
 }

@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
+import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.DriverGroup;
 import backend.backend.domain.entities.Guest;
@@ -15,6 +16,7 @@ import backend.backend.domain.entities.HistoricStates;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
+import backend.backend.domain.entities.Vehicle;
 import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -97,6 +99,7 @@ public class RequestRepository implements IRequestRepository {
     @Override
     @Transactional
     public void addDriver(Request request, Driver driver, BigDecimal kilometers) {
+        driver.setIsWorking(true);
         _entityManager.persist(new DriverGroup(kilometers, request, driver));
     }
 
@@ -191,4 +194,35 @@ public class RequestRepository implements IRequestRepository {
             throw new DBException("Não foi encontrado nenhum pedido");
         }
     }
+
+    @Override
+    public Vehicle getVehicle(Request request) {
+        try {
+
+            TypedQuery<Vehicle> query = _entityManager.createQuery(
+                    "SELECT v FROM Vehicle v INNER JOIN Request r WHERE r = :request AND r.license = v.license",
+                    Vehicle.class);
+
+            return query.setParameter("request", request).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foram encontrados nenhums motoristas associados ao pedido");
+        }
+    }
+
+    @Override
+    public Container getContainer(Request request) {
+        try {
+
+            TypedQuery<Container> query = _entityManager.createQuery(
+                    "SELECT c FROM Container c INNER JOIN Request r WHERE r = :request AND r.containerLicense = c.license",
+                    Container.class);
+
+            return query.setParameter("request", request).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foram encontrados nenhums motoristas associados ao pedido");
+        }
+    }
+
 }

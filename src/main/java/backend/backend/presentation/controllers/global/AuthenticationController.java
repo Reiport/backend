@@ -15,6 +15,7 @@ import backend.backend.application.services.authentication.RegisterUserService;
 import backend.backend.application.services.authentication.RenewAuthenticationTokensService;
 import backend.backend.application.services.authentication.ValidateAccountService;
 import backend.backend.application.services.authentication.common.AuthenticationResult;
+import backend.backend.presentation.contracts.SimpleResponse;
 import backend.backend.presentation.contracts.authentication.ForgotPasswordRequest;
 import backend.backend.presentation.contracts.authentication.LoginRequest;
 import backend.backend.presentation.contracts.authentication.RegisterRequest;
@@ -86,12 +87,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgotpassword")
-    private ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+    private ResponseEntity<SimpleResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
 
         this.forgotPasswordService.handle(request);
 
         return ResponseEntity
-                .ok("Foi enviado um novo email de recuperação");
+                .ok(new SimpleResponse("Foi enviado um novo email de recuperação"));
     }
 
     @GetMapping("/validate_account")

@@ -87,7 +87,7 @@ public class Request {
         this.postalCodeOri = postalCodeOri;
         this.client = client;
         // TODO: valor a pagar é sempre 1
-        // this.deliveryPrice = BigDecimal.valueOf(1);
+        this.deliveryPrice = BigDecimal.valueOf(1);
     }
 
     public Request(Vehicle truck, Container container, Container secContainer,

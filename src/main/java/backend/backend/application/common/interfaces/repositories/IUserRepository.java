@@ -45,4 +45,7 @@ public interface IUserRepository extends JpaRepository<Guest, Integer> {
     @Query(value = "SELECT d FROM Driver d")
     Collection<Driver> getFullDrivers();
 
+    @Query(value = "SELECT d FROM Driver d WHERE d.isWorking = false")
+    Collection<Driver> getFullAvailableDrivers();
+
 }

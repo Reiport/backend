@@ -14,10 +14,10 @@ public class ContentRequest {
     @NotEmpty(message = "Preencher campo: nome da empresa")
     private String companyName;
 
-    @NotEmpty(message = "Preencher campo: licença do veiculo")
+    // @NotEmpty(message = "Preencher campo: licença do veiculo")
     private String vehicleLicense;
 
-    @NotEmpty(message = "Preencher campo: licença do contentor")
+    // @NotEmpty(message = "Preencher campo: licença do contentor")
     private String containerLicense;
 
     private String containerLicenseSecond;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.backend.application.services.WorkerService;
 import backend.backend.application.services.authentication.RegisterWorkerService;
 import backend.backend.domain.entities.Guest;
+import backend.backend.presentation.contracts.SimpleResponse;
 import backend.backend.presentation.contracts.authentication.RegisterWorkerRequest;
 import backend.backend.presentation.contracts.worker.WorkerResponse;
 import backend.backend.presentation.mappers.GuestMapper;
@@ -62,13 +63,13 @@ public class ManageWorkerAccount {
 
     @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/auth/worker")
-    public ResponseEntity<String> registerAlternativeUser(@Valid @RequestBody RegisterWorkerRequest request) {
+    public ResponseEntity<SimpleResponse> registerAlternativeUser(@Valid @RequestBody RegisterWorkerRequest request) {
 
         registerWorkerService.handle(request);
 
         return ResponseEntity
                 .ok()
-                .body("The user was generated!");
+                .body(new SimpleResponse("The user was generated!"));
 
     }
 

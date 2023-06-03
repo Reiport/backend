@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.application.services.ContainerService;
 import backend.backend.domain.entities.Container;
+import backend.backend.presentation.contracts.SimpleResponse;
 import backend.backend.presentation.contracts.container.ContainerRequest;
 import backend.backend.presentation.contracts.container.ContainerResponse;
 import backend.backend.presentation.mappers.ContainerMapper;
@@ -50,18 +51,18 @@ public class ContainerController {
 
     @PreAuthorize("hasAuthority('Gestor')")
     @PostMapping("/create")
-    public ResponseEntity<String> createContainer(@Valid @RequestBody ContainerRequest request) {
+    public ResponseEntity<SimpleResponse> createContainer(@Valid @RequestBody ContainerRequest request) {
         containerService.createContainer(request);
 
-        return ResponseEntity.ok("O contentor foi adicionado");
+        return ResponseEntity.ok(new SimpleResponse("O contentor foi adicionado"));
     }
 
     @PreAuthorize("hasAuthority('Gestor')")
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteContentor(@RequestParam String license) {
+    public ResponseEntity<SimpleResponse> deleteContentor(@RequestParam String license) {
         containerService.deleteContainer(license);
 
-        return ResponseEntity.ok("O contentor foi removido");
+        return ResponseEntity.ok(new SimpleResponse("O contentor foi removido"));
     }
 
 }

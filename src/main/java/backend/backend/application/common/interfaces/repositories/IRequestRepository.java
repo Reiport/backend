@@ -3,11 +3,13 @@ package backend.backend.application.common.interfaces.repositories;
 import java.math.BigDecimal;
 import java.util.Collection;
 
+import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
+import backend.backend.domain.entities.Vehicle;
 
 public interface IRequestRepository {
 
@@ -55,5 +57,9 @@ public interface IRequestRepository {
     Request updateRequest(Request oldRequest);
 
     RequestInfo getRequestInfoById(int requestId);
+
+    Vehicle getVehicle(Request request);
+
+    Container getContainer(Request request);
 
 }
