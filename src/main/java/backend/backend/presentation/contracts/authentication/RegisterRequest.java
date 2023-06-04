@@ -49,7 +49,6 @@ public class RegisterRequest {
     @NotEmpty(message = "Porfavor preencha o campo: codigo postal")
     private String postalCode;
 
-    @NotEmpty(message = "Porfavor preencha o campo: tipo de funcionario")
     private String guestType;
 
 }
