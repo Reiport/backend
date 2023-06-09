@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Random;
 
+import org.springframework.security.access.AccessDeniedException;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -22,7 +24,7 @@ public class JwtGenerator implements IJwtGenerator {
 
     // TODO: Fix the role acess
     @Override
-    public String generateToken(String uuid, String email, Collection<String> role) {
+    public String generateToken(String uuid, String email, Collection<String> role, long duration) {
 
         String token = "";
 
@@ -33,7 +35,7 @@ public class JwtGenerator implements IJwtGenerator {
                     .withClaim("email", email)
                     .withClaim("role", (String) role.toArray()[0])
                     .withClaim("token_id", uuid)
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + duration))
                     .sign(algorithm);
 
         } catch (Exception e) {
@@ -59,7 +61,7 @@ public class JwtGenerator implements IJwtGenerator {
             decodedJWT = verifier.verify(token);
 
         } catch (Exception e) {
-            throw new RuntimeException("Error Decoding the token!");
+            throw new AccessDeniedException("Error Decoding the token!");
         }
 
         return decodedJWT;

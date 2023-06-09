@@ -134,9 +134,8 @@ public class Request {
     @JoinColumn(name = "client", nullable = false)
     private Guest client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "invoice", nullable = false)
-    private Invoice invoice;
+    @OneToMany(mappedBy = "request")
+    private Set<Invoice> requestInvoices;
 
     @OneToMany(mappedBy = "request")
     private Set<DriverGroup> requestDriverGroups;

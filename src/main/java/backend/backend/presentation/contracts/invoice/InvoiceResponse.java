@@ -11,9 +11,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class InvoiceResponse {
+
     private Integer id;
     private BigDecimal priceWithoutVat;
     private BigDecimal priceWithVat;
     private LocalDate dateIssue;
+    private String nif;
+    private String street;
+    private int port;
+    private String postalCode;
     private LocalDate paymentDate;
+
 }

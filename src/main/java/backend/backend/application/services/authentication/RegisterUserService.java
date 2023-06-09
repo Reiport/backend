@@ -108,12 +108,12 @@ public class RegisterUserService {
         var token = jwtGenerator.generateToken(
                 createdUser.getId().toString(),
                 registerRequest.getEmail(),
-                authorities);
+                authorities, 30 * 60 * 1000);
 
         var refresh_token = jwtGenerator.generateToken(
                 createdUser.getId().toString(),
                 registerRequest.getEmail(),
-                authorities);
+                authorities, 2 * 60 * 60 * 1000);
 
         return new AuthenticationResult(
                 token,

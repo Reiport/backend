@@ -96,6 +96,9 @@ public class AproveRequestService {
                     request.getKilometers());
         }
 
+        workingRequest.setDeliveryPrice(request.getDeliveryPrice());
+        requestService.updateRequest(workingRequest);
+
         Map<String, Object> options = new HashMap<>();
         options.put("name", primeDriver.getGuest_id().getFirstName() + " "
                 + primeDriver.getGuest_id().getLastName());

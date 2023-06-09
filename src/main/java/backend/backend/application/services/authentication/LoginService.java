@@ -55,10 +55,10 @@ public class LoginService {
                 .collect(Collectors.toList());
 
         String token = jwtGenerator.generateToken(userFound.get().getId().toString(), request.getEmail(),
-                authorities);
+                authorities, 30 * 60 * 1000);
 
         String refreshToken = jwtGenerator.generateToken(userFound.get().getId().toString(),
-                request.getEmail(), authorities);
+                request.getEmail(), authorities, 2 * 60 * 60 * 1000);
 
         return new AuthenticationResult(
                 token,

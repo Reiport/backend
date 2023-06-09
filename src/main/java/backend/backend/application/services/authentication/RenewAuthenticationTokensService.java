@@ -45,8 +45,10 @@ public class RenewAuthenticationTokensService {
                 .collect(Collectors.toList());
 
         return new AuthenticationResult(
-                tokenGenerator.generateToken(authUser.getId().toString(), authUser.getEmail(), authorities),
-                tokenGenerator.generateToken(authUser.getId().toString(), authUser.getEmail(), authorities));
+                tokenGenerator.generateToken(authUser.getId().toString(), authUser.getEmail(), authorities,
+                        30 * 60 * 1000),
+                tokenGenerator.generateToken(authUser.getId().toString(), authUser.getEmail(), authorities,
+                        2 * 60 * 60 * 1000));
 
     }
 

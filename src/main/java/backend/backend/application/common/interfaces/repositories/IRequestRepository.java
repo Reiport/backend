@@ -6,6 +6,7 @@ import java.util.Collection;
 import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
+import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
@@ -61,5 +62,15 @@ public interface IRequestRepository {
     Vehicle getVehicle(Request request);
 
     Container getContainer(Request request);
+
+    Collection<RequestInfo> getMyRequests(Guest authUser);
+
+    void addInvoice(Request request, Invoice invoice);
+
+    Collection<Invoice> getAllInvoices(int id);
+
+    Invoice getInvoice(int id);
+
+    Invoice updateInvoice(Invoice invoice);
 
 }

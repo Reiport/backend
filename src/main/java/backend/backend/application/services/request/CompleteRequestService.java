@@ -13,6 +13,7 @@ import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.RequestService;
 import backend.backend.domain.entities.Guest;
+import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
 import backend.backend.presentation.errors.request.RequestStateViolated;
@@ -36,17 +37,25 @@ public class CompleteRequestService {
     @Transactional
     public void handle(int id) {
 
-        Guest client;
-
         Request workingRequest = requestService.getRequest(id);
 
-        client = requestRepository.getClient(workingRequest);
+        Guest client = requestRepository.getClient(workingRequest);
 
         if (requestService.getState(workingRequest) != State.DELIVERED) {
             throw new RequestStateViolated();
         }
 
         requestRepository.changeState(workingRequest, State.COMPLETED, authorizationFacade.getAuthenticatedUser());
+
+        requestRepository.addInvoice(workingRequest, new Invoice(
+                workingRequest.getDeliveryPrice(),
+                workingRequest.getDeliveryPrice().multiply(BigDecimal.valueOf(0.23)),
+                client.getNif(),
+                client.getStreet(),
+                client.getPort(),
+                0,
+                client.getPostalCode(),
+                null));
 
         Map<String, Object> data = new HashMap<>();
         data.put("name", client.getFirstName() + " "

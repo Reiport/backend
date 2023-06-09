@@ -8,7 +8,7 @@ public interface IJwtGenerator {
 
     String generateSimpleToken();
 
-    String generateToken(String id, String email, Collection<String> role);
+    String generateToken(String id, String email, Collection<String> role, long duration);
 
     DecodedJWT decodeToken(String token);
 

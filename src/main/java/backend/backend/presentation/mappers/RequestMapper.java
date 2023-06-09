@@ -4,8 +4,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
+import backend.backend.presentation.contracts.invoice.InvoiceResponse;
 import backend.backend.presentation.contracts.request.RequestResponse;
 
 @Mapper
@@ -30,5 +32,8 @@ public interface RequestMapper {
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
     RequestResponse toRequestInfoResponse(RequestInfo request);
+
+    @Mapping(target = "postalCode", source = "postalCode.id")
+    InvoiceResponse toInvoiceResponse(Invoice invoice);
 
 }

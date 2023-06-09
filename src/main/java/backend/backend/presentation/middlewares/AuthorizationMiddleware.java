@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import backend.backend.application.common.interfaces.IJwtGenerator;
+import backend.backend.presentation.errors.common.ErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +44,29 @@ public class AuthorizationMiddleware extends OncePerRequestFilter {
         }
 
         jwtToken = authHeader.substring(7);
-        var decodedToken = jwtGenerator.decodeToken(jwtToken);
+
+        DecodedJWT decodedToken;
+
+        try {
+
+            decodedToken = jwtGenerator.decodeToken(jwtToken);
+
+        } catch (Exception e) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.FORBIDDEN,
+                    "Não está autorizado a realizar esta operação",
+                    request.getRequestURL().toString());
+
+            response.setStatus(errorResponse.getCode());
+            String json = objectMapper.writeValueAsString(errorResponse);
+
+            // Set the response content type and write the JSON message
+            response.setContentType("application/json");
+            response.getWriter().write(json);
+            response.getWriter().flush();
+            return;
+        }
 
         userEmail = decodedToken
                 .getClaim("email")

@@ -23,10 +23,13 @@ import backend.backend.application.services.worker.manager.AproveRequestService;
 import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
+import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.Vehicle;
+import backend.backend.presentation.contracts.PayRequest;
 import backend.backend.presentation.contracts.SimpleResponse;
 import backend.backend.presentation.contracts.container.ContainerResponse;
+import backend.backend.presentation.contracts.invoice.InvoiceResponse;
 import backend.backend.presentation.contracts.manager.ContentCompleteRequest;
 import backend.backend.presentation.contracts.request.ContentRequest;
 import backend.backend.presentation.contracts.request.RequestResponse;
@@ -80,11 +83,45 @@ public class RequestController {
 
     }
 
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Cliente')")
+    @GetMapping("/invoices")
+    public ResponseEntity<Collection<InvoiceResponse>> getAllInvoices(@RequestParam int id) {
+
+        Collection<Invoice> result = this.requestService.getAllInvoices(id);
+
+        var response = result
+                .stream()
+                .map(request -> RequestMapper.INSTANCE.toInvoiceResponse(request))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+
+    }
+
     @PreAuthorize("hasAuthority('Rececionista')")
     @GetMapping("/client")
     public ResponseEntity<Collection<RequestResponse>> getAllRequestFromClient(@RequestParam int id) {
 
         Collection<RequestInfo> result = this.requestService.getAllRequestOfClient(id);
+
+        var response = result
+                .stream()
+                .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+
+    }
+
+    @PreAuthorize("hasAuthority('Cliente')")
+    @GetMapping("/my")
+    public ResponseEntity<Collection<RequestResponse>> getAllRequestFromClient() {
+
+        Collection<RequestInfo> result = this.requestService.getAllMyRequests();
 
         var response = result
                 .stream()
@@ -138,7 +175,7 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor') or hasAuthority('Cliente')")
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 
@@ -150,7 +187,7 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor') or hasAuthority('Cliente')")
     @GetMapping("/members")
     public ResponseEntity<?> getRequestMembers(@RequestParam int id) {
 
@@ -228,9 +265,9 @@ public class RequestController {
 
     @PreAuthorize("hasAuthority('Cliente')")
     @PostMapping("/payment")
-    public ResponseEntity<SimpleResponse> payDelivery(@RequestParam int id) {
+    public ResponseEntity<SimpleResponse> payDelivery(@Valid @RequestBody PayRequest request) {
 
-        this.payRequestService.handle(id);
+        this.payRequestService.handle(request);
 
         return ResponseEntity
                 .ok()

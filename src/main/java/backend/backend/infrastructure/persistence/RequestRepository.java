@@ -13,6 +13,7 @@ import backend.backend.domain.entities.DriverGroup;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.GuestGroup;
 import backend.backend.domain.entities.HistoricStates;
+import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
@@ -173,11 +174,7 @@ public class RequestRepository implements IRequestRepository {
 
     @Override
     public Request updateRequest(Request request) {
-
-        Request oldRequest = getRequestById(request.getId());
-
-        return oldRequest;
-
+        return _entityManager.merge(request);
     }
 
     @Override
@@ -223,6 +220,62 @@ public class RequestRepository implements IRequestRepository {
         } catch (Exception e) {
             throw new DBException("Não foram encontrados nenhums motoristas associados ao pedido");
         }
+    }
+
+    @Override
+    public Collection<RequestInfo> getMyRequests(Guest authUser) {
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT ri FROM RequestInfo ri INNER JOIN Request r INNER JOIN GuestGroup gp WHERE gp.guest = :my AND gp.request = r AND ri.id = r.id AND r.deletedAt is null",
+                    RequestInfo.class);
+
+            return query.setParameter("my", authUser).getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum pedido");
+        }
+    }
+
+    @Override
+    public void addInvoice(Request request, Invoice invoice) {
+        invoice.setRequest(request);
+        _entityManager.persist(invoice);
+    }
+
+    @Override
+    public Collection<Invoice> getAllInvoices(int id) {
+        try {
+
+            TypedQuery<Invoice> query = _entityManager.createQuery(
+                    "SELECT i FROM Invoice i WHERE i.request.id = :request",
+                    Invoice.class);
+
+            return query.setParameter("request", id).getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhuma fatura");
+        }
+    }
+
+    @Override
+    public Invoice getInvoice(int id) {
+        try {
+
+            TypedQuery<Invoice> query = _entityManager.createQuery(
+                    "SELECT i FROM Invoice i WHERE i.id = :invoice",
+                    Invoice.class);
+
+            return query.setParameter("invoice", id).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhuma fatura");
+        }
+    }
+
+    @Override
+    public Invoice updateInvoice(Invoice invoice) {
+        return _entityManager.merge(invoice);
     }
 
 }

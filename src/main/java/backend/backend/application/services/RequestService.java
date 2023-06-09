@@ -11,6 +11,7 @@ import backend.backend.application.common.interfaces.repositories.IUserRepositor
 import backend.backend.domain.entities.Container;
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
+import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.Vehicle;
@@ -19,16 +20,20 @@ import backend.backend.domain.entities.Vehicle;
 public class RequestService {
 
     @Autowired
+    private IAuthorizationFacade authorizationFacade;
+
+    @Autowired
     private IRequestRepository requestRepository;
 
     @Autowired
     private IUserRepository userRepository;
 
-    @Autowired
-    private IAuthorizationFacade authorizationFacade;
-
     public boolean checkMemberShip(Request request, Guest guest) {
         return !this.getRequestMembers(request.getId()).isEmpty();
+    }
+
+    public Collection<RequestInfo> getAllMyRequests() {
+        return requestRepository.getMyRequests(authorizationFacade.getAuthenticatedUser());
     }
 
     public Collection<Driver> getAllDrivers(int requestId) {
@@ -77,6 +82,10 @@ public class RequestService {
 
     public Collection<RequestInfo> getRequestToEvaluate() {
         return this.requestRepository.getRequestToEvaluate(authorizationFacade.getAuthenticatedUser());
+    }
+
+    public Collection<Invoice> getAllInvoices(int id) {
+        return this.requestRepository.getAllInvoices(id);
     }
 
 }
