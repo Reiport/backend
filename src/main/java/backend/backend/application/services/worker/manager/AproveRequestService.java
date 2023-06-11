@@ -45,10 +45,6 @@ public class AproveRequestService {
     @Autowired
     private IMailSender mailSender;
 
-    // TODO: Implement an middleware that verifies in each route that user can mess
-    // around in the request
-    // TODO: Is missing the second container license
-    // TODO: Is missing the total value of the request
     @Transactional
     public void handle(ContentCompleteRequest request) {
 

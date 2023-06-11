@@ -40,7 +40,6 @@ public class ValidateAccountService {
             throw new UserNotFoundException();
         }
 
-        // TODO: Change the DB to accept enable users
         user = userFound.get();
 
     }

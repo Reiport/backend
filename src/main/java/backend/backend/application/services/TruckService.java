@@ -22,7 +22,6 @@ public class TruckService {
     @Autowired
     private ITruckRepository truckRepository;
 
-    // TODO: Validate Data
     @Transactional
     public void createTruck(TruckRequest request) {
         truckRepository.save(

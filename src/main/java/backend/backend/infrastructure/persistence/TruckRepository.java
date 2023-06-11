@@ -68,7 +68,6 @@ public class TruckRepository extends BaseRepository implements ITruckRepository 
         _entityManager.merge(truck);
     }
 
-    // TODO: ALL UPDATES
     @Transactional
     @Override
     public void updateTruck(String license, Vehicle vehicle) {

@@ -22,7 +22,6 @@ public class JwtGenerator implements IJwtGenerator {
         algorithm = Algorithm.HMAC256(jwtConfiguration.getSecret());
     }
 
-    // TODO: Fix the role acess
     @Override
     public String generateToken(String uuid, String email, Collection<String> role, long duration) {
 
@@ -46,7 +45,6 @@ public class JwtGenerator implements IJwtGenerator {
 
     }
 
-    // TODO: Authentication Error here
     @Override
     public DecodedJWT decodeToken(String token) {
 

@@ -63,7 +63,6 @@ public class RegisterUserService {
             throw new UserAlreadyRegisteredException();
         }
 
-        // TODO: Consertar a busca do tipo de utilizador ao banco
         var createdUser = this.userRepository.save(
                 new Guest(
                         registerRequest.getEmail(),

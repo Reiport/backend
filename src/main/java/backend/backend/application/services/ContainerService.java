@@ -29,7 +29,6 @@ public class ContainerService {
         return this.containerRepository.getContainerById(lincense);
     }
 
-    // TODO: Does not work
     @Transactional
     public void createContainer(ContainerRequest request) {
         containerRepository.createContainer(

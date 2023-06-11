@@ -64,15 +64,9 @@ public class CreateSuspendedRequest {
         // Create Request without vehicles
         Guest foundClient = _userRepository.findClientById(request.getClientId());
 
-        // TODO: Most likely change this, to assigning the postal code manually
+        // TODO: IF NOT EXITS CREATE AN NEW
         PostalCode foundPostalCodeDest = _postalCodeRepository.findByCode(request.getPostalCodeDest());
-
         PostalCode foundPostalCodeOri = _postalCodeRepository.findByCode(request.getPostalCodeOri());
-
-        // ,
-        // request.isHasContainerClient()
-        // ? containerService.getContainerByLicense(request.getContainerLicenseSecond())
-        // : null,
 
         Request createdRequest = _requestRepository.save(
                 new Request(
@@ -95,7 +89,6 @@ public class CreateSuspendedRequest {
                         foundClient));
         ;
 
-        // Update Historic States - Worker Started Request
         _historicStateRepository.save(
                 new HistoricStates(
                         State.SUSPENDED,
