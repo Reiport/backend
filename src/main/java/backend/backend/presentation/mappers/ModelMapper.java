@@ -1,5 +1,8 @@
 package backend.backend.presentation.mappers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -32,5 +35,12 @@ public interface ModelMapper {
     CountryResponse toCountryResponse(Country country);
 
     BrandResponse toBrandResponse(Brand country);
+
+    public static LocalDate localDateToString(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        String formattedDate = localDate.format(formatter);
+        return LocalDate.parse(formattedDate);
+    }
 
 }

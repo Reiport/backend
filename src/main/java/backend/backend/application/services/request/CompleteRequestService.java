@@ -49,7 +49,8 @@ public class CompleteRequestService {
 
         requestRepository.addInvoice(workingRequest, new Invoice(
                 workingRequest.getDeliveryPrice(),
-                workingRequest.getDeliveryPrice().multiply(BigDecimal.valueOf(0.23)),
+                BigDecimal.valueOf(workingRequest.getDeliveryPrice().doubleValue()
+                        + workingRequest.getDeliveryPrice().doubleValue() * 0.23),
                 client.getNif(),
                 client.getStreet(),
                 client.getPort(),
@@ -71,7 +72,8 @@ public class CompleteRequestService {
         data.put("nif", client.getNif());
         data.put("qtCargo", workingRequest.getCargoWeight());
         data.put("value", workingRequest.getDeliveryPrice());
-        data.put("ivaValue", workingRequest.getDeliveryPrice().multiply(BigDecimal.valueOf(0.23)));
+        data.put("ivaValue", BigDecimal.valueOf(workingRequest.getDeliveryPrice().doubleValue()
+                + workingRequest.getDeliveryPrice().doubleValue() * 0.23));
         data.put("totalValue", workingRequest.getDeliveryPrice()
                 .add(workingRequest.getDeliveryPrice().multiply(BigDecimal.valueOf(0.23))));
 

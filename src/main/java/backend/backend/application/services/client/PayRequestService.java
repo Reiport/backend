@@ -50,7 +50,7 @@ public class PayRequestService {
         Invoice invoice = requestRepository.getInvoice(request.getInvoiceId());
 
         if (request.getAmount() != invoice.getPriceWithVat().doubleValue()) {
-            throw new RuntimeException("Pagamento não admitido!. Porfavor introduza o valor correto");
+            throw new RuntimeException("Pagamento não admitido!. Por favor introduza o valor correto");
         }
 
         invoice.setPaymentDate(LocalDate.now());

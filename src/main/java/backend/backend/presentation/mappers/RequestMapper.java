@@ -55,4 +55,11 @@ public interface RequestMapper {
         return data;
     }
 
+    public static LocalDate localDateToString(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        String formattedDate = localDate.format(formatter);
+        return LocalDate.parse(formattedDate);
+    }
+
 }

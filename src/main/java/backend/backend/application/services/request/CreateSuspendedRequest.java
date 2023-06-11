@@ -64,7 +64,6 @@ public class CreateSuspendedRequest {
         // Create Request without vehicles
         Guest foundClient = _userRepository.findClientById(request.getClientId());
 
-        // TODO: IF NOT EXITS CREATE AN NEW
         PostalCode foundPostalCodeDest = _postalCodeRepository.findByCode(request.getPostalCodeDest());
         PostalCode foundPostalCodeOri = _postalCodeRepository.findByCode(request.getPostalCodeOri());
 
@@ -76,7 +75,7 @@ public class CreateSuspendedRequest {
                                 ? containerService.getContainerByLicense(request.getContainerLicense())
                                 : null,
                         BigDecimal.valueOf(request.getCargoWeight()),
-                        LocalDate.parse(request.getDeadline(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        LocalDate.parse(request.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                         request.getPortDest(),
                         request.getStreetDest(),
                         request.getPortOri(),
