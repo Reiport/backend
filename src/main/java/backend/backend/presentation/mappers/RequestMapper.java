@@ -23,6 +23,12 @@ public interface RequestMapper {
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
     @Mapping(source = "deadline", target = "deadline", dateFormat = "dd/MM/yyyy")
+    @Mapping(target = "countryOri", ignore = true)
+    @Mapping(target = "countryDest", ignore = true)
+    @Mapping(target = "invoice", ignore = true)
+    @Mapping(target = "localityDest", ignore = true)
+    @Mapping(target = "localityOri", ignore = true)
+    @Mapping(target = "state", ignore = true)
     RequestResponse toRequestResponse(Request request);
 
     @Mapping(target = "postalCodeDest", source = "postalCodeDest")
