@@ -11,6 +11,7 @@ import backend.backend.application.common.interfaces.ICredentialGenerator;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IGuestTypeRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
+import backend.backend.config.settings.FrontEndSettings;
 import backend.backend.domain.entities.Guest;
 import backend.backend.presentation.contracts.authentication.RegisterWorkerRequest;
 import backend.backend.presentation.mappers.GuestMapper;
@@ -31,11 +32,13 @@ public class RegisterWorkerService {
     private ICredentialGenerator credentialGenerator;
 
     @Autowired
+    private FrontEndSettings frontEndSettings;
+
+    @Autowired
     private IMailSender mailSender;
 
     public void handle(RegisterWorkerRequest request) {
 
-        // TODO: Mudar isto!
         if (request.getGuestType().equals("Cliente"))
             throw new RuntimeException("You cannot register an Client!");
 
@@ -54,6 +57,7 @@ public class RegisterWorkerService {
         // Atribuição da password
 
         Guest guest = GuestMapper.INSTANCE.registerWorkerRequestToGuest(request);
+        guest.setEnabled(true);
         guest.setEmail(email);
         guest.setPassword(passwordEncoder.encode(password));
         guest.setGuestType(guestTypeRepository.findByName(request.getGuestType()).get());
@@ -64,6 +68,7 @@ public class RegisterWorkerService {
 
         options.put("email", guest.getEmail());
         options.put("password", password);
+        options.put("web", frontEndSettings.getUrl() + "/auth/login");
 
         // Send Email
         mailSender.sendEmail(

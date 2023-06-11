@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Bem-vindo à Reiport</title>
     <style>
       body {
@@ -69,14 +69,14 @@
     <div class="container">
       <h1>Bem-vindo à Reiport!</h1>
       <p>
-        Enviamos o seu e-mail da empresa, bem como a palavra-chave
-        respetiva.
+        Enviamos o seu e-mail da empresa, bem como a palavra-chave respetiva.
       </p>
-      <p> E-mail: <span th:text="${email}"></span></p>
-      <p> Palavra-chave: <span th:text="${password}"></span></p>
-      <a href="#" class="button">Abrir na web</a>
+      <p>E-mail: <span th:text="${email}"></span></p>
+      <p>Palavra-chave: <span th:text="${password}"></span></p>
+      <a th:href="${web}" class="button">Abrir na web</a>
       <div class="footer">
-        Precisa de ajuda? <a href="#">Entre em contacto com a nossa equipe de assistência</a>
+        Precisa de ajuda?
+        <a href="#">Entre em contacto com a nossa equipe de assistência</a>
       </div>
     </div>
   </body>

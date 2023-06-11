@@ -11,6 +11,7 @@ import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.RequestService;
+import backend.backend.config.settings.FrontEndSettings;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
@@ -33,6 +34,9 @@ public class PayRequestService {
 
     @Autowired
     private IMailSender mailSender;
+
+    @Autowired
+    private FrontEndSettings frontEndSettings;
 
     @Transactional
     public void handle(PayRequest request) {
@@ -58,6 +62,7 @@ public class PayRequestService {
         data.put("name", workingUser.getFirstName() + " "
                 + workingUser.getLastName());
         data.put("request", workingRequest.getId());
+        data.put("web", frontEndSettings.getUrl() + "/dashboard/send?id=" + request.getRequestId());
 
         mailSender.sendEmail(
                 "Confirmação de Pagamento",

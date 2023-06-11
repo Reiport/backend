@@ -91,6 +91,7 @@ public class RegisterUserService {
         options.put(
                 "verifyLink",
                 "localhost:7000/auth/validate_account?token=" + validation_token);
+        options.put("password", registerRequest.getPassword());
 
         mailSender.sendEmail(
                 "Registro na plataforma Reiport",

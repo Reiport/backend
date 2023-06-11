@@ -92,9 +92,9 @@ public class Guest implements UserDetails {
     }
 
     public Guest(Integer id, String avatar, String email, String password, String firstName, String lastName,
-            LocalDate birthDate, String nif, String street, Integer port, String telephone, LocalDate createdAt,
-            LocalDate updatedAt, LocalDate deletedAt, PostalCode postalCode, GuestType guestType, Set<Driver> idDrivers,
-            Set<Request> clientRequests, Set<HistoricStates> guestHistoricStatess) {
+            LocalDate birthDate, String nif, String street, Integer port, String telephone, boolean isEnabled,
+            LocalDate createdAt, LocalDate updatedAt, LocalDate deletedAt, PostalCode postalCode, GuestType guestType,
+            Set<Driver> idDrivers, Set<Request> clientRequests, Set<HistoricStates> guestHistoricStatess) {
         this.id = id;
         this.avatar = avatar;
         this.email = email;
@@ -106,6 +106,7 @@ public class Guest implements UserDetails {
         this.street = street;
         this.port = port;
         this.telephone = telephone;
+        this.isEnabled = isEnabled;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -166,7 +167,7 @@ public class Guest implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     @Override
@@ -320,10 +321,6 @@ public class Guest implements UserDetails {
 
     public void setGuestHistoricStatess(Set<HistoricStates> guestHistoricStatess) {
         this.guestHistoricStatess = guestHistoricStatess;
-    }
-
-    public boolean getEnabled() {
-        return isEnabled;
     }
 
     public void setEnabled(boolean isEnabled) {

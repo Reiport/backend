@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>O transporte foi iniciado</title>
     <style>
       body {
@@ -68,10 +68,14 @@
   <body>
     <div class="container">
       <h1>Olá, <span th:text="${name}"></span>!</h1>
-      <p> O transporte do pedido nº <span th:text="${request}"></span> foi iniciado.</p>
-      <a href="#" class="button">Abrir na web</a>
+      <p>
+        O transporte do pedido nº <span th:text="${request}"></span> foi
+        iniciado.
+      </p>
+      <a href="${web}" class="button">Abrir na web</a>
       <div class="footer">
-        Precisa de ajuda? <a href="#">Entre em contacto com a nossa equipe de assistência</a>
+        Precisa de ajuda?
+        <a href="#">Entre em contacto com a nossa equipe de assistência</a>
       </div>
     </div>
   </body>

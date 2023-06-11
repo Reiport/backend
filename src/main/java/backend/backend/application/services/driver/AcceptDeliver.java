@@ -10,6 +10,7 @@ import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
 import backend.backend.application.services.RequestService;
+import backend.backend.config.settings.FrontEndSettings;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
@@ -30,6 +31,9 @@ public class AcceptDeliver {
     @Autowired
     private IMailSender mailSender;
 
+    @Autowired
+    private FrontEndSettings frontEndSettings;
+
     public void handle(int requestId) {
 
         Guest client;
@@ -47,6 +51,7 @@ public class AcceptDeliver {
         data.put("name", client.getFirstName() + " "
                 + client.getLastName());
         data.put("request", workingRequest.getId());
+        data.put("web", frontEndSettings.getUrl() + "/dashboard/send?id=" + requestId);
 
         mailSender.sendEmail(
                 "Pedido Atualizado",
