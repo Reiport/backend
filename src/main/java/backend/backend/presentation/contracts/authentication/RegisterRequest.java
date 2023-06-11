@@ -48,9 +48,18 @@ public class RegisterRequest {
     public RegisterRequest() {
     }
 
-    public RegisterRequest(@NotEmpty(message = "Por favor preencha o campo: email") String email, String password,
-            String firstName, String lastName, String birthDate, String nif, String street, Integer port,
-            String telephone, String postalCode, String guestType) {
+    public RegisterRequest(
+            @Email(message = "Por favor introduza um email valido: user@reiport.trl") @NotEmpty(message = "Por favor preencha o campo: email") String email,
+            @NotBlank(message = "Por favor preencha o campo: password") @Size(min = 8, max = 16, message = "A password tem de ter pelo menos de 8 a 16 caracteres") String password,
+            @NotBlank(message = "Por favor preencha o campo: nome própio") String firstName,
+            @NotBlank(message = "Por favor preencha o campo: sobrenome") String lastName,
+            @NotBlank(message = "Por favor preencha o campo: data de nascimento") String birthDate,
+            @Size(min = 9, max = 9, message = "Introduza o nif válido com 9 caracteres") @NotBlank(message = "Por favor preencha o campo: nif") String nif,
+            @NotEmpty(message = "Por favor preencha o campo: rua") String street,
+            @NotNull(message = "Por favor preencha o campo: número da porta") Integer port,
+            @Size(min = 9, max = 9, message = "Introduza um número de telefone válido com 9 caracteres") @NotEmpty(message = "Por favor preencha o campo: telefone") String telephone,
+            @Size(min = 8, max = 8, message = "Introduza um codigo postal válido com 8 caracteres") @NotEmpty(message = "Por favor preencha o campo: codigo postal") String postalCode,
+            String guestType) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;

@@ -40,7 +40,7 @@ public class WorkerService {
         Guest worker = getWorker(id);
 
         if (worker == null) {
-            throw new RuntimeException("Não existe nehum trabalhador com esse id");
+            throw new RuntimeException("Não existe nenhum trabalhador com esse id");
         }
 
         worker.setFirstName(request.getFirstName());

@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,9 +49,6 @@ public class RegisterUserService {
     @Autowired
     private ITokenRepository tokenRepository;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     public AuthenticationResult handle(RegisterRequest registerRequest) {
 
         var postalCode = this.postalCodeRepository.findByCode(registerRequest.getPostalCode());
@@ -63,19 +59,20 @@ public class RegisterUserService {
             throw new UserAlreadyRegisteredException();
         }
 
-        var createdUser = this.userRepository.save(
-                new Guest(
-                        registerRequest.getEmail(),
-                        passwordEncoder.encode(registerRequest.getPassword()),
-                        registerRequest.getFirstName(),
-                        registerRequest.getLastName(),
-                        LocalDate.parse(registerRequest.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        registerRequest.getNif(),
-                        registerRequest.getStreet(),
-                        registerRequest.getPort(),
-                        registerRequest.getTelephone(),
-                        postalCode,
-                        guestTypeRepository.findByName("Cliente").get()));
+        var client = new Guest(
+                registerRequest.getEmail(),
+                passwordEncoder.encode(registerRequest.getPassword()),
+                registerRequest.getFirstName(),
+                registerRequest.getLastName(),
+                LocalDate.parse(registerRequest.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                registerRequest.getNif(),
+                registerRequest.getStreet(),
+                registerRequest.getPort(),
+                registerRequest.getTelephone(),
+                postalCode,
+                guestTypeRepository.findByName("Cliente").get());
+
+        var createdUser = this.userRepository.save(client);
 
         Map<String, Object> options = new HashMap<>();
 
@@ -98,9 +95,6 @@ public class RegisterUserService {
                 registerRequest.getEmail(),
                 "welcome",
                 options);
-
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(createdUser, registerRequest.getPassword()));
 
         Collection<String> authorities = createdUser.getAuthorities().stream().map(role -> role.getAuthority())
                 .collect(Collectors.toList());
