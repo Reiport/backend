@@ -1,25 +1,24 @@
 package backend.backend.presentation.contracts.invoice;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class InvoiceResponse {
 
     private Integer id;
     private BigDecimal priceWithoutVat;
     private BigDecimal priceWithVat;
-    private LocalDate dateIssue;
+    private String dateIssue;
     private String nif;
     private String street;
     private int port;
     private String postalCode;
-    private LocalDate paymentDate;
+    private String paymentDate;
 
     public InvoiceResponse() {
     }
 
-    public InvoiceResponse(Integer id, BigDecimal priceWithoutVat, BigDecimal priceWithVat, LocalDate dateIssue,
-            String nif, String street, int port, String postalCode, LocalDate paymentDate) {
+    public InvoiceResponse(Integer id, BigDecimal priceWithoutVat, BigDecimal priceWithVat, String dateIssue,
+            String nif, String street, int port, String postalCode, String paymentDate) {
         this.id = id;
         this.priceWithoutVat = priceWithoutVat;
         this.priceWithVat = priceWithVat;
@@ -55,11 +54,11 @@ public class InvoiceResponse {
         this.priceWithVat = priceWithVat;
     }
 
-    public LocalDate getDateIssue() {
+    public String getDateIssue() {
         return dateIssue;
     }
 
-    public void setDateIssue(LocalDate dateIssue) {
+    public void setDateIssue(String dateIssue) {
         this.dateIssue = dateIssue;
     }
 
@@ -95,11 +94,11 @@ public class InvoiceResponse {
         this.postalCode = postalCode;
     }
 
-    public LocalDate getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(LocalDate paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 

@@ -1,5 +1,8 @@
 package backend.backend.presentation.mappers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -27,7 +30,6 @@ public interface GuestMapper {
     @Mapping(target = "idDrivers", ignore = true)
     @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "guestHistoricStatess", ignore = true)
-    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     Guest registerRequestToGuest(RegisterRequest request);
@@ -43,13 +45,11 @@ public interface GuestMapper {
     @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "guestHistoricStatess", ignore = true)
     @Mapping(target = "password", ignore = true)
-    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     Guest updateProfileToGuest(UpdateProfile request);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     @Mapping(target = "guestType", ignore = true)
     @Mapping(source = "postalCode", target = "postalCode.id")
     @Mapping(target = "deletedAt", ignore = true)
@@ -67,10 +67,15 @@ public interface GuestMapper {
 
     @Mapping(target = "postalCode", source = "postalCode.id")
     @Mapping(target = "guestType", source = "guestType.name")
-    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     WorkerResponse toWorkerResponse(Guest guest);
 
     @Mapping(source = "guest_id", target = "guest")
     DriverResponse toDriverResponse(Driver composeDriver);
+
+    public static String localDateToString(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        var data = date.format(formatter);
+        return data;
+    }
 
 }

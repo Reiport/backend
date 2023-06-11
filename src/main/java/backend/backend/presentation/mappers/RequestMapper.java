@@ -1,5 +1,8 @@
 package backend.backend.presentation.mappers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -22,7 +25,6 @@ public interface RequestMapper {
     @Mapping(target = "license", source = "license.license")
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
-    @Mapping(source = "deadline", target = "deadline", dateFormat = "dd/MM/yyyy")
     @Mapping(target = "countryOri", ignore = true)
     @Mapping(target = "countryDest", ignore = true)
     @Mapping(target = "invoice", ignore = true)
@@ -38,12 +40,19 @@ public interface RequestMapper {
     @Mapping(target = "license", source = "vehicleLicense")
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
-    @Mapping(source = "deadline", target = "deadline", dateFormat = "dd/MM/yyyy")
     RequestResponse toRequestInfoResponse(RequestInfo request);
 
     @Mapping(target = "postalCode", source = "postalCode.id")
-    @Mapping(source = "paymentDate", target = "paymentDate", dateFormat = "dd/MM/yyyy")
-    @Mapping(source = "dateIssue", target = "dateIssue", dateFormat = "dd/MM/yyyy")
     InvoiceResponse toInvoiceResponse(Invoice invoice);
+
+    public static String localDateToString(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if (date == null) {
+            return "";
+        }
+
+        var data = date.format(formatter);
+        return data;
+    }
 
 }

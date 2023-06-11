@@ -26,9 +26,6 @@ public class WorkerResponse {
 
     private String guestType;
 
-    public WorkerResponse() {
-    }
-
     public WorkerResponse(int id, String avatar, String email, String firstName, String lastName, String birthDate,
             String nif, String street, Integer port, String telephone, String postalCode, String guestType) {
         this.id = id;
@@ -43,6 +40,9 @@ public class WorkerResponse {
         this.telephone = telephone;
         this.postalCode = postalCode;
         this.guestType = guestType;
+    }
+
+    public WorkerResponse() {
     }
 
     public int getId() {
