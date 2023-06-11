@@ -41,6 +41,9 @@ public class ValidateAccountService {
         }
 
         user = userFound.get();
+        user.setEnabled(true);
+
+        userRepository.save(user);
 
     }
 

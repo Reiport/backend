@@ -59,6 +59,9 @@ public class Guest implements UserDetails {
     @Column(nullable = false, precision = 10, scale = 2)
     private String telephone;
 
+    @Column(nullable = true)
+    private boolean isEnabled;
+
     @Column
     private LocalDate createdAt;
 
@@ -317,6 +320,14 @@ public class Guest implements UserDetails {
 
     public void setGuestHistoricStatess(Set<HistoricStates> guestHistoricStatess) {
         this.guestHistoricStatess = guestHistoricStatess;
+    }
+
+    public boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
 }

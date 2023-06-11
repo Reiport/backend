@@ -11,6 +11,7 @@ import backend.backend.application.common.interfaces.IJwtGenerator;
 import backend.backend.application.common.interfaces.IMailSender;
 import backend.backend.application.common.interfaces.repositories.ITokenRepository;
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
+import backend.backend.config.settings.FrontEndSettings;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.redis.Token;
 import backend.backend.presentation.contracts.authentication.ForgotPasswordRequest;
@@ -23,16 +24,15 @@ public class ForgotPasswordService {
     private final IUserRepository userRepository;
     private final IJwtGenerator jwtGenerator;
     private final IMailSender mailSender;
+    private final FrontEndSettings frontEndSettings;
 
-    public ForgotPasswordService(
-            ITokenRepository tokenRepository,
-            IUserRepository userRepository,
-            IJwtGenerator jwtGenerator,
-            IMailSender mailSender) {
+    public ForgotPasswordService(ITokenRepository tokenRepository, IUserRepository userRepository,
+            IJwtGenerator jwtGenerator, IMailSender mailSender, FrontEndSettings frontEndSettings) {
         this.tokenRepository = tokenRepository;
         this.userRepository = userRepository;
         this.jwtGenerator = jwtGenerator;
         this.mailSender = mailSender;
+        this.frontEndSettings = frontEndSettings;
     }
 
     public void handle(ForgotPasswordRequest request) {
@@ -55,7 +55,7 @@ public class ForgotPasswordService {
 
         options.put("name", user.get().getEmail());
         options.put("forgotLink",
-                "localhost:3000/reset/resetpassword?token=" + forgotToken);
+                frontEndSettings.getUrl() + "/reset/resetpassword?token=" + forgotToken);
 
         mailSender.sendEmail(
                 "Pedido de esquecimento de senha",

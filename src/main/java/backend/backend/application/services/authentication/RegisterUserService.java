@@ -90,10 +90,10 @@ public class RegisterUserService {
 
         options.put(
                 "verifyLink",
-                "localhost:8080/auth/validate_account?token=" + validation_token);
+                "localhost:7000/auth/validate_account?token=" + validation_token);
 
         mailSender.sendEmail(
-                "Registro na plantaforma Reiport",
+                "Registro na plataforma Reiport",
                 registerRequest.getEmail(),
                 "welcome",
                 options);
