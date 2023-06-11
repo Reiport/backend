@@ -28,6 +28,7 @@ public interface GuestMapper {
     @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "guestHistoricStatess", ignore = true)
     @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
+    @Mapping(target = "avatar", ignore = true)
     Guest registerRequestToGuest(RegisterRequest request);
 
     @Mapping(source = "guestType", target = "guestType.name")
@@ -42,6 +43,7 @@ public interface GuestMapper {
     @Mapping(target = "guestHistoricStatess", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
+    @Mapping(target = "avatar", ignore = true)
     Guest updateProfileToGuest(UpdateProfile request);
 
     @Mapping(target = "id", ignore = true)
@@ -57,6 +59,7 @@ public interface GuestMapper {
     @Mapping(target = "guestHistoricStatess", ignore = true)
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "avatar", ignore = true)
     Guest registerWorkerRequestToGuest(RegisterWorkerRequest request);
 
     @Mapping(target = "postalCode", source = "postalCode.id")

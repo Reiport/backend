@@ -33,6 +33,9 @@ public class Guest implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = true)
+    private String avatar;
+
     @Column(nullable = false, length = 200, unique = true)
     private String email;
 
