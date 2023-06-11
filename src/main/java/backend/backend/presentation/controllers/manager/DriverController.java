@@ -23,7 +23,7 @@ public class DriverController {
     @Autowired
     private DriverService driverService;
 
-    @PreAuthorize("hasAuthority('Gestor')")
+    @PreAuthorize("hasAuthority('Gestor') or hasAuthority('Admin')")
     @GetMapping()
     public ResponseEntity<DriverResponse> getDriverById(@RequestParam int id) {
         return ResponseEntity.ok(GuestMapper.INSTANCE.toDriverResponse(driverService.getDriverById(id)));
