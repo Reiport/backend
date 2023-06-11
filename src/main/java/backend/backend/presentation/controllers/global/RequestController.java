@@ -25,6 +25,7 @@ import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.RequestInfo;
+import backend.backend.domain.entities.Statistics;
 import backend.backend.domain.entities.Vehicle;
 import backend.backend.presentation.contracts.PayRequest;
 import backend.backend.presentation.contracts.SimpleResponse;
@@ -175,7 +176,7 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor') or hasAuthority('Cliente')")
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor') or hasAuthority('Cliente') or hasAuthority('Motorista')")
     @GetMapping("")
     public ResponseEntity<RequestResponse> getRequest(@RequestParam int id) {
 
@@ -187,7 +188,34 @@ public class RequestController {
 
     }
 
-    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor') or hasAuthority('Cliente')")
+    @PreAuthorize("hasAuthority('Motorista')")
+    @GetMapping("/deliver/schedual")
+    public ResponseEntity<Collection<RequestResponse>> getSchedualDelivers() {
+
+        var result = this.requestService.getSchedualDelivers();
+
+        return ResponseEntity
+                .ok()
+                .body(result
+                        .stream()
+                        .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                        .collect(Collectors.toList()));
+
+    }
+
+    @PreAuthorize("hasAuthority('Motorista')")
+    @GetMapping("/deliver/current")
+    public ResponseEntity<RequestResponse> getCurrentDeliver() {
+
+        var result = this.requestService.getCurrentExecuteDeliver();
+
+        return ResponseEntity
+                .ok()
+                .body(RequestMapper.INSTANCE.toRequestInfoResponse(result));
+
+    }
+
+    @PreAuthorize("hasAuthority('Rececionista') or hasAuthority('Gestor') or hasAuthority('Cliente') or hasAuthority('Motorista')")
     @GetMapping("/members")
     public ResponseEntity<?> getRequestMembers(@RequestParam int id) {
 
@@ -272,6 +300,33 @@ public class RequestController {
         return ResponseEntity
                 .ok()
                 .body(new SimpleResponse("O pedido foi pago com sucesso!"));
+
+    }
+
+    @PreAuthorize("hasAuthority('Cliente')")
+    @GetMapping("/statistics")
+    public ResponseEntity<Statistics> statistics() {
+
+        Statistics statistics = this.requestService.getStatisticsFromRequest();
+
+        return ResponseEntity
+                .ok()
+                .body(statistics);
+
+    }
+
+    @PreAuthorize("hasAuthority('Motorista')")
+    @GetMapping("/deliver")
+    public ResponseEntity<Collection<RequestResponse>> getRequestToDeliver() {
+
+        Collection<RequestInfo> requestToDeliver = this.requestService.getRequestToDeliver();
+
+        return ResponseEntity
+                .ok()
+                .body(requestToDeliver
+                        .stream()
+                        .map(request -> RequestMapper.INSTANCE.toRequestInfoResponse(request))
+                        .collect(Collectors.toList()));
 
     }
 

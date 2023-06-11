@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import backend.backend.application.common.interfaces.IAuthorizationFacade;
 import backend.backend.application.common.interfaces.IMailSender;
+import backend.backend.application.common.interfaces.repositories.IDriverRepository;
 import backend.backend.application.common.interfaces.repositories.IRequestRepository;
+import backend.backend.application.common.interfaces.repositories.IUserRepository;
 import backend.backend.application.services.RequestService;
+import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.State;
@@ -23,6 +26,12 @@ public class FinishDeliver {
 
     @Autowired
     private IAuthorizationFacade authorizationFacade;
+
+    @Autowired
+    private IDriverRepository driverRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
 
     @Autowired
     private IRequestRepository requestRepository;
@@ -42,6 +51,10 @@ public class FinishDeliver {
             throw new RequestStateViolated();
 
         requestRepository.changeState(workingRequest, State.DELIVERED, authorizationFacade.getAuthenticatedUser());
+
+        Driver driver = userRepository.getDriver(authorizationFacade.getAuthenticatedUser().getId());
+        driver.setIsWorking(false);
+        driverRepository.save(driver);
 
         Map<String, Object> data = new HashMap<>();
         data.put("name", client.getFirstName() + " "

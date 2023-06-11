@@ -22,6 +22,7 @@ public interface RequestMapper {
     @Mapping(target = "license", source = "license.license")
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
+    @Mapping(source = "deadline", target = "deadline", dateFormat = "dd/MM/yyyy")
     RequestResponse toRequestResponse(Request request);
 
     @Mapping(target = "postalCodeDest", source = "postalCodeDest")
@@ -31,9 +32,12 @@ public interface RequestMapper {
     @Mapping(target = "license", source = "vehicleLicense")
     @Mapping(target = "client.postalCode", source = "client.postalCode.id")
     @Mapping(target = "client.guestType", source = "client.guestType.name")
+    @Mapping(source = "deadline", target = "deadline", dateFormat = "dd/MM/yyyy")
     RequestResponse toRequestInfoResponse(RequestInfo request);
 
     @Mapping(target = "postalCode", source = "postalCode.id")
+    @Mapping(source = "paymentDate", target = "paymentDate", dateFormat = "dd/MM/yyyy")
+    @Mapping(source = "dateIssue", target = "dateIssue", dateFormat = "dd/MM/yyyy")
     InvoiceResponse toInvoiceResponse(Invoice invoice);
 
 }

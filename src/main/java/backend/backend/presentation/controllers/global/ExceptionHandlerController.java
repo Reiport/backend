@@ -3,8 +3,6 @@ package backend.backend.presentation.controllers.global;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -86,15 +84,25 @@ public class ExceptionHandlerController {
         PrintWriter printWriter = new PrintWriter(stringWriter);
         e.printStackTrace(printWriter);
 
-        Map<String, String> errorMap = new HashMap<>();
+        // Map<String, String> errorMap = new HashMap<>();
+        // e.getBindingResult().getFieldErrors().forEach(error -> {
+        // errorMap.put(error.getField(), error.getDefaultMessage());
+        // });
+
+        StringBuilder builder = new StringBuilder();
+
+        // Map<String, String> errorMap = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error -> {
-            errorMap.put(error.getField(), error.getDefaultMessage());
+            builder.append(error.getField() + "|" + error.getDefaultMessage() + ",");
         });
+
+        String message = builder.toString();
+        message = message.substring(0, message.lastIndexOf(','));
 
         return new ResponseEntity<>(
                 new ErrorResponse(
                         status,
-                        errorMap,
+                        message,
                         request.getRequestURL().toString()),
                 status);
 

@@ -17,6 +17,7 @@ import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
+import backend.backend.domain.entities.Statistics;
 import backend.backend.domain.entities.Vehicle;
 import backend.backend.presentation.errors.DBException;
 import jakarta.persistence.EntityManager;
@@ -276,6 +277,110 @@ public class RequestRepository implements IRequestRepository {
     @Override
     public Invoice updateInvoice(Invoice invoice) {
         return _entityManager.merge(invoice);
+    }
+
+    @Override
+    public Statistics getStatistics(Guest user) {
+        TypedQuery<Long> query;
+
+        try {
+
+            query = _entityManager.createQuery(
+                    "SELECT COUNT(r.id) FROM RequestInfo r WHERE r.state = 0 AND r.client = :user",
+                    Long.class);
+
+            var exeCount = query.setParameter("user", user).getSingleResult();
+
+            query = _entityManager.createQuery(
+                    "SELECT COUNT(r.id) FROM RequestInfo r WHERE r.state = 1 AND r.client = :user",
+                    Long.class);
+
+            var susCount = query.setParameter("user", user).getSingleResult();
+
+            query = _entityManager.createQuery(
+                    "SELECT COUNT(r.id) FROM RequestInfo r WHERE r.state = 2 AND r.client = :user",
+                    Long.class);
+
+            var delCount = query.setParameter("user", user).getSingleResult();
+
+            query = _entityManager.createQuery(
+                    "SELECT COUNT(r.id) FROM RequestInfo r WHERE r.state = 3 AND r.client = :user",
+                    Long.class);
+
+            var comCount = query.setParameter("user", user).getSingleResult();
+
+            query = _entityManager.createQuery(
+                    "SELECT COUNT(r.id) FROM RequestInfo r WHERE r.state = 4 AND r.client = :user",
+                    Long.class);
+
+            var schCount = query.setParameter("user", user).getSingleResult();
+
+            query = _entityManager.createQuery(
+                    "SELECT COUNT(r.id) FROM RequestInfo r WHERE r.state = 5 AND r.client = :user",
+                    Long.class);
+
+            var payCount = query.setParameter("user", user).getSingleResult();
+
+            return new Statistics(
+                    exeCount,
+                    susCount,
+                    delCount,
+                    comCount,
+                    schCount,
+                    payCount);
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhuma fatura");
+        }
+    }
+
+    @Override
+    public Collection<RequestInfo> getRequestToDeliver(Guest authenticatedUser) {
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT r FROM RequestInfo r INNER JOIN DriverGroup dg WHERE dg.request = r AND dg.driver.guest_id = :driver AND r.state in (0,2,4)",
+                    RequestInfo.class);
+
+            return query.setParameter("driver", authenticatedUser).getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum pedido");
+        }
+    }
+
+    @Override
+    public Collection<RequestInfo> getSchedualDelivers(Guest authenticatedUser) {
+
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT r FROM RequestInfo r INNER JOIN DriverGroup dg WHERE dg.request = r AND dg.driver.guest_id = :driver AND r.state = 4",
+                    RequestInfo.class);
+
+            return query.setParameter("driver", authenticatedUser).getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum pedido");
+        }
+
+    }
+
+    @Override
+    public RequestInfo getCurrentExecuteDeliver(Guest authenticatedUser) {
+
+        try {
+
+            TypedQuery<RequestInfo> query = _entityManager.createQuery(
+                    "SELECT r FROM RequestInfo r INNER JOIN DriverGroup dg WHERE dg.driver.isWorking = true AND dg.request = r AND dg.driver.guest_id = :driver AND r.state = 0 ORDER BY dg.createdAt DESC",
+                    RequestInfo.class);
+
+            return query.setParameter("driver", authenticatedUser).getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("Não foi encontrado nenhum pedido");
+        }
+
     }
 
 }

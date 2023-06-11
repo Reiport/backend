@@ -14,6 +14,7 @@ import backend.backend.domain.entities.Guest;
 import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
+import backend.backend.domain.entities.Statistics;
 import backend.backend.domain.entities.Vehicle;
 
 @Service
@@ -86,6 +87,22 @@ public class RequestService {
 
     public Collection<Invoice> getAllInvoices(int id) {
         return this.requestRepository.getAllInvoices(id);
+    }
+
+    public Statistics getStatisticsFromRequest() {
+        return this.requestRepository.getStatistics(authorizationFacade.getAuthenticatedUser());
+    }
+
+    public Collection<RequestInfo> getRequestToDeliver() {
+        return this.requestRepository.getRequestToDeliver(authorizationFacade.getAuthenticatedUser());
+    }
+
+    public Collection<RequestInfo> getSchedualDelivers() {
+        return this.requestRepository.getSchedualDelivers(authorizationFacade.getAuthenticatedUser());
+    }
+
+    public RequestInfo getCurrentExecuteDeliver() {
+        return this.requestRepository.getCurrentExecuteDeliver(authorizationFacade.getAuthenticatedUser());
     }
 
 }

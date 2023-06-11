@@ -23,8 +23,10 @@ public interface ModelMapper {
     @Mapping(target = "modelContainers", ignore = true)
     @Mapping(target = "modelVehicles", ignore = true)
     @Mapping(target = "brand", ignore = true)
+    @Mapping(source = "launchDate", target = "launchDate", dateFormat = "dd/MM/yyyy")
     Model ToModel(ModelResponse modelResponse);
 
+    @Mapping(source = "launchDate", target = "launchDate", dateFormat = "dd/MM/yyyy")
     ModelResponse toModelResponse(Model model);
 
     CountryResponse toCountryResponse(Country country);

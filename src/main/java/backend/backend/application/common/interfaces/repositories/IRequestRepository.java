@@ -10,6 +10,7 @@ import backend.backend.domain.entities.Invoice;
 import backend.backend.domain.entities.Request;
 import backend.backend.domain.entities.RequestInfo;
 import backend.backend.domain.entities.State;
+import backend.backend.domain.entities.Statistics;
 import backend.backend.domain.entities.Vehicle;
 
 public interface IRequestRepository {
@@ -72,5 +73,13 @@ public interface IRequestRepository {
     Invoice getInvoice(int id);
 
     Invoice updateInvoice(Invoice invoice);
+
+    Statistics getStatistics(Guest user);
+
+    Collection<RequestInfo> getRequestToDeliver(Guest authenticatedUser);
+
+    Collection<RequestInfo> getSchedualDelivers(Guest guest);
+
+    RequestInfo getCurrentExecuteDeliver(Guest authenticatedUser);
 
 }

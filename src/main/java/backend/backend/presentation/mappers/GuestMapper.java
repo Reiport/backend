@@ -6,6 +6,7 @@ import org.mapstruct.factory.Mappers;
 
 import backend.backend.domain.entities.Driver;
 import backend.backend.domain.entities.Guest;
+import backend.backend.presentation.contracts.UpdateProfile;
 import backend.backend.presentation.contracts.authentication.RegisterRequest;
 import backend.backend.presentation.contracts.authentication.RegisterWorkerRequest;
 import backend.backend.presentation.contracts.worker.DriverResponse;
@@ -26,7 +27,22 @@ public interface GuestMapper {
     @Mapping(target = "idDrivers", ignore = true)
     @Mapping(target = "authorities", ignore = true)
     @Mapping(target = "guestHistoricStatess", ignore = true)
+    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     Guest registerRequestToGuest(RegisterRequest request);
+
+    @Mapping(source = "guestType", target = "guestType.name")
+    @Mapping(source = "postalCode", target = "postalCode.id")
+    @Mapping(target = "deletedAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "clientRequests", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "idDrivers", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
+    @Mapping(target = "guestHistoricStatess", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
+    Guest updateProfileToGuest(UpdateProfile request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
@@ -45,6 +61,7 @@ public interface GuestMapper {
 
     @Mapping(target = "postalCode", source = "postalCode.id")
     @Mapping(target = "guestType", source = "guestType.name")
+    @Mapping(source = "birthDate", target = "birthDate", dateFormat = "dd/MM/yyyy")
     WorkerResponse toWorkerResponse(Guest guest);
 
     @Mapping(source = "guest_id", target = "guest")
