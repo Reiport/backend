@@ -5,14 +5,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@AllArgsConstructor
 @RedisHash("tokens")
-@Getter()
-@Setter()
 public class Token {
 
     @Id()
@@ -24,5 +17,38 @@ public class Token {
 
     @TimeToLive()
     private Long expire;
+
+    public Token() {
+    }
+
+    public Token(Integer userId, String value, Long expire) {
+        this.userId = userId;
+        this.value = value;
+        this.expire = expire;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Long getExpire() {
+        return expire;
+    }
+
+    public void setExpire(Long expire) {
+        this.expire = expire;
+    }
 
 }

@@ -22,13 +22,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class AuthorizationMiddleware extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final IJwtGenerator jwtGenerator;
+
+    public AuthorizationMiddleware(UserDetailsService userDetailsService, IJwtGenerator jwtGenerator) {
+        this.userDetailsService = userDetailsService;
+        this.jwtGenerator = jwtGenerator;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

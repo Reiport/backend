@@ -7,16 +7,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Table(name = "guesttype")
-@Data
 @Entity
-@NoArgsConstructor
 public class GuestType {
 
     @Id
@@ -45,5 +41,75 @@ public class GuestType {
 
     @OneToMany(mappedBy = "guestType")
     private Set<Guest> guestTypeGuests;
+
+    public GuestType() {
+    }
+
+    public GuestType(Integer id, String name, String description, LocalDate createdAt, LocalDate updatedAt,
+            LocalDate deletedAt, Set<Guest> guestTypeGuests) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.guestTypeGuests = guestTypeGuests;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDate getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDate deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Set<Guest> getGuestTypeGuests() {
+        return guestTypeGuests;
+    }
+
+    public void setGuestTypeGuests(Set<Guest> guestTypeGuests) {
+        this.guestTypeGuests = guestTypeGuests;
+    }
 
 }

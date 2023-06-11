@@ -8,16 +8,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Table(name = "postalcode")
-@Data
 @Entity
-@NoArgsConstructor
+
 public class PostalCode {
 
     @Id
@@ -64,5 +61,103 @@ public class PostalCode {
 
     @OneToMany(mappedBy = "postalCodeOri")
     private Set<Request> postalCodeOriRequests;
+
+    public PostalCode() {
+    }
+
+    public PostalCode(String id, String description, String locality, LocalDate createdAt, LocalDate updatedAt,
+            LocalDate deletedAt, Country country, Set<Guest> postalCodeGuests, Set<Request> postalCodeDestRequests,
+            Set<Request> postalCodeOriRequests) {
+        this.id = id;
+        this.description = description;
+        this.locality = locality;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.country = country;
+        this.postalCodeGuests = postalCodeGuests;
+        this.postalCodeDestRequests = postalCodeDestRequests;
+        this.postalCodeOriRequests = postalCodeOriRequests;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDate getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDate deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public Set<Guest> getPostalCodeGuests() {
+        return postalCodeGuests;
+    }
+
+    public void setPostalCodeGuests(Set<Guest> postalCodeGuests) {
+        this.postalCodeGuests = postalCodeGuests;
+    }
+
+    public Set<Request> getPostalCodeDestRequests() {
+        return postalCodeDestRequests;
+    }
+
+    public void setPostalCodeDestRequests(Set<Request> postalCodeDestRequests) {
+        this.postalCodeDestRequests = postalCodeDestRequests;
+    }
+
+    public Set<Request> getPostalCodeOriRequests() {
+        return postalCodeOriRequests;
+    }
+
+    public void setPostalCodeOriRequests(Set<Request> postalCodeOriRequests) {
+        this.postalCodeOriRequests = postalCodeOriRequests;
+    }
 
 }

@@ -23,10 +23,8 @@ import backend.backend.application.common.interfaces.IJwtGenerator;
 import backend.backend.config.settings.JwtConfiguration;
 import backend.backend.infrastructure.providers.authentication.JwtGenerator;
 import backend.backend.presentation.middlewares.AuthorizationMiddleware;
-import lombok.RequiredArgsConstructor;
 
 @Configuration
-@RequiredArgsConstructor
 @EnableConfigurationProperties
 @EnableMethodSecurity()
 public class SecurityConfig {
@@ -34,6 +32,11 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     private final JwtConfiguration jwtConfiguration;
+
+    public SecurityConfig(UserDetailsService userDetailsService, JwtConfiguration jwtConfiguration) {
+        this.userDetailsService = userDetailsService;
+        this.jwtConfiguration = jwtConfiguration;
+    }
 
     // Generates Password Encoder
     @Bean

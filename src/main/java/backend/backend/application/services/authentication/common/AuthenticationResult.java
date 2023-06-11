@@ -1,13 +1,32 @@
 package backend.backend.application.services.authentication.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
-@Getter
 public class AuthenticationResult {
 
     private String token;
     private String refresh_token;
+
+    public AuthenticationResult() {
+    }
+
+    public AuthenticationResult(String token, String refresh_token) {
+        this.token = token;
+        this.refresh_token = refresh_token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getRefresh_token() {
+        return refresh_token;
+    }
+
+    public void setRefresh_token(String refresh_token) {
+        this.refresh_token = refresh_token;
+    }
 
 }

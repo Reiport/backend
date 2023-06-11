@@ -11,13 +11,16 @@ import backend.backend.application.services.authentication.common.ResetPassword;
 import backend.backend.presentation.contracts.SimpleResponse;
 import backend.backend.presentation.contracts.authentication.ResetPasswordRequest;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequiredArgsConstructor
+
 public class ResetPasswordController {
 
     private final ResetPasswordService resetPasswordService;
+
+    public ResetPasswordController(ResetPasswordService resetPasswordService) {
+        this.resetPasswordService = resetPasswordService;
+    }
 
     @PostMapping("/resetpassword")
     private ResponseEntity<SimpleResponse> resetPassword(@RequestParam String token,

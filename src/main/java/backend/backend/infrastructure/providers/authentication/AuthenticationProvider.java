@@ -7,13 +7,15 @@ import org.springframework.stereotype.Component;
 
 import backend.backend.application.common.interfaces.repositories.IUserRepository;
 import backend.backend.domain.entities.Guest;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class AuthenticationProvider implements UserDetailsService {
 
     private final IUserRepository userRepository;
+
+    public AuthenticationProvider(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
