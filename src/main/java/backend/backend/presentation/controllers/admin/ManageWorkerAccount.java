@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,6 +72,19 @@ public class ManageWorkerAccount {
         return ResponseEntity
                 .ok()
                 .body(new SimpleResponse("O trabalhador foi eliminado!"));
+
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @PutMapping("/workers/update")
+    public ResponseEntity<SimpleResponse> updateWorkerById(@RequestParam int id,
+            @RequestBody RegisterWorkerRequest request) {
+
+        workerService.updateWorkerById(id, request);
+
+        return ResponseEntity
+                .ok()
+                .body(new SimpleResponse("O trabalhador foi atualizado!"));
 
     }
 
