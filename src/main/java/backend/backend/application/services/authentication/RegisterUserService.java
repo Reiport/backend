@@ -64,7 +64,7 @@ public class RegisterUserService {
                 passwordEncoder.encode(registerRequest.getPassword()),
                 registerRequest.getFirstName(),
                 registerRequest.getLastName(),
-                LocalDate.parse(registerRequest.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                LocalDate.parse(registerRequest.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 registerRequest.getNif(),
                 registerRequest.getStreet(),
                 registerRequest.getPort(),
@@ -72,6 +72,8 @@ public class RegisterUserService {
                 postalCode,
                 guestTypeRepository.findByName("Cliente").get());
 
+        client.setAvatar(
+                "https://rjgetrgsupehkuqfhpqq.supabase.co/storage/v1/object/sign/SUPASUPAPROJ/avatar5.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJTVVBBU1VQQVBST0ovYXZhdGFyNS5wbmciLCJpYXQiOjE2ODY2OTQ3OTIsImV4cCI6MTcxODIzMDc5Mn0.A6pY5cWFJB6m-TIq0SO6vh5OGorswqqXHwh3MQEQlFU&t=2023-06-13T22%3A19%3A51.256Z");
         var createdUser = this.userRepository.save(client);
 
         Map<String, Object> options = new HashMap<>();

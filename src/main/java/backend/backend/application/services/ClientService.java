@@ -35,7 +35,7 @@ public class ClientService {
 
         client.setFirstName(request.getFirstName());
         client.setLastName(request.getLastName());
-        client.setBirthDate(LocalDate.parse(request.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        client.setBirthDate(LocalDate.parse(request.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         client.setPort(request.getPort());
         client.setStreet(request.getStreet());
         client.setTelephone(request.getTelephone());

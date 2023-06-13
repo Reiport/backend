@@ -45,7 +45,7 @@ public class WorkerService {
 
         worker.setFirstName(request.getFirstName());
         worker.setLastName(request.getLastName());
-        worker.setBirthDate(LocalDate.parse(request.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        worker.setBirthDate(LocalDate.parse(request.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         worker.setPort(request.getPort());
         worker.setStreet(request.getStreet());
         worker.setTelephone(request.getTelephone());

@@ -34,7 +34,7 @@ public class ProfileService {
         authenticatedUser.setFirstName(updateProfile.getFirstName());
         authenticatedUser.setLastName(updateProfile.getLastName());
         authenticatedUser
-                .setBirthDate(LocalDate.parse(updateProfile.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                .setBirthDate(LocalDate.parse(updateProfile.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         authenticatedUser.setNif(updateProfile.getNif());
         authenticatedUser.setStreet(updateProfile.getStreet());
         authenticatedUser.setPort(updateProfile.getPort());
